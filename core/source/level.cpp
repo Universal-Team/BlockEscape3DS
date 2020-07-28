@@ -28,12 +28,14 @@
 #include "level.hpp"
 #include "msg.hpp"
 
+#include <cstring>
+
 Level::Level() { this->validLevel = false; }
 
 void Level::unload() {
 	// Reset cars.
 	this->cars.clear();
-	if (this->levelData) delete levelData; // Delete Level data.
+	this->levelData = nullptr;
 	this->validLevel = false;
 }
 
@@ -44,7 +46,7 @@ void Level::loadLevel(const std::string &file) {
 	this->levelFile = fopen(file.c_str(), "r");
 
 	if (!this->levelFile) {
-		printf("Level file could not be opened.");
+		Msg::DisplayWaitMsg("Not able to open file!");
 		this->validLevel = false;
 		return;
 	}
@@ -52,16 +54,25 @@ void Level::loadLevel(const std::string &file) {
 	fseek(this->levelFile, 0, SEEK_END);
 	this->size = ftell(this->levelFile);
 	if (this->size != 0x53) {
-		printf("Level size is incorrect.");
+		Msg::DisplayWaitMsg("Level size is incorrect!");
 		fclose(this->levelFile);
 		this->validLevel = false;
 		return;
 	}
 
-	fseek(this->levelFile, 4, SEEK_SET); // skip magic header.
-	this->levelData = new u8[0x4F];
-	fread(this->levelData, 1, 0x4F, this->levelFile); // Read level data.
+	fseek(this->levelFile, 0, SEEK_SET);
+	this->levelData = std::unique_ptr<u8[]>(new u8[0x53]);
+	fread(this->levelData.get(), 1, 0x53, this->levelFile); // Read level data.
 	fclose(this->levelFile); // Close cause unneeded.
+
+	static const char MAGIC[4] = {'R','H','3','D'};
+
+	// Verify Magic header.
+	if (memcmp(MAGIC, this->levelData.get(), 0x4) != 0) {
+		Msg::DisplayWaitMsg("Invalid Magic field!");
+		this->validLevel = false;
+		return;
+	}
 
 	this->validLevel = true;
 
@@ -73,20 +84,20 @@ void Level::prepareLevel() {
 	if (this->validLevel && this->levelData) {
 		// 2 size cars.
 		for (int i = 0; i < 11; i++) {
-			if (this->levelData[0 + (i * 0x5)] != 0) {
-				this->cars.push_back({std::make_unique<Cars>(this->levelData[1 + (i * 0x5)], this->levelData[2 + (i * 0x5)], 2, Direction(this->levelData[0 + (i * 0x5)]), Car(i + 1), this->levelData[3 + (i * 0x5)])});
+			if (this->levelPointer()[0 + (i * 0x5)] != 0) {
+				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x5)], this->levelPointer()[2 + (i * 0x5)], 2, Direction(this->levelPointer()[0 + (i * 0x5)]), Car(i + 1), this->levelPointer()[3 + (i * 0x5)])});
 			}
 		}
 
 		// 3 size cars.
 		for (int i = 0; i < 4; i++) {
-			if (this->levelData[0x37 + (i * 0x5)] != 0) {
-				this->cars.push_back({std::make_unique<Cars>(this->levelData[0x38 + (i * 0x5)], this->levelData[0x39 + (i * 0x5)], 3, Direction(this->levelData[0x37 + (i * 0x5)]), Car(11 + i), this->levelData[0x3A + (i * 0x5)])});
+			if (this->levelPointer()[0x37 + (i * 0x5)] != 0) {
+				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x38 + (i * 0x5)], this->levelPointer()[0x39 + (i * 0x5)], 3, Direction(this->levelPointer()[0x37 + (i * 0x5)]), Car(11 + i), this->levelPointer()[0x3A + (i * 0x5)])});
 			}
 		}
 
 		// the needed car.
-		this->cars.push_back({std::make_unique<Cars>(this->levelData[0x4C], this->levelData[0x4D], 2, Direction(this->levelData[0x4B]), Car::Red, this->levelData[0x4E])});
+		this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x4C], this->levelPointer()[0x4D], 2, Direction(this->levelPointer()[0x4B]), Car::Red, this->levelPointer()[0x4E])});
 	}
 }
 

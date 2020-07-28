@@ -53,7 +53,12 @@ public:
 
 	bool returnIfMovable(int cr, bool mv); // if movement is true, do forward.
 private:
-	u8* levelData = nullptr; // Our level buffer.
+	const u8* levelPointer() {
+		if (this->levelData) return this->levelData.get() + 0x4;
+		else return nullptr;
+	}
+
+	std::unique_ptr<u8[]> levelData = nullptr; // Our level buffer.
 	FILE *levelFile = nullptr; // Our FILE variable.
 	u32 size = 0;
 
