@@ -36,7 +36,7 @@
 class Cars;
 class Level {
 public:
-	Level(const std::string &file);
+	Level();
 	void loadLevel(const std::string &file);
 	void prepareLevel();
 	void unload();

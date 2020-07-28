@@ -28,7 +28,7 @@
 #include "level.hpp"
 #include "msg.hpp"
 
-Level::Level(const std::string &file) { this->loadLevel(file); }
+Level::Level() { this->validLevel = false; }
 
 void Level::unload() {
 	// Reset cars.

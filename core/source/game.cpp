@@ -29,7 +29,9 @@
 #include "msg.hpp"
 
 // Your constructor here for the Game.
-Game::Game() { this->currentLevel = std::make_unique<Level>("romfs:/levels/level1.lvl"); }
+Game::Game() {
+	this->currentLevel = std::make_unique<Level>();
+}
 
 void Game::unload() {
 	this->currentLevel->unload();
