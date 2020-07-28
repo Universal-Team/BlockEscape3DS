@@ -145,157 +145,74 @@ bool Level::isValid() { return this->validLevel; }
 bool Level::returnIfMovable(int cr, bool mv) {
 	if (this->getCarAmount() < cr) return false; // No No.
 
+	int distance = 0;
+
 	// Do not do anything, if 6 / 1.
 	if (mv) {
 		if (this->cars[cr]->getPosition() + this->cars[cr]->getSize() - 1 == 6) return false;
+		distance = this->cars[cr]->getPosition() + this->cars[cr]->getSize();
 	} else {
 		if (this->cars[cr]->getPosition() == 1) return false;
+		distance = this->cars[cr]->getPosition() - 1;
 	}
 
-	int distance = 0;
-
-	if (mv) {
-		distance = this->cars[cr]->getPosition() + this->cars[cr]->getSize();
-		if (this->cars[cr]->getDirection() == Direction::Horizontal) {
-			for (int i = 0; i < this->getCarAmount(); i++) {
-				if (this->cars[i]->getDirection() == Direction::Vertical) {
-					if (this->cars[i]->getY() == distance) {
-						if (this->cars[i]->getSize() == 2) {
-							if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX()) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-							if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getX()) {
-								return false; // Blocked!
-							}
+	// Up / Down.
+	if (this->cars[cr]->getDirection() == Direction::Horizontal) {
+		for (int i = 0; i < this->getCarAmount(); i++) {
+			if (this->cars[i]->getDirection() == Direction::Vertical) {
+				if (this->cars[i]->getY() == distance) {
+					if (this->cars[i]->getSize() == 2) {
+						if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX()) {
+							return false; // Blocked!
 						}
-					}
-
-				} else if (this->cars[i]->getDirection() == Direction::Horizontal) {
-					if (this->cars[i]->getX() == this->cars[cr]->getX()) {
-						if (this->cars[i]->getSize() == 2) {
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
-								return false; // Blocked!
-							}
+					} else if (this->cars[i]->getSize() == 3) {
+						if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getX()) {
+							return false; // Blocked!
 						}
 					}
 				}
-			}
 
-			// Right.
-		} else if (this->cars[cr]->getDirection() == Direction::Vertical) {
-			for (int i = 0; i < this->getCarAmount(); i++) {
-
-				if (this->cars[i]->getDirection() == Direction::Horizontal) {
-
-					if (this->cars[i]->getX() == distance) {
-
-						if (this->cars[i]->getSize() == 2) {
-
-							if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY()) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-
-							if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getY()) {
-
-								return false; // Blocked!
-							}
+			} else if (this->cars[i]->getDirection() == Direction::Horizontal) {
+				if (this->cars[i]->getX() == this->cars[cr]->getX()) {
+					if (this->cars[i]->getSize() == 2) {
+						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
+							return false; // Blocked!
 						}
-					}
-
-				} else if (this->cars[i]->getDirection() == Direction::Vertical) {
-
-					if (this->cars[i]->getY() == this->cars[cr]->getY()) {
-
-						if (this->cars[i]->getSize() == 2) {
-
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
-
-								return false; // Blocked!
-							}
+					} else if (this->cars[i]->getSize() == 3) {
+						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
+							return false; // Blocked!
 						}
 					}
 				}
 			}
 		}
 
-		// Backwards.
-	} else {
-		distance = this->cars[cr]->getPosition() - 1;
-		if (this->cars[cr]->getDirection() == Direction::Horizontal) {
-
-			for (int i = 0; i < this->getCarAmount(); i++) {
-
-				if (this->cars[i]->getDirection() == Direction::Vertical) {
-
-					if (this->cars[i]->getY() == distance) {
-
-						if (this->cars[i]->getSize() == 2) {
-
-							if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX()) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-
-							if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getX()) {
-
-								return false; // Blocked!
-							}
+		// Right / Left.
+	} else if (this->cars[cr]->getDirection() == Direction::Vertical) {
+		for (int i = 0; i < this->getCarAmount(); i++) {
+			if (this->cars[i]->getDirection() == Direction::Horizontal) {
+				if (this->cars[i]->getX() == distance) {
+					if (this->cars[i]->getSize() == 2) {
+						if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY()) {
+							return false; // Blocked!
 						}
-					}
-
-				} else if (this->cars[i]->getDirection() == Direction::Horizontal) {
-					if (this->cars[i]->getX() == this->cars[cr]->getX()) {
-						if (this->cars[i]->getSize() == 2) {
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
-								return false; // Blocked!
-							}
+					} else if (this->cars[i]->getSize() == 3) {
+						if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getY()) {
+							return false; // Blocked!
 						}
 					}
 				}
-			}
-
-		} else if (this->cars[cr]->getDirection() == Direction::Vertical) {
-			for (int i = 0; i < this->getCarAmount(); i++) {
-				if (this->cars[i]->getDirection() == Direction::Horizontal) {
-
-					if (this->cars[i]->getX() == distance) {
-						if (this->cars[i]->getSize() == 2) {
-							if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY()) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-							if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getY()) {
-								return false; // Blocked!
-							}
+				
+			} else if (this->cars[i]->getDirection() == Direction::Vertical) {
+				if (this->cars[i]->getY() == this->cars[cr]->getY()) {
+					if (this->cars[i]->getSize() == 2) {
+						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
+							return false; // Blocked!
 						}
-					}
 
-				} else if (this->cars[i]->getDirection() == Direction::Vertical) {
-
-					if (this->cars[i]->getY() == this->cars[cr]->getY()) {
-						if (this->cars[i]->getSize() == 2) {
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
-								return false; // Blocked!
-							}
-						} else if (this->cars[i]->getSize() == 3) {
-							if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
-								return false; // Blocked!
-							}
+					} else if (this->cars[i]->getSize() == 3) {
+						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
+							return false; // Blocked!
 						}
 					}
 				}

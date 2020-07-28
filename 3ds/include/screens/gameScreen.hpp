@@ -29,6 +29,7 @@
 
 #include "common.hpp"
 #include "game.hpp"
+#include "structs.hpp"
 
 class GameScreen : public Screen {
 public:
@@ -41,6 +42,26 @@ private:
 	std::unique_ptr<Game> currentGame; // Our current game.
 	void DrawGameField() const;
 	int selectedCar = 0;
+
+	// Car Selection.
+	const std::vector<Structs::ButtonPos> carList = {
+		{240, 20, 60, 20},
+		{240, 40, 60, 20},
+		{240, 60, 60, 20},
+		{240, 80, 60, 20},
+		{240, 100, 60, 20},
+		{240, 120, 60, 20},
+		{240, 140, 60, 20},
+		{240, 160, 60, 20},
+		{240, 180, 60, 20},
+		{240, 200, 60, 20},
+		{240, 220, 60, 20},
+		{240, 240, 60, 20},
+		{240, 260, 60, 20},
+		{240, 280, 60, 20},
+		{240, 400, 60, 20},
+		{240, 320, 60, 20}
+	};
 };
 
 #endif

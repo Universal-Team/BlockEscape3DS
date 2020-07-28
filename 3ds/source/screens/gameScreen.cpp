@@ -28,6 +28,7 @@
 #include "gameScreen.hpp"
 
 extern std::unique_ptr<Config> config;
+extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 GameScreen::GameScreen() {
 	// Call Game Constructor here.
@@ -73,6 +74,12 @@ void GameScreen::DrawGameField() const {
 	}
 
 	if (this->currentGame) DrawSelectedCar(this->selectedCar);
+
+	Gui::Draw_Rect(this->carList[1].x-10, this->carList[1].y, 80, this->currentGame->getCarAmount() * 20, config->barColor());
+
+	for (int i = 0; i < this->currentGame->getCarAmount(); i++) {
+		Gui::Draw_Rect(this->carList[i+1].x, this->carList[i+1].y, (this->currentGame->getSize(i) * 20), 20, GFX::getColor(this->currentGame->getCar(i)));
+	}
 }
 
 void GameScreen::Draw(void) const {
@@ -91,6 +98,14 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Msg::DisplayWaitMsg("You won! :)");
 			Gui::screenBack(true);
 			return;
+		}
+	}
+
+	if (hDown & KEY_TOUCH) {
+		for (int i = 0; i < this->currentGame->getCarAmount(); i++) {
+			if (touching(touch, this->carList[i + 1])) {
+				this->selectedCar = i;
+			}
 		}
 	}
 
