@@ -33,6 +33,15 @@
 #include <memory>
 #include <vector>
 
+/* RushHour3D Level Structure.
+	first 4 bytes: 52 48 33 44 (Magic Header "RH3D").
+	5th byte: Direction of first car. (0 = not included, 1 = Vertical, 2 = Horizontal.)
+	6th byte: RowX of first car. (0 = not included. 1 - 6: Included.)
+	7th byte: RowY of first car. (0 = not included. 1 - 6: Included.)
+	8th byte: FF!
+	9th byte: Repeat same steps as 6 - 8 byte until 0x42.
+*/
+
 class Cars;
 class Level {
 public:

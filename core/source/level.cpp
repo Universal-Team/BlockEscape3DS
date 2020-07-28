@@ -53,7 +53,7 @@ void Level::loadLevel(const std::string &file) {
 
 	fseek(this->levelFile, 0, SEEK_END);
 	this->size = ftell(this->levelFile);
-	if (this->size != 0x53) {
+	if (this->size != 0x43) {
 		Msg::DisplayWaitMsg("Level size is incorrect!");
 		fclose(this->levelFile);
 		this->validLevel = false;
@@ -61,8 +61,8 @@ void Level::loadLevel(const std::string &file) {
 	}
 
 	fseek(this->levelFile, 0, SEEK_SET);
-	this->levelData = std::unique_ptr<u8[]>(new u8[0x53]);
-	fread(this->levelData.get(), 1, 0x53, this->levelFile); // Read level data.
+	this->levelData = std::unique_ptr<u8[]>(new u8[0x43]);
+	fread(this->levelData.get(), 1, 0x43, this->levelFile); // Read level data.
 	fclose(this->levelFile); // Close cause unneeded.
 
 	static const char MAGIC[4] = {'R','H','3','D'};
@@ -82,22 +82,101 @@ void Level::loadLevel(const std::string &file) {
 // Prepare the level here.
 void Level::prepareLevel() {
 	if (this->validLevel && this->levelData) {
+
 		// 2 size cars.
 		for (int i = 0; i < 11; i++) {
-			if (this->levelPointer()[0 + (i * 0x5)] != 0) {
-				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x5)], this->levelPointer()[2 + (i * 0x5)], 2, Direction(this->levelPointer()[0 + (i * 0x5)]), Car(i + 1), this->levelPointer()[3 + (i * 0x5)])});
+			if (this->levelPointer()[0 + (i * 0x4)] != 0) {
+
+				if (this->levelPointer()[0 + (i * 0x4)] < 1 || this->levelPointer()[0 + (i * 0x4)] > 2) {
+					Msg::DisplayWaitMsg("Car " + std::to_string(1 + i) + " has an invalid direction!");
+					this->validLevel = false;
+					return;
+				}
+
+				if (this->levelPointer()[1 + (i * 0x4)] < 1 || this->levelPointer()[1 + (i * 0x4)] > 6) {
+					Msg::DisplayWaitMsg("Car " + std::to_string(1 + i) + " has an invalid rowX!");
+					this->validLevel = false;
+					return;
+				}
+
+				if (this->levelPointer()[2 + (i * 0x4)] < 1 || this->levelPointer()[2 + (i * 0x4)] > 6) {
+					Msg::DisplayWaitMsg("Car " + std::to_string(1 + i) + " has an invalid rowY!");
+					this->validLevel = false;
+					return;
+				}
+
+
+				// Direction check. Vertical.
+				if (this->levelPointer()[0 + (i * 0x4)] == 1) {
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x4)], this->levelPointer()[2 + (i * 0x4)], 2, Direction(this->levelPointer()[0 + (i * 0x4)]), Car(i + 1), this->levelPointer()[1 + (i * 0x4)])});
+					// Direction check. Horizontal.
+				} else if (this->levelPointer()[0 + (i * 0x4)] == 2) {
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x4)], this->levelPointer()[2 + (i * 0x4)], 2, Direction(this->levelPointer()[0 + (i * 0x4)]), Car(i + 1), this->levelPointer()[2 + (i * 0x4)])});
+				}
 			}
 		}
 
 		// 3 size cars.
 		for (int i = 0; i < 4; i++) {
-			if (this->levelPointer()[0x37 + (i * 0x5)] != 0) {
-				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x38 + (i * 0x5)], this->levelPointer()[0x39 + (i * 0x5)], 3, Direction(this->levelPointer()[0x37 + (i * 0x5)]), Car(11 + i), this->levelPointer()[0x3A + (i * 0x5)])});
+			if (this->levelPointer()[0x2C + (i * 0x4)] != 0) {
+
+				if (this->levelPointer()[0x2C + (i * 0x4)] < 1 || this->levelPointer()[0x2C + (i * 0x4)] > 2) {
+					Msg::DisplayWaitMsg("Car " + std::to_string(12 + i) + " has an invalid direction!");
+					this->validLevel = false;
+					return;
+				}
+
+				if (this->levelPointer()[0x2D + (i * 0x4)] < 1 || this->levelPointer()[0x2D + (i * 0x4)] > 6) {
+					Msg::DisplayWaitMsg("Car " + std::to_string(12 + i) + " has an invalid rowX!");
+					this->validLevel = false;
+					return;
+				}
+
+				if (this->levelPointer()[0x2E + (i * 0x4)] < 1 || this->levelPointer()[0x2E + (i * 0x4)] > 6) {
+					Msg::DisplayWaitMsg("Car " + std::to_string(12 + i) + " has an invalid rowY!");
+					this->validLevel = false;
+					return;
+				}
+
+				// Direction check. Vertical.
+				if (this->levelPointer()[0x2C + (i * 0x4)] == 1) {
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2D + (i * 0x4)], this->levelPointer()[0x2E + (i * 0x4)], 3, Direction(this->levelPointer()[0x2C + (i * 0x4)]), Car(11 + i), this->levelPointer()[0x2D + (i * 0x4)])});
+					// Direction check. Horizontal.
+				} else if (this->levelPointer()[0x2C + (i * 0x4)] == 2) {
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2D + (i * 0x4)], this->levelPointer()[0x2E + (i * 0x4)], 3, Direction(this->levelPointer()[0x2C + (i * 0x4)]), Car(11 + i), this->levelPointer()[0x2E + (i * 0x4)])});
+				}
 			}
 		}
 
 		// the needed car.
-		this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x4C], this->levelPointer()[0x4D], 2, Direction(this->levelPointer()[0x4B]), Car::Red, this->levelPointer()[0x4E])});
+		if (this->levelPointer()[0x3C] != 0) {
+
+			if (this->levelPointer()[0x3C] < 1 ||this->levelPointer()[0x3C] > 2) {
+				Msg::DisplayWaitMsg("Car 16 has an invalid direction!");
+				this->validLevel = false;
+				return;
+			}
+
+			if (this->levelPointer()[0x3D] < 1 || this->levelPointer()[0x3D] > 6) {
+				Msg::DisplayWaitMsg("Car 16 has an invalid rowX!");
+				this->validLevel = false;
+				return;
+			}
+
+			if (this->levelPointer()[0x3E] < 1 || this->levelPointer()[0x3E] > 6) {
+				Msg::DisplayWaitMsg("Car 16 has an invalid rowY!");
+				this->validLevel = false;
+				return;
+			}
+
+			// Direction check. Vertical.
+			if (this->levelPointer()[0x3C] == 1) {
+				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x3D], this->levelPointer()[0x3E], 2, Direction(this->levelPointer()[0x3C]), Car::Red, this->levelPointer()[0x3D])});
+				// Direction check. Horizontal.
+			} else if (this->levelPointer()[0x3C] == 2) {
+				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x3D], this->levelPointer()[0x3E], 2, Direction(this->levelPointer()[0x3C]), Car::Red, this->levelPointer()[0x3E])});
+			}
+		}
 	}
 }
 
