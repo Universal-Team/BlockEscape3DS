@@ -25,6 +25,7 @@
 */
 
 #include "coreHelper.hpp"
+#include "lang.hpp"
 #include "level.hpp"
 #include "msg.hpp"
 
@@ -47,7 +48,7 @@ void Level::loadLevel(const std::string &file) {
 	this->levelFile = fopen(file.c_str(), "r");
 
 	if (!this->levelFile) {
-		Msg::DisplayWaitMsg("Not able to open file!");
+		Msg::DisplayWaitMsg(Lang::get("FILE_NOT_OPEN"));
 		this->validLevel = false;
 		return;
 	}
@@ -55,7 +56,7 @@ void Level::loadLevel(const std::string &file) {
 	fseek(this->levelFile, 0, SEEK_END);
 	this->size = ftell(this->levelFile);
 	if (this->size != 0x43) {
-		Msg::DisplayWaitMsg("Level size is incorrect!");
+		Msg::DisplayWaitMsg(Lang::get("LEVEL_SIZE_INCORRECT"));
 		fclose(this->levelFile);
 		this->validLevel = false;
 		return;
@@ -70,7 +71,7 @@ void Level::loadLevel(const std::string &file) {
 
 	// Verify Magic header.
 	if (memcmp(MAGIC, this->levelData.get(), 0x4) != 0) {
-		Msg::DisplayWaitMsg("Invalid Magic field!");
+		Msg::DisplayWaitMsg(Lang::get("LEVEL_INVALID_MAGIC"));
 		this->validLevel = false;
 		return;
 	}
@@ -89,19 +90,19 @@ void Level::prepareLevel() {
 			if (this->levelPointer()[0 + (i * 0x4)] != 0) {
 
 				if (this->levelPointer()[0 + (i * 0x4)] < 1 || this->levelPointer()[0 + (i * 0x4)] > 2) {
-					Msg::DisplayWaitMsg("Car " + std::to_string(1 + i) + " has an invalid direction!");
+					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(1 + i) + " " +  Lang::get("INVALID_DIRECTION"));
 					this->validLevel = false;
 					return;
 				}
 
 				if (this->levelPointer()[1 + (i * 0x4)] < 1 || this->levelPointer()[1 + (i * 0x4)] > 6) {
-					Msg::DisplayWaitMsg("Car " + std::to_string(1 + i) + " has an invalid rowX!");
+					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(1 + i) + " " +  Lang::get("INVALID_X_ROW"));
 					this->validLevel = false;
 					return;
 				}
 
 				if (this->levelPointer()[2 + (i * 0x4)] < 1 || this->levelPointer()[2 + (i * 0x4)] > 6) {
-					Msg::DisplayWaitMsg("Car " + std::to_string(1 + i) + " has an invalid rowY!");
+					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(1 + i) + " " +  Lang::get("INVALID_Y_ROW"));
 					this->validLevel = false;
 					return;
 				}
@@ -122,19 +123,19 @@ void Level::prepareLevel() {
 			if (this->levelPointer()[0x2C + (i * 0x4)] != 0) {
 
 				if (this->levelPointer()[0x2C + (i * 0x4)] < 1 || this->levelPointer()[0x2C + (i * 0x4)] > 2) {
-					Msg::DisplayWaitMsg("Car " + std::to_string(12 + i) + " has an invalid direction!");
+					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(12 + i) + " " +  Lang::get("INVALID_DIRECTION"));
 					this->validLevel = false;
 					return;
 				}
 
 				if (this->levelPointer()[0x2D + (i * 0x4)] < 1 || this->levelPointer()[0x2D + (i * 0x4)] > 6) {
-					Msg::DisplayWaitMsg("Car " + std::to_string(12 + i) + " has an invalid rowX!");
+					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(12 + i) + " " +  Lang::get("INVALID_X_ROW"));
 					this->validLevel = false;
 					return;
 				}
 
 				if (this->levelPointer()[0x2E + (i * 0x4)] < 1 || this->levelPointer()[0x2E + (i * 0x4)] > 6) {
-					Msg::DisplayWaitMsg("Car " + std::to_string(12 + i) + " has an invalid rowY!");
+					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(12 + i) + " " +  Lang::get("INVALID_Y_ROW"));
 					this->validLevel = false;
 					return;
 				}
@@ -153,19 +154,19 @@ void Level::prepareLevel() {
 		if (this->levelPointer()[0x3C] != 0) {
 
 			if (this->levelPointer()[0x3C] < 1 ||this->levelPointer()[0x3C] > 2) {
-				Msg::DisplayWaitMsg("Car 16 has an invalid direction!");
+				Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(16) + " " +  Lang::get("INVALID_DIRECTION"));
 				this->validLevel = false;
 				return;
 			}
 
 			if (this->levelPointer()[0x3D] < 1 || this->levelPointer()[0x3D] > 6) {
-				Msg::DisplayWaitMsg("Car 16 has an invalid rowX!");
+				Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(16) + " " +  Lang::get("INVALID_X_ROW"));
 				this->validLevel = false;
 				return;
 			}
 
 			if (this->levelPointer()[0x3E] < 1 || this->levelPointer()[0x3E] > 6) {
-				Msg::DisplayWaitMsg("Car 16 has an invalid rowY!");
+				Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(16) + " " +  Lang::get("INVALID_Y_ROW"));
 				this->validLevel = false;
 				return;
 			}

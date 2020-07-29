@@ -43,7 +43,7 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents, bool romf
 
 	GFX::DrawFileBrowseBG();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "Select a Level. " + std::string(romfs ? "[RomFS]" : "[SD Card]"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("LEVEL_SELECT") + " " + std::string(romfs ? "[RomFS]" : "[SD Card]"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
 		if (i == Selection) {
@@ -58,14 +58,14 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents, bool romf
 	}
 
 	Gui::DrawString(26, 32, 0.53f, config->textColor(), levels, 360);
-	Gui::DrawStringCentered(0, 217, 0.6f, config->textColor(), "Press START to refresh the list.", 390);
+	Gui::DrawStringCentered(0, 217, 0.6f, config->textColor(), Lang::get("REFRESH"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 static void DrawBottom() {
 	GFX::DrawFileBrowseBG(false);
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.7f, config->textColor(), "Press \uE002 to change mode.", 310);
+	Gui::DrawStringCentered(0, -2, 0.7f, config->textColor(), Lang::get("CHANGE_LOCATION_MODE"), 310);
 	C3D_FrameEnd(0);
 }
 
@@ -137,7 +137,7 @@ std::string Overlays::SelectLevel() {
 			char path[PATH_MAX];
 			getcwd(path, PATH_MAX);
 			if (strcmp(path, "sdmc:/3ds/RushHour3D/Levels/") == 0 || strcmp(path, "/3ds/RushHour3D/Levels/") == 0 || strcmp(path, "romfs:/Levels/") == 0) {
-				if (Msg::promptMsg("Cancel Level Selection?")) {
+				if (Msg::promptMsg(Lang::get("LEVEL_SELECT_CANCEL"))) {
 					return "!NO_LEVEL";
 				}
 			} else {

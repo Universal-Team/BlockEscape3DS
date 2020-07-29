@@ -91,10 +91,16 @@ void GameScreen::DrawGameField() const {
 
 void GameScreen::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - GameScreen", 390);
-	Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), "Movements: " + std::to_string(this->currentGame->getMovement()), 390);
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("GAME_SCREEN"), 390);
+	
+	if (this->currentGame->isValid()) {
+		Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("MOVEMENTS") + std::to_string(this->currentGame->getMovement()), 390);
+	} else {
+		Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("LEVEL_NOT_LOADED"), 390);
+	}
+
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
-	this->DrawGameField();
+	if (this->currentGame->isValid()) this->DrawGameField();
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -104,15 +110,15 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame && this->currentGame->isValid()) {
 		if (this->currentGame->getCar(this->selectedCar) == Car::Red) {
 			if (this->currentGame->getPosition(this->selectedCar) == 5) {
-				Msg::DisplayWaitMsg("You won this Level! :)");
+				Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
 
-				if (Msg::promptMsg("Would you like to play another Level?")) {
+				if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
 					const std::string path = Overlays::SelectLevel();
 					if (path != "!NO_LEVEL") {
 						this->currentGame->loadLevel(path);
 						return;
 					} else {
-						Msg::DisplayWaitMsg("You didn't selected a level... going back...");
+						Msg::DisplayWaitMsg(Lang::get("LEVEL_NOT_SELECTED"));
 						Gui::screenBack(true);
 						return;
 					}

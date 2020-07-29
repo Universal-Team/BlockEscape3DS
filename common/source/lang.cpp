@@ -24,14 +24,42 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_COMMON_HPP
-#define _RUSH_HOUR_3D_COMMON_HPP
-
 #include "config.hpp"
-#include "gfx.hpp"
-#include "gui.hpp"
 #include "lang.hpp"
-#include "msg.hpp"
-#include "screenCommon.hpp"
 
+#include <stdio.h>
+#include <unistd.h>
+
+nlohmann::json appJson;
+extern std::unique_ptr<Config> config;
+
+#ifdef _3DS
+	#define LANGPATH "romfs:/lang/"
+#else
+	#define LANGPATH "nitro:/lang/"
 #endif
+
+std::string Lang::get(const std::string &key) {
+	if (!appJson.contains(key)) {
+		return "MISSING: " + key;
+	}
+	
+	return appJson.at(key).get_ref<const std::string&>();
+}
+
+std::string langs[] = {"br", "de", "en", "es", "fr", "it", "pl", "pt", "ru", "jp"};
+
+void Lang::load() {
+	FILE* values;
+	if (access((LANGPATH + langs[config->language()]+"/app.json").c_str(), F_OK) == 0 ) {
+		values = fopen((LANGPATH + langs[config->language()]+"/app.json").c_str(), "rt");
+		if (values)	appJson = nlohmann::json::parse(values, nullptr, false);
+		fclose(values);
+
+	} else {
+		// Load English otherwise.
+		values = fopen((LANGPATH + langs[2]+"/app.json").c_str(), "rt");
+		if (values)	appJson = nlohmann::json::parse(values, nullptr, false);
+		fclose(values);
+	}
+}

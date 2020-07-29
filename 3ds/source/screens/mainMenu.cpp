@@ -34,7 +34,7 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void MainMenu::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - MainMenu", 390);
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("MAINMENU"), 390);
 	
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
@@ -46,7 +46,7 @@ void MainMenu::Draw(void) const {
 		}
 	}
 
-	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), "New Game", 130);
+	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("NEW_GAME"), 130);
 	//Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), "?", 130);
 	//Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), "?", 130);
 	//Gui::DrawStringCentered(80, mainButtons[3].y+12, 0.6f, config->textColor(), "?", 130);

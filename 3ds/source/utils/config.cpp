@@ -49,6 +49,7 @@ void Config::initialize() {
 	this->setInt("Button_Color", BUTTON_COLOR);
 	this->setInt("Selector_Color", SELECTED_COLOR);
 	this->setInt("Version", this->configVersion);
+	this->setInt("Language", 2);
 
 	// Write to file.
 	std::string dump = this->json.dump(1, '\t');
@@ -111,6 +112,12 @@ Config::Config() {
 		this->v_debug = this->getBool("Debug");
 	}
 
+	if (!this->json.contains("Language")) {
+		this->language(2);
+	} else {
+		this->language(this->getInt("Language"));
+	}
+
 	if (!this->json.contains("Version")) {
 		this->version(this->configVersion);
 	} else {
@@ -131,7 +138,8 @@ void Config::save() {
 		this->setInt("BG_Color", this->bgColor());
 		this->setInt("Button_Color", this->buttonColor());
 		this->setInt("Selector_Color", this->selectorColor());
-		this->setInt("Version", this->version());
+		this->setInt("Language", this->language());
+		this->setInt("Version", this->configVersion);
 
 		// Write changes to file.
 		std::string dump = this->json.dump(1, '\t');

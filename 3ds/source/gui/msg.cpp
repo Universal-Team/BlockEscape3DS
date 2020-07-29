@@ -55,8 +55,8 @@ bool Msg::promptMsg2(std::string promptMsg) {
 		// Draw Bottom Screen part.
 		Gui::Draw_Rect(10, 100, 140, 40, config->buttonColor());
 		Gui::Draw_Rect(170, 100, 140, 40, config->buttonColor());
-		Gui::DrawStringCentered(-150+70, 105, 0.8f, config->textColor(), "Yes", 140);
-		Gui::DrawStringCentered(150-70, 105, 0.8f, config->textColor(), "No", 140);
+		Gui::DrawStringCentered(-150+70, 105, 0.8f, config->textColor(), Lang::get("YES"), 140);
+		Gui::DrawStringCentered(150-70, 105, 0.8f, config->textColor(), Lang::get("NO"), 140);
 		GFX::DrawButtonSelector(promptBtn[selection].x, promptBtn[selection].y);
 		C3D_FrameEnd(0);
 
@@ -134,10 +134,10 @@ void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, waitMsg))/2, 0.8f, config->textColor(), waitMsg, 390, 70);
-	Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), "Press \uE000 to continue.", 390);
+	Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("A_CONTINUE"), 390);
 	GFX::DrawBottom();
 	Gui::Draw_Rect(100, 100, 140, 40, config->buttonColor());
-	Gui::DrawStringCentered(-60+70, 105, 0.8f, config->textColor(), "OK", 140);
+	Gui::DrawStringCentered(-60+70, 105, 0.8f, config->textColor(), Lang::get("OK"), 140);
 	C3D_FrameEnd(0);
 
 	while(1) {
@@ -177,7 +177,7 @@ void Msg::DisplayMsg(std::string Message) {
 }
 
 void Msg::NotImplementedYet(void) {
-	Msg::DisplayWaitMsg("This is not implemented yet!");
+	Msg::DisplayWaitMsg(Lang::get("NOT_IMPLEMENTED_YET"));
 }
 
 // For debug messages with "Debug": true in the config.

@@ -58,6 +58,7 @@ Result Init::Initialize() {
 	mkdir("sdmc:/3ds/RushHour3D/Levels", 0777); // Levels path.
 
 	config = std::make_unique<Config>();
+	Lang::load();
 
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
 	osSetSpeedupEnable(true); // Enable speed-up for New 3DS users.

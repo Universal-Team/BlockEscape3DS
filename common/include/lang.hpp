@@ -24,14 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_COMMON_HPP
-#define _RUSH_HOUR_3D_COMMON_HPP
+#ifndef _RUSH_HOUR_3D_LANG_HPP
+#define _RUSH_HOUR_3D_LANG_HPP
 
-#include "config.hpp"
-#include "gfx.hpp"
-#include "gui.hpp"
-#include "lang.hpp"
-#include "msg.hpp"
-#include "screenCommon.hpp"
+#include "json.hpp"
+
+#include <string>
+
+namespace Lang {
+	std::string get(const std::string &key);
+	void load();
+}
 
 #endif
