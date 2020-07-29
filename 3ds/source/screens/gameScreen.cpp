@@ -81,10 +81,10 @@ void GameScreen::DrawGameField() const {
 	if (this->currentGame && this->currentGame->isValid()) {
 		DrawSelectedCar(this->selectedCar);
 
-		Gui::Draw_Rect(this->carList[1].x-10, this->carList[1].y, 80, this->currentGame->getCarAmount() * 20, config->barColor());
+		Gui::Draw_Rect(230, 0, 80, this->currentGame->getCarAmount() * 15, config->barColor());
 
 		for (int i = 0; i < this->currentGame->getCarAmount(); i++) {
-			Gui::Draw_Rect(this->carList[i+1].x, this->carList[i+1].y, (this->currentGame->getSize(i) * 20), 20, GFX::getColor(this->currentGame->getCar(i)));
+			Gui::Draw_Rect(this->carList[i].x, this->carList[i].y, (this->currentGame->getSize(i) * 20), 10, GFX::getColor(this->currentGame->getCar(i)));
 		}
 	}
 }
@@ -131,7 +131,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 		if (hDown & KEY_TOUCH) {
 			for (int i = 0; i < this->currentGame->getCarAmount(); i++) {
-				if (touching(touch, this->carList[i + 1])) {
+				if (touching(touch, this->carList[i])) {
 					this->selectedCar = i;
 				}
 			}
