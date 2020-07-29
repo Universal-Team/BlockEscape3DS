@@ -100,7 +100,13 @@ void GameScreen::Draw(void) const {
 	}
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
-	if (this->currentGame->isValid()) this->DrawGameField();
+
+	if (this->currentGame->isValid()) {
+		this->DrawGameField();
+	} else {
+		GFX::DrawBottom(true);
+	}
+
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
