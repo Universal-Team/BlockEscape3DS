@@ -37,6 +37,7 @@ void Level::unload() {
 	this->cars.clear();
 	this->levelData = nullptr;
 	this->validLevel = false;
+	this->resetMovement();
 }
 
 // Load a level.

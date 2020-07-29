@@ -50,6 +50,10 @@ public:
 	int getCarAmount();
 	bool isValid();
 
+	// Movement stuff here.
+	int getMovement() { return this->currentLevel->getMovement(); }
+	void doMovement() { this->currentLevel->doMovement(); }
+	void resetMovement() { this->currentLevel->resetMovement(); }
 	bool returnIfMovable(int cr, bool mv); // if movement is true, do forward.
 private:
 	std::unique_ptr<Level> currentLevel;

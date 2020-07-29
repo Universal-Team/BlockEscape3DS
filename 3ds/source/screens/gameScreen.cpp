@@ -92,6 +92,7 @@ void GameScreen::DrawGameField() const {
 void GameScreen::Draw(void) const {
 	GFX::DrawTop();
 	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - GameScreen", 390);
+	Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), "Movements: " + std::to_string(this->currentGame->getMovement()), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	this->DrawGameField();
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
@@ -143,6 +144,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
 				if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
 					this->currentGame->setPosition(this->selectedCar, this->currentGame->getPosition(this->selectedCar) + 1);
+					this->currentGame->doMovement();
 				}
 			}
 		}
@@ -151,6 +153,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
 				if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
 					this->currentGame->setPosition(this->selectedCar, this->currentGame->getPosition(this->selectedCar) - 1);
+					this->currentGame->doMovement();
 				}
 			}
 		}
@@ -159,6 +162,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
 				if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
 					this->currentGame->setPosition(this->selectedCar, this->currentGame->getPosition(this->selectedCar) - 1);
+					this->currentGame->doMovement();
 				}
 			}
 		}
@@ -167,6 +171,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
 				if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
 					this->currentGame->setPosition(this->selectedCar, this->currentGame->getPosition(this->selectedCar) + 1);
+					this->currentGame->doMovement();
 				}
 			}
 		}

@@ -60,6 +60,11 @@ public:
 	int getCarAmount();
 	bool isValid();
 
+	// Movement stuff here.
+	int getMovement() { return this->movement; }
+	void doMovement() { this->movement++; }
+	void resetMovement() { this->movement = 0; }
+	
 	bool returnIfMovable(int cr, bool mv); // if movement is true, do forward.
 private:
 	const u8* levelPointer() {
@@ -70,9 +75,8 @@ private:
 	std::unique_ptr<u8[]> levelData = nullptr; // Our level buffer.
 	FILE *levelFile = nullptr; // Our FILE variable.
 	u32 size = 0;
-
+	int movement = 0;
 	bool validLevel = false;
-
 	std::vector<std::unique_ptr<Cars>> cars;
 };
 
