@@ -42,11 +42,6 @@ private:
 	std::unique_ptr<Game> currentGame; // Our current game.
 	void DrawGameField() const;
 	int selectedCar = 0;
-	int wins = 0;
-
-	const std::vector<std::string> levelNames = {
-		"level1.lvl", "level1.1.lvl"
-	};
 
 	// Car Selection.
 	const std::vector<Structs::ButtonPos> carList = {

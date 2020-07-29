@@ -24,14 +24,25 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_OVERLAY_HPP
-#define _RUSH_HOUR_3D_OVERLAY_HPP
+#ifndef _RUSH_HOUR_3D_FILE_BROWSE_HPP
+#define _RUSH_HOUR_3D_FILE_BROWSE_HPP
 
-#include "common.hpp"
+#include <dirent.h>
+#include <string>
+#include <sys/stat.h>
+#include <vector>
 
-namespace Overlays {
-	void SplashOverlay();
-	std::string SelectLevel();
-}
+struct DirEntry {
+	std::string name;
+	std::string path;
+	bool isDirectory;
+};
+
+bool nameEndsWith(const std::string name, const std::vector<std::string> extensionList);
+void getDirectoryContents(std::vector<DirEntry>& dirContents, const std::vector<std::string> extensionList);
+void getDirectoryContents(std::vector<DirEntry>& dirContents);
+std::vector<std::string> getContents(const std::string name, const std::vector<std::string> extensionList);
+
+bool returnIfExist(const std::string path, const std::vector<std::string> extensionList);
 
 #endif

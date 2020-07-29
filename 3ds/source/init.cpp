@@ -55,7 +55,8 @@ Result Init::Initialize() {
 	// Create missing directories.
 	mkdir("sdmc:/3ds", 0777); // For DSP dump.
 	mkdir("sdmc:/3ds/RushHour3D", 0777); // main Path.
-	
+	mkdir("sdmc:/3ds/RushHour3D/Levels", 0777); // Levels path.
+
 	config = std::make_unique<Config>();
 
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);

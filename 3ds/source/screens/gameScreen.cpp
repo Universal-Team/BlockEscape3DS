@@ -26,6 +26,7 @@
 
 #include "config.hpp"
 #include "gameScreen.hpp"
+#include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
@@ -33,7 +34,11 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 GameScreen::GameScreen() {
 	// Call Game Constructor here.
 	this->currentGame = std::make_unique<Game>();
-	this->currentGame->loadLevel("romfs:/levels/level1.lvl");
+	const std::string path = Overlays::SelectLevel();
+	if (path != "!NO_LEVEL") {
+		this->currentGame->loadLevel(path);
+		return;
+	}
 }
 
 void GameScreen::DrawCar(int car) const {
@@ -87,8 +92,6 @@ void GameScreen::DrawGameField() const {
 void GameScreen::Draw(void) const {
 	GFX::DrawTop();
 	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - GameScreen", 390);
-	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), "Current Level: " + this->levelNames[this->wins], 390);
-
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	this->DrawGameField();
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
@@ -100,17 +103,22 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame && this->currentGame->isValid()) {
 		if (this->currentGame->getCar(this->selectedCar) == Car::Red) {
 			if (this->currentGame->getPosition(this->selectedCar) == 5) {
-				Msg::DisplayWaitMsg("You won Level " + std::to_string(this->wins +1) + "! :)");
+				Msg::DisplayWaitMsg("You won this Level! :)");
 
-				this->wins++;
-				if (this->wins < (int)this->levelNames.size()) {
-					this->currentGame->loadLevel("romfs:/levels/" + this->levelNames[this->wins]);
-					this->selectedCar = 0;
+				if (Msg::promptMsg("Would you like to play another Level?")) {
+					const std::string path = Overlays::SelectLevel();
+					if (path != "!NO_LEVEL") {
+						this->currentGame->loadLevel(path);
+						return;
+					} else {
+						Msg::DisplayWaitMsg("You didn't selected a level... going back...");
+						Gui::screenBack(true);
+						return;
+					}
+				} else {
+					Gui::screenBack(true);
 					return;
 				}
-
-				Gui::screenBack(true);
-				return;
 			}
 		}
 
@@ -126,6 +134,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (hDown & KEY_R) {
 			if (this->selectedCar < this->currentGame->getCarAmount()-1) this->selectedCar++;
 		}
+
 		if (hDown & KEY_L) {
 			if (this->selectedCar > 0) this->selectedCar--;
 		}
