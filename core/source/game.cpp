@@ -52,20 +52,20 @@ int Game::getXRow(int cr) {
 	return this->currentLevel->getXRow(cr);
 }
 
+void Game::setXRow(int cr, int pos) {
+	this->currentLevel->setXRow(cr, pos);
+}
+
 int Game::getYRow(int cr) {
 	return this->currentLevel->getYRow(cr);
 }
 
+void Game::setYRow(int cr, int pos) {
+	this->currentLevel->setYRow(cr, pos);
+}
+
 int Game::getSize(int cr) {
 	return this->currentLevel->getSize(cr);
-}
-
-int Game::getPosition(int cr) {
-	return this->currentLevel->getPosition(cr);
-}
-
-void Game::setPosition(int cr, int pos) {
-	this->currentLevel->setPosition(cr, pos);
 }
 
 Direction Game::getDirection(int cr) {

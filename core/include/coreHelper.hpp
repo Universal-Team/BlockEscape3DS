@@ -53,4 +53,9 @@ enum class Direction {
 	Horizontal
 };
 
+struct GameField {
+	int cartype;
+	Direction direction;
+};
+
 #endif

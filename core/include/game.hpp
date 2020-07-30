@@ -41,10 +41,10 @@ public:
 	void unload();
 
 	int getXRow(int cr);
+	void setXRow(int cr, int pos);
 	int getYRow(int cr);
+	void setYRow(int cr, int pos);
 	int getSize(int cr);
-	int getPosition(int cr);
-	void setPosition(int cr, int pos);
 	Direction getDirection(int cr);
 	Car getCar(int cr);
 	int getCarAmount();
@@ -55,6 +55,10 @@ public:
 	void doMovement() { this->currentLevel->doMovement(); }
 	void resetMovement() { this->currentLevel->resetMovement(); }
 	bool returnIfMovable(int cr, bool mv); // if movement is true, do forward.
+
+	// Gamefield.
+	int returnField(int i) { return this->currentLevel->returnField(i); }
+	Direction returnDirection(int i) { return this->currentLevel->returnDirection(i);}
 private:
 	std::unique_ptr<Level> currentLevel;
 };

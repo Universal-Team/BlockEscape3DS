@@ -41,7 +41,7 @@ private:
 	void DrawSelectedCar(int car) const;
 	std::unique_ptr<Game> currentGame; // Our current game.
 	void DrawGameField() const;
-	int selectedCar = 0;
+	int selectedCar = 0, selectedField = 0;
 
 	// Car Selection.
 	const std::vector<Structs::ButtonPos> carList = {

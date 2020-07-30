@@ -39,6 +39,10 @@ void Level::unload() {
 	this->levelData = nullptr;
 	this->validLevel = false;
 	this->resetMovement();
+
+	for (int i = 0; i < 36; i++) {
+		this->gamefield[i] = {-1, Direction::None};
+	}
 }
 
 // Load a level.
@@ -110,10 +114,17 @@ void Level::prepareLevel() {
 
 				// Direction check. Vertical.
 				if (this->levelPointer()[0 + (i * 0x3)] == 1) {
-					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Car(i + 1), this->levelPointer()[1 + (i * 0x3)])});
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Car(i + 1))});
+					for (int i2 = 0; i2 < 2; i2++) {
+						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)])};
+					}
+					
 					// Direction check. Horizontal.
 				} else if (this->levelPointer()[0 + (i * 0x3)] == 2) {
-					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Car(i + 1), this->levelPointer()[2 + (i * 0x3)])});
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Car(i + 1))});
+					for (int i2 = 0; i2 < 2; i2++) {
+						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)])};
+					}
 				}
 			}
 		}
@@ -142,10 +153,20 @@ void Level::prepareLevel() {
 
 				// Direction check. Vertical.
 				if (this->levelPointer()[0x21 + (i * 0x3)] == 1) {
-					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Car(11 + i), this->levelPointer()[0x22 + (i * 0x3)])});
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Car(11 + i))});
+
+					for (int i2 = 0; i2 < 3; i2++) {
+						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)])};
+					}
+
 					// Direction check. Horizontal.
 				} else if (this->levelPointer()[0x21 + (i * 0x3)] == 2) {
-					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Car(11 + i), this->levelPointer()[0x23 + (i * 0x3)])});
+					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Car(11 + i))});
+
+					for (int i2 = 0; i2 < 3; i2++) {
+						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)])};
+					}
+
 				}
 			}
 		}
@@ -173,10 +194,20 @@ void Level::prepareLevel() {
 
 			// Direction check. Vertical.
 			if (this->levelPointer()[0x2D] == 1) {
-				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Car::Red, this->levelPointer()[0x2E])});
+				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Car::Red)});
+
+				for (int i2 = 0; i2 < 2; i2++) {
+					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + i2 - 1] = {(int)Car::Red, Direction(this->levelPointer()[0x2D])};
+				}
+
 				// Direction check. Horizontal.
 			} else if (this->levelPointer()[0x2D] == 2) {
-				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Car::Red, this->levelPointer()[0x2F])});
+				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Car::Red)});
+
+				for (int i2 = 0; i2 < 2; i2++) {
+					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + (i2 * 6) - 1] = {(int)Car::Red, Direction(this->levelPointer()[0x2D])};
+				}
+
 			}
 		}
 	}
@@ -188,34 +219,28 @@ int Level::getXRow(int cr) {
 	return this->cars[cr]->getX();
 }
 
+void Level::setXRow(int cr, int pos) {
+	if (this->getCarAmount() < cr) return;
+
+	this->cars[cr]->setX(pos);
+}
+
 int Level::getYRow(int cr) {
 	if (this->getCarAmount() < cr) return 0;
 
 	return this->cars[cr]->getY();
 }
 
+void Level::setYRow(int cr, int pos) {
+	if (this->getCarAmount() < cr) return;
+
+	this->cars[cr]->setY(pos);
+}
+
 int Level::getSize(int cr) {
 	if (this->getCarAmount() < cr) return 0;
 
 	return this->cars[cr]->getSize();
-}
-
-int Level::getPosition(int cr) {
-	if (this->getCarAmount() < cr) return 0;
-
-	return this->cars[cr]->getPosition();
-}
-
-void Level::setPosition(int cr, int pos) {
-	if (this->getCarAmount() < cr) return;
-
-	if (this->cars[cr]->getSize() == 2) {
-		if (pos > 6 || pos < 1) return;
-		this->cars[cr]->setPosition(pos);
-	} else if (this->cars[cr]->getSize() == 3) {
-		if (pos > 4 || pos < 1) return;
-		this->cars[cr]->setPosition(pos);
-	}
 }
 
 Direction Level::getDirection(int cr) {
@@ -239,13 +264,27 @@ bool Level::returnIfMovable(int cr, bool mv) {
 
 	int distance = 0;
 
+
 	// Do not do anything, if 6 / 1.
 	if (mv) {
-		if (this->cars[cr]->getPosition() + this->cars[cr]->getSize() - 1 == 6) return false;
-		distance = this->cars[cr]->getPosition() + this->cars[cr]->getSize();
+		if (this->cars[cr]->getDirection() == Direction::Vertical) {
+			if (this->cars[cr]->getX() + this->cars[cr]->getSize() - 1 == 6) return false;
+			distance = this->cars[cr]->getX() + this->cars[cr]->getSize();
+
+		} else if (this->cars[cr]->getDirection() == Direction::Horizontal) {
+			if (this->cars[cr]->getY() + this->cars[cr]->getSize() - 1 == 6) return false;
+			distance = this->cars[cr]->getY() + this->cars[cr]->getSize();
+		}
+
 	} else {
-		if (this->cars[cr]->getPosition() == 1) return false;
-		distance = this->cars[cr]->getPosition() - 1;
+		if (this->cars[cr]->getDirection() == Direction::Vertical) {
+			if (this->cars[cr]->getX() == 1) return false;
+			distance = this->cars[cr]->getX() - 1;
+
+		} else if (this->cars[cr]->getDirection() == Direction::Horizontal) {
+			if (this->cars[cr]->getY() == 1) return false;
+			distance = this->cars[cr]->getY() - 1;
+		}
 	}
 
 	// Up / Down.
@@ -254,24 +293,26 @@ bool Level::returnIfMovable(int cr, bool mv) {
 			if (this->cars[i]->getDirection() == Direction::Vertical) {
 				if (this->cars[i]->getY() == distance) {
 					if (this->cars[i]->getSize() == 2) {
-						if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX()) {
+						if (this->cars[i]->getX() == this->cars[cr]->getX() || this->cars[i]->getX() + 1 == this->cars[cr]->getX()) {
 							return false; // Blocked!
 						}
 					} else if (this->cars[i]->getSize() == 3) {
-						if (this->cars[i]->getPosition() == this->cars[cr]->getX() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getX() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getX()) {
+						if (this->cars[i]->getX() == this->cars[cr]->getX() || this->cars[i]->getX() + 1 == this->cars[cr]->getX() || this->cars[i]->getX() + 2 == this->cars[cr]->getX()) {
 							return false; // Blocked!
 						}
 					}
 				}
 
+
+
 			} else if (this->cars[i]->getDirection() == Direction::Horizontal) {
 				if (this->cars[i]->getX() == this->cars[cr]->getX()) {
 					if (this->cars[i]->getSize() == 2) {
-						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
+						if (this->cars[i]->getY() == distance || this->cars[i]->getY() + 1 == distance) {
 							return false; // Blocked!
 						}
 					} else if (this->cars[i]->getSize() == 3) {
-						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
+						if (this->cars[i]->getY() == distance || this->cars[i]->getY() + 1 == distance || this->cars[i]->getY() + 2 == distance) {
 							return false; // Blocked!
 						}
 					}
@@ -285,11 +326,11 @@ bool Level::returnIfMovable(int cr, bool mv) {
 			if (this->cars[i]->getDirection() == Direction::Horizontal) {
 				if (this->cars[i]->getX() == distance) {
 					if (this->cars[i]->getSize() == 2) {
-						if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY()) {
+						if (this->cars[i]->getY() == this->cars[cr]->getY() || this->cars[i]->getY() + 1 == this->cars[cr]->getY()) {
 							return false; // Blocked!
 						}
 					} else if (this->cars[i]->getSize() == 3) {
-						if (this->cars[i]->getPosition() == this->cars[cr]->getY() || this->cars[i]->getPosition() + 1 == this->cars[cr]->getY() || this->cars[i]->getPosition() + 2 == this->cars[cr]->getY()) {
+						if (this->cars[i]->getY() == this->cars[cr]->getY() || this->cars[i]->getY() + 1 == this->cars[cr]->getY() || this->cars[i]->getY() + 2 == this->cars[cr]->getY()) {
 							return false; // Blocked!
 						}
 					}
@@ -298,12 +339,12 @@ bool Level::returnIfMovable(int cr, bool mv) {
 			} else if (this->cars[i]->getDirection() == Direction::Vertical) {
 				if (this->cars[i]->getY() == this->cars[cr]->getY()) {
 					if (this->cars[i]->getSize() == 2) {
-						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance) {
+						if (this->cars[i]->getX() == distance || this->cars[i]->getX() + 1 == distance) {
 							return false; // Blocked!
 						}
 
 					} else if (this->cars[i]->getSize() == 3) {
-						if (this->cars[i]->getPosition() == distance || this->cars[i]->getPosition() + 1 == distance || this->cars[i]->getPosition() + 2 == distance) {
+						if (this->cars[i]->getX() == distance || this->cars[i]->getX() + 1 == distance || this->cars[i]->getX() + 2 == distance) {
 							return false; // Blocked!
 						}
 					}
