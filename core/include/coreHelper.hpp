@@ -27,6 +27,9 @@
 #ifndef _RUSH_HOUR_3D_CORE_HELPER_HPP
 #define _RUSH_HOUR_3D_CORE_HELPER_HPP
 
+#define GRIDSIZE 6 // The Grid size is 6x6.
+#define STARTPOS 1 // 1 is the start of Grid.
+
 enum class Car {
 	Lock_Invalid,
 	Lock1, // 2.

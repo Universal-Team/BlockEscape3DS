@@ -31,7 +31,10 @@
 
 #include <cstring>
 
-Level::Level() { this->validLevel = false; }
+Level::Level(bool useField) {
+	this->validLevel = false;
+	this->useField = useField;
+}
 
 void Level::unload() {
 	// Reset cars.
@@ -105,19 +108,19 @@ void Level::prepareLevel() {
 		for (int i = 0; i < 11; i++) {
 			if (this->levelPointer()[0 + (i * 0x3)] != 0) {
 
-				if (this->levelPointer()[0 + (i * 0x3)] < 1 || this->levelPointer()[0 + (i * 0x3)] > 2) {
+				if (this->levelPointer()[0 + (i * 0x3)] < STARTPOS || this->levelPointer()[0 + (i * 0x3)] > 2) {
 					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(1 + i) + " " +  Lang::get("INVALID_DIRECTION"));
 					this->validLevel = false;
 					return;
 				}
 
-				if (this->levelPointer()[1 + (i * 0x3)] < 1 || this->levelPointer()[1 + (i * 0x3)] > 6) {
+				if (this->levelPointer()[1 + (i * 0x3)] < STARTPOS || this->levelPointer()[1 + (i * 0x3)] > GRIDSIZE) {
 					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(1 + i) + " " +  Lang::get("INVALID_X_ROW"));
 					this->validLevel = false;
 					return;
 				}
 
-				if (this->levelPointer()[2 + (i * 0x3)] < 1 || this->levelPointer()[2 + (i * 0x3)] > 6) {
+				if (this->levelPointer()[2 + (i * 0x3)] < STARTPOS || this->levelPointer()[2 + (i * 0x3)] > GRIDSIZE) {
 					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(1 + i) + " " +  Lang::get("INVALID_Y_ROW"));
 					this->validLevel = false;
 					return;
@@ -145,19 +148,19 @@ void Level::prepareLevel() {
 		for (int i = 0; i < 4; i++) {
 			if (this->levelPointer()[0x21 + (i * 0x3)] != 0) {
 
-				if (this->levelPointer()[0x21 + (i * 0x3)] < 1 || this->levelPointer()[0x21 + (i * 0x3)] > 2) {
+				if (this->levelPointer()[0x21 + (i * 0x3)] < STARTPOS || this->levelPointer()[0x21 + (i * 0x3)] > 2) {
 					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(12 + i) + " " +  Lang::get("INVALID_DIRECTION"));
 					this->validLevel = false;
 					return;
 				}
 
-				if (this->levelPointer()[0x22 + (i * 0x3)] < 1 || this->levelPointer()[0x22 + (i * 0x3)] > 6) {
+				if (this->levelPointer()[0x22 + (i * 0x3)] < STARTPOS || this->levelPointer()[0x22 + (i * 0x3)] > GRIDSIZE) {
 					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(12 + i) + " " +  Lang::get("INVALID_X_ROW"));
 					this->validLevel = false;
 					return;
 				}
 
-				if (this->levelPointer()[0x23 + (i * 0x3)] < 1 || this->levelPointer()[0x23 + (i * 0x3)] > 6) {
+				if (this->levelPointer()[0x23 + (i * 0x3)] < STARTPOS || this->levelPointer()[0x23 + (i * 0x3)] > GRIDSIZE) {
 					Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(12 + i) + " " +  Lang::get("INVALID_Y_ROW"));
 					this->validLevel = false;
 					return;
@@ -186,19 +189,19 @@ void Level::prepareLevel() {
 		// the needed car.
 		if (this->levelPointer()[0x2D] != 0) {
 
-			if (this->levelPointer()[0x2D] < 1 ||this->levelPointer()[0x2D] > 2) {
+			if (this->levelPointer()[0x2D] < STARTPOS ||this->levelPointer()[0x2D] > 2) {
 				Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(16) + " " +  Lang::get("INVALID_DIRECTION"));
 				this->validLevel = false;
 				return;
 			}
 
-			if (this->levelPointer()[0x2E] < 1 || this->levelPointer()[0x2E] > 6) {
+			if (this->levelPointer()[0x2E] < STARTPOS || this->levelPointer()[0x2E] > GRIDSIZE) {
 				Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(16) + " " +  Lang::get("INVALID_X_ROW"));
 				this->validLevel = false;
 				return;
 			}
 
-			if (this->levelPointer()[0x2F] < 1 || this->levelPointer()[0x2F] > 6) {
+			if (this->levelPointer()[0x2F] < STARTPOS || this->levelPointer()[0x2F] > GRIDSIZE) {
 				Msg::DisplayWaitMsg(Lang::get("CAR") + " " + std::to_string(16) + " " +  Lang::get("INVALID_Y_ROW"));
 				this->validLevel = false;
 				return;
@@ -234,16 +237,28 @@ int Level::getXRow(int cr) {
 void Level::setXRow(int cr, int xPos, int yPos, int pos) {
 	if (this->getCarAmount() < cr) return;
 
-	this->cars[cr]->setX(pos);
-
 	// Field stuff.
-	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
-		this->gamefield[((yPos * 6) - 6) + xPos + i - 1] = {-1, Direction::None, -1};
+	if (this->useField) {
+		for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+			if (this->cars[cr]->getX() >= STARTPOS || this->cars[cr]->getY() >= STARTPOS) {
+				if (this->cars[cr]->getDirection() == Direction::Vertical) {
+					this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + xPos + i - 1] = {-1, Direction::None, -1};
+				} else if (this->cars[cr]->getDirection() == Direction::Horizontal) {
+					this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + xPos - 1] = {-1, Direction::None, -1};
+				}
+			}
+		}
+
+		for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+			if (this->cars[cr]->getDirection() == Direction::Vertical) {
+				this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + pos + (i - 1)] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
+			} else if (this->cars[cr]->getDirection() == Direction::Horizontal) {
+				this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + pos - 1] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
+			}
+		}
 	}
 
-	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
-		this->gamefield[((yPos * 6) - 6) + pos + i - 1] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
-	}
+	this->cars[cr]->setX(pos);
 }
 
 int Level::getYRow(int cr) {
@@ -255,16 +270,28 @@ int Level::getYRow(int cr) {
 void Level::setYRow(int cr, int xPos, int yPos, int pos) {
 	if (this->getCarAmount() < cr) return;
 
-	this->cars[cr]->setY(pos);
-
 	// Field stuff.
-	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
-		this->gamefield[xPos + ((yPos * 6) - 6) + (i * 6) - 1] = {-1, Direction::None, -1};
+	if (this->useField) {
+		for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+			if (this->cars[cr]->getX() >= STARTPOS || this->cars[cr]->getY() >= STARTPOS) {
+				if (this->cars[cr]->getDirection() == Direction::Horizontal) {
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {-1, Direction::None, -1};
+				} else if (this->cars[cr]->getDirection() == Direction::Vertical) {
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) - 1] = {-1, Direction::None, -1};
+				}
+			}
+		}
+
+		for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+			if (this->cars[cr]->getDirection() == Direction::Horizontal) {
+				this->gamefield[xPos + ((pos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
+			} else if (this->cars[cr]->getDirection() == Direction::Vertical) {
+				this->gamefield[xPos + ((pos * GRIDSIZE) - GRIDSIZE) - 1] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
+			}
+		}
 	}
 
-	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
-		this->gamefield[xPos + ((pos * 6) - 6) + (i * 6) - 1] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
-	}
+	this->cars[cr]->setY(pos);
 }
 
 int Level::getSize(int cr) {
@@ -277,6 +304,44 @@ Direction Level::getDirection(int cr) {
 	if (this->getCarAmount() < cr) return Direction::None;
 
 	return this->cars[cr]->getDirection();
+}
+
+void Level::setDirection(int cr, int xPos, int yPos, Direction dr) {
+	if (this->getCarAmount() < cr) return;
+
+	this->cars[cr]->setDirection(dr);
+
+
+	// Field stuff.
+	if (this->useField) {
+		if (dr == Direction::Horizontal) {
+			for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+				if (xPos != 0 || yPos != 0) {
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {-1, Direction::None, -1};
+				}
+			}
+
+			for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+				if (xPos != 0 || yPos != 0) {
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {(int)this->cars[cr]->getCar(), dr, cr};
+				}
+			}
+
+
+		} else if (dr == Direction::Vertical) {
+			for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+				if (xPos != 0 || yPos != 0) {
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {-1, Direction::None, -1};
+				}
+			}
+
+			for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+				if (xPos != 0 || yPos != 0) {
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {(int)this->cars[cr]->getCar(), dr, cr};
+				}
+			}
+		}
+	}
 }
 
 Car Level::getCar(int cr) {
@@ -298,21 +363,21 @@ bool Level::returnIfMovable(int cr, bool mv) {
 	// Do not do anything, if 6 / 1.
 	if (mv) {
 		if (this->cars[cr]->getDirection() == Direction::Vertical) {
-			if (this->cars[cr]->getX() + this->cars[cr]->getSize() - 1 == 6) return false;
+			if (this->cars[cr]->getX() + this->cars[cr]->getSize() - 1 == GRIDSIZE) return false;
 			distance = this->cars[cr]->getX() + this->cars[cr]->getSize();
 
 		} else if (this->cars[cr]->getDirection() == Direction::Horizontal) {
-			if (this->cars[cr]->getY() + this->cars[cr]->getSize() - 1 == 6) return false;
+			if (this->cars[cr]->getY() + this->cars[cr]->getSize() - 1 == GRIDSIZE) return false;
 			distance = this->cars[cr]->getY() + this->cars[cr]->getSize();
 		}
 
 	} else {
 		if (this->cars[cr]->getDirection() == Direction::Vertical) {
-			if (this->cars[cr]->getX() == 1) return false;
+			if (this->cars[cr]->getX() == STARTPOS) return false;
 			distance = this->cars[cr]->getX() - 1;
 
 		} else if (this->cars[cr]->getDirection() == Direction::Horizontal) {
-			if (this->cars[cr]->getY() == 1) return false;
+			if (this->cars[cr]->getY() == STARTPOS) return false;
 			distance = this->cars[cr]->getY() - 1;
 		}
 	}
@@ -384,4 +449,33 @@ bool Level::returnIfMovable(int cr, bool mv) {
 	}
 
 	return true;
+}
+
+// Create a new Level!
+void Level::createNew() {
+	this->unload();
+
+	this->levelData = std::unique_ptr<u8[]>(new u8[0x34]);
+	this->levelData[0] = 'R'; this->levelData[1] = 'H'; this->levelData[2] = '3'; this->levelData[3] = 'D';
+
+	// Push all cars here! :P
+	for (int i = 0; i < 11; i++) {
+		this->cars.push_back({std::make_unique<Cars>(0, 0, 2, Direction(0), Car(1 + i))});
+	}
+
+	for (int i = 0; i < 4; i++) {
+		this->cars.push_back({std::make_unique<Cars>(0, 0, 3, Direction(0), Car(11 + i))});
+	}
+
+	this->cars.push_back({std::make_unique<Cars>(0, 0, 2, Direction(0), Car::Red)});
+
+	this->validLevel = true;
+}
+
+void Level::setCreatorStuff() {
+	for (int i = 0; i < 16; i++) {
+		this->levelData[0x4 + (i * 0x3)] = (int)this->cars[i]->getDirection();
+		this->levelData[0x5 + (i * 0x3)] = this->cars[i]->getX();
+		this->levelData[0x6 + (i * 0x3)] = this->cars[i]->getY();
+	}
 }

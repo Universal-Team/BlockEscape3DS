@@ -44,8 +44,10 @@
 class Cars;
 class Level {
 public:
-	Level();
+	Level(bool useField = true);
 	void loadLevel(const std::string &file);
+	void createNew();
+	void setCreatorStuff();
 	void prepareLevel();
 	void unload();
 	void reload();
@@ -56,6 +58,7 @@ public:
 	void setYRow(int cr, int xPos, int yPos, int pos);
 	int getSize(int cr);
 	Direction getDirection(int cr);
+	void setDirection(int cr, int xPos, int yPos, Direction dr);
 	Car getCar(int cr);
 	int getCarAmount();
 	bool isValid();
@@ -70,12 +73,16 @@ public:
 	int returnField(int i) { return this->gamefield[i].cartype; }
 	Direction returnDirection(int i) { return this->gamefield[i].direction; }
 	int returnIndex(int i) { return this->gamefield[i].index; }
-private:
+
+
+	std::unique_ptr<u8[]> &levelDt() { return this->levelData; }
+
 	const u8* levelPointer() {
 		if (this->levelData) return this->levelData.get() + 0x4;
 		else return nullptr;
 	}
-
+private:
+	bool useField = true;
 	std::unique_ptr<u8[]> levelData = nullptr; // Our level buffer.
 	FILE *levelFile = nullptr; // Our FILE variable.
 	u32 size = 0;

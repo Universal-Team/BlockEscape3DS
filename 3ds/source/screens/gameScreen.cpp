@@ -126,7 +126,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (this->currentGame && this->currentGame->isValid()) {
 			if (this->currentGame->getCar(this->selectedCar) == Car::Red) {
 				if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
-					if (this->currentGame->getXRow(this->selectedCar) == 5) {
+					if (this->currentGame->getXRow(this->selectedCar) == GRIDSIZE - 1) {
 						Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
 
 						if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
@@ -145,7 +145,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						}
 					}
 				} else if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
-					if (this->currentGame->getYRow(this->selectedCar) == 5) {
+					if (this->currentGame->getYRow(this->selectedCar) == GRIDSIZE - 1) {
 						Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
 
 						if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
@@ -224,13 +224,13 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
 
 					for (int i = 0; i < 6; i++) {
-						if (this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < 6 && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) * 6) - 6) - 1])) {
+						if (this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < GRIDSIZE && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) * GRIDSIZE) - GRIDSIZE) - 1])) {
 							if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
 								this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) + 1);
 								this->currentGame->doMovement();
 							}
 
-						} else if (this->currentGame->getYRow(this->selectedCar) > 1 && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) - 1) * 6) - 6) - 1])) {
+						} else if (this->currentGame->getYRow(this->selectedCar) > STARTPOS && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) - 1) * GRIDSIZE) - GRIDSIZE) - 1])) {
 							if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
 								this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) - 1);
 								this->currentGame->doMovement();
@@ -241,13 +241,13 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				} else if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
 
 					for (int i = 0; i < 6; i++) {
-						if (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < 6 && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * 6) - 6) + (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) - 1])) {
+						if (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < GRIDSIZE && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * GRIDSIZE) - GRIDSIZE) + (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) - 1])) {
 							if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
 								this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) + 1);
 								this->currentGame->doMovement();
 							}
 
-						} else if (this->currentGame->getXRow(this->selectedCar) > 1 && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * 6) - 6) + (this->currentGame->getXRow(this->selectedCar) - 1) - 1])) {
+						} else if (this->currentGame->getXRow(this->selectedCar) > STARTPOS && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * GRIDSIZE) - GRIDSIZE) + (this->currentGame->getXRow(this->selectedCar) - 1) - 1])) {
 							if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
 								this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) - 1);
 								this->currentGame->doMovement();

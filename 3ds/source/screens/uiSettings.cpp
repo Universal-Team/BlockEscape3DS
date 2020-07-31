@@ -24,40 +24,46 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "colorChanger.hpp"
+#include "credits.hpp"
 #include "config.hpp"
-#include "gameScreen.hpp"
-#include "levelCreator.hpp"
-#include "mainMenu.hpp"
+#include "overlay.hpp"
 #include "uiSettings.hpp"
 
 extern std::unique_ptr<Config> config;
-extern bool exiting;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-void MainMenu::Draw(void) const {
+void UISettings::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("MAINMENU"), 390);
-	
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("UI_SETTINGS"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		Gui::Draw_Rect(mainButtons[i].x, mainButtons[i].y, mainButtons[i].w, mainButtons[i].h, config->buttonColor());
 		if (this->Selection == i) {
 			GFX::DrawButtonSelector(mainButtons[i].x, mainButtons[i].y);
 		}
 	}
 
-	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("NEW_GAME"), 130);
-	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("LEVEL_CREATOR"), 130);
-	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("UI_SETTINGS"), 130);
-	Gui::DrawStringCentered(80, mainButtons[3].y+12, 0.6f, config->textColor(), "?", 130);
+	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("COLOR_SETTINGS"), 130);
+	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("LANGUAGE"), 130);
+	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("CREDITS"), 130);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 
-void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	// Navigation.
+void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	if (hDown & KEY_TOUCH) {
+		if (touching(touch, mainButtons[0])) {
+			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
+		} else if (touching(touch, mainButtons[1])) {
+			Overlays::SelectLanguage();
+		} else if (touching(touch, mainButtons[2])) {
+			Gui::setScreen(std::make_unique<Credits>(), true, true);
+		}
+	}
+
 	if (hDown & KEY_RIGHT) {
 		if (this->Selection < 3) this->Selection++;
 	}
@@ -75,32 +81,17 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 
 	if (hDown & KEY_A) {
-		switch(this->Selection) {
-			case 0:
-				Gui::setScreen(std::make_unique<GameScreen>(), true, true);
-				break;
-			case 1:
-				Gui::setScreen(std::make_unique<LevelCreator>(), true, true);
-				break;
-			case 2:
-				Gui::setScreen(std::make_unique<UISettings>(), true, true);
-				break;
+		if (this->Selection == 0) {
+			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
+		} else if (this->Selection == 1) {
+			Overlays::SelectLanguage();
+		} else if (this->Selection == 2) {
+			Gui::setScreen(std::make_unique<Credits>(), true, true);
 		}
-	}
-	
-	if (hDown & KEY_START) {
-		fadeout = true;
-		fadecolor = 0;
-		exiting = true;
 	}
 
-	if (hDown & KEY_TOUCH) {
-		if (touching(touch, mainButtons[0])) {
-			Gui::setScreen(std::make_unique<GameScreen>(), true, true);
-		} else if (touching(touch, mainButtons[1])) {
-			Gui::setScreen(std::make_unique<LevelCreator>(), true, true);
-		} else if (touching(touch, mainButtons[2])) {
-			Gui::setScreen(std::make_unique<UISettings>(), true, true);
-		}
+	if (hDown & KEY_B) {
+		Gui::screenBack(true);
+		return;
 	}
 }
