@@ -58,7 +58,8 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (touching(touch, mainButtons[0])) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (touching(touch, mainButtons[1])) {
-			Overlays::SelectLanguage();
+			Msg::NotImplementedYet();
+			//Overlays::SelectLanguage();
 		} else if (touching(touch, mainButtons[2])) {
 			Gui::setScreen(std::make_unique<Credits>(), true, true);
 		}
@@ -84,7 +85,8 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (this->Selection == 0) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (this->Selection == 1) {
-			Overlays::SelectLanguage();
+			Msg::NotImplementedYet();
+			//Overlays::SelectLanguage();
 		} else if (this->Selection == 2) {
 			Gui::setScreen(std::make_unique<Credits>(), true, true);
 		}

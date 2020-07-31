@@ -5,7 +5,7 @@ RushHour3D is a Rush Hour clone for Nintendo 3DS, including...
 
 * Level Creator, though without any out of bounds checks yet.
 * RGB Overlay for the UI Colors. Also includes custom car colors!
-* Including 40 Levels.. including 10 Beginner, 10 Intermediate, 10 Advanced and 10 Expert Levels.
+* Including 40 Levels with 10 Beginner, 10 Intermediate, 10 Advanced and 10 Expert Levels.
 
 ## Screenshots of RushHour3D
 ### Color Settings
