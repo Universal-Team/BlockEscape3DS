@@ -57,9 +57,9 @@ void LevelCreator::DrawCar(int car) const {
 	if (this->level->getDirection(car) != Direction::None || this->level->getCar(car) != Car::Lock_Invalid) {
 		if (this->level->getXRow(car) != 0 || this->level->getYRow(car) != 0) {
 			if (this->level->getDirection(car) == Direction::Vertical) {
-				Gui::Draw_Rect((30 * this->level->getXRow(car)), ((30 * this->level->getYRow(car)) -1), this->level->getSize(car) * 30, (30), GFX::getColor(this->level->getCar(car)));
+				Gui::Draw_Rect((30 * this->level->getXRow(car)), ((30 * this->level->getYRow(car)) -1), this->level->getSize(car) * 30, (30), GFX::getCarColor(this->level->getCar(car)));
 			} else if (this->level->getDirection(car) == Direction::Horizontal) {
-				Gui::Draw_Rect(((30 * this->level->getXRow(car)) - 1), (30 * this->level->getYRow(car)), 30, (this->level->getSize(car) * 30), GFX::getColor(this->level->getCar(car)));
+				Gui::Draw_Rect(((30 * this->level->getXRow(car)) - 1), (30 * this->level->getYRow(car)), 30, (this->level->getSize(car) * 30), GFX::getCarColor(this->level->getCar(car)));
 			}
 		}
 	}
@@ -82,7 +82,7 @@ void LevelCreator::DrawGameField() const {
 		Gui::Draw_Rect(230, 0, 80, this->level->getCarAmount() * 15, config->barColor());
 
 		for (int i = 0; i < this->level->getCarAmount(); i++) {
-			Gui::Draw_Rect(this->carList[i].x, this->carList[i].y, (this->level->getSize(i) * 20), 10, GFX::getColor(this->level->getCar(i)));
+			Gui::Draw_Rect(this->carList[i].x, this->carList[i].y, (this->level->getSize(i) * 20), 10, GFX::getCarColor(this->level->getCar(i)));
 		}
 	}
 

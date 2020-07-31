@@ -68,9 +68,9 @@ static void DrawCar(std::unique_ptr<Level> &level, int car) {
 	if (level && level->isValid()) {
 		if (level->getDirection(car) != Direction::None || level->getCar(car) != Car::Lock_Invalid) {
 			if (level->getDirection(car) == Direction::Vertical) {
-				Gui::Draw_Rect((30 * level->getXRow(car)), ((30 * level->getYRow(car)) -1), level->getSize(car) * 30, (30), GFX::getColor(level->getCar(car)));
+				Gui::Draw_Rect((30 * level->getXRow(car)), ((30 * level->getYRow(car)) -1), level->getSize(car) * 30, (30), GFX::getCarColor(level->getCar(car)));
 			} else if (level->getDirection(car) == Direction::Horizontal) {
-				Gui::Draw_Rect(((30 * level->getXRow(car)) - 1), (30 * level->getYRow(car)), 30, (level->getSize(car) * 30), GFX::getColor(level->getCar(car)));
+				Gui::Draw_Rect(((30 * level->getXRow(car)) - 1), (30 * level->getYRow(car)), 30, (level->getSize(car) * 30), GFX::getCarColor(level->getCar(car)));
 			}
 		}
 	}

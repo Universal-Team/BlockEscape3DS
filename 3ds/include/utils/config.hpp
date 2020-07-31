@@ -54,6 +54,9 @@ public:
 	// Selector Color.
 	u32 selectorColor() { return this->v_selectorColor; }
 	void selectorColor(u32 v) { this->v_selectorColor = v; if (!this->changesMade)	this->changesMade = true; }
+	// Car Colors.
+	u32 carColor(int car) { return this->v_carColors[car]; }
+	void carColor(int car, u32 v) { this->v_carColors[car] = v; if (!this->changesMade)	this->changesMade = true; }
 	// Debug.
 	bool debug() { return this->v_debug; }
 	// Language.
@@ -77,6 +80,7 @@ private:
 
 	// Color variables and more.
 	u32 v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;
+	u32 v_carColors[16];
 	int v_language, v_version;
 	bool v_debug;
 };

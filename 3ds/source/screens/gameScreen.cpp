@@ -45,9 +45,9 @@ GameScreen::GameScreen() {
 void GameScreen::DrawCar(int car) const {
 	if (this->currentGame->getDirection(car) != Direction::None || this->currentGame->getCar(car) != Car::Lock_Invalid) {
 		if (this->currentGame->getDirection(car) == Direction::Vertical) {
-			Gui::Draw_Rect((30 * this->currentGame->getXRow(car)), ((30 * this->currentGame->getYRow(car)) -1), this->currentGame->getSize(car) * 30, (30), GFX::getColor(this->currentGame->getCar(car)));
+			Gui::Draw_Rect((30 * this->currentGame->getXRow(car)), ((30 * this->currentGame->getYRow(car)) -1), this->currentGame->getSize(car) * 30, (30), GFX::getCarColor(this->currentGame->getCar(car)));
 		} else if (this->currentGame->getDirection(car) == Direction::Horizontal) {
-			Gui::Draw_Rect(((30 * this->currentGame->getXRow(car)) - 1), (30 * this->currentGame->getYRow(car)), 30, (this->currentGame->getSize(car) * 30), GFX::getColor(this->currentGame->getCar(car)));
+			Gui::Draw_Rect(((30 * this->currentGame->getXRow(car)) - 1), (30 * this->currentGame->getYRow(car)), 30, (this->currentGame->getSize(car) * 30), GFX::getCarColor(this->currentGame->getCar(car)));
 		}
 	}
 }

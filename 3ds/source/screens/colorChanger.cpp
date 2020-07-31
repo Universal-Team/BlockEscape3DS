@@ -40,6 +40,10 @@ void ColorChanger::DrawPreview(void) const {
 		Gui::Draw_Rect(130, 120, 150, 40, config->buttonColor());
 	}  else if (this->colorMode == 4) {
 		GFX::DrawButtonSelector(120, 65, 1.5, 1.5);
+	} else if (this->colorMode > 4) {
+		for (int i = 0; i < 16; i++) {
+			if (this->colorMode - 5 == i) Gui::Draw_Rect(130, 120, 150, 40, config->carColor(i));
+		}
 	}
 }
 
@@ -79,7 +83,18 @@ void ColorChanger::Draw(void) const {
 		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->selectorColor(), 2).c_str(), 400);
 		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->selectorColor(), 1).c_str(), 400);
 		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->selectorColor(), 0).c_str(), 400);
+
+	} else if (this->colorMode > 4) {
+		for (int i = 0; i < 16; i++) {
+			if (this->colorMode - 5 == i) {
+				Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("CAR") + " " + std::to_string(i + 1), 320);
+				Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->carColor(i), 2).c_str(), 400);
+				Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->carColor(i), 1).c_str(), 400);
+				Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->carColor(i), 0).c_str(), 400);
+			}
+		}
 	}
+
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -96,7 +111,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 
 	if (hDown & KEY_RIGHT || hDown & KEY_R) {
-		if (this->colorMode < 4) this->colorMode++;
+		if (this->colorMode < 20) this->colorMode++;
 	}
 
 	if (hDown & KEY_A) {
@@ -117,6 +132,14 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				config->selectorColor(Overlays::SelectRGB(config->selectorColor()));
 				break;
 		}
+
+		if (this->colorMode > 4) {
+			for (int i = 0; i < 16; i++) {
+				if (this->colorMode - 5 == i) {
+					config->carColor(i, Overlays::SelectRGB(config->carColor(i)));
+				}
+			}
+		}
 	}
 
 	if (hDown & KEY_TOUCH) {
@@ -134,8 +157,16 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					config->buttonColor(RGBA8(red, ColorHelper::getColorValue(config->buttonColor(), 1), ColorHelper::getColorValue(config->buttonColor(), 0), 255));
 				} else if (this->colorMode == 4) {
 					config->selectorColor(RGBA8(red, ColorHelper::getColorValue(config->selectorColor(), 1), ColorHelper::getColorValue(config->selectorColor(), 0), 255));
+				} else if (this->colorMode > 4) {
+
+					for (int i = 0; i < 16; i++) {
+						if (this->colorMode - 5 == i) {
+							config->carColor(i, RGBA8(red, ColorHelper::getColorValue(config->carColor(i), 1), ColorHelper::getColorValue(config->carColor(i), 0), 255));
+						}
+					}
 				}
 			}
+
 		} else if (touching(touch, buttons[1])) {
 			int temp = Keyboard::setu8(Lang::get("ENTER_GREEN_RGB"));
 			if (temp != -1) {
@@ -150,8 +181,16 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), green, ColorHelper::getColorValue(config->buttonColor(), 0), 255));
 				} else if (this->colorMode == 4) {
 					config->selectorColor(RGBA8(ColorHelper::getColorValue(config->selectorColor(), 2), green, ColorHelper::getColorValue(config->selectorColor(), 0), 255));
+				} else if (this->colorMode > 4) {
+
+					for (int i = 0; i < 16; i++) {
+						if (this->colorMode - 5 == i) {
+							config->carColor(i, RGBA8(ColorHelper::getColorValue(config->carColor(i), 2), green, ColorHelper::getColorValue(config->carColor(i), 0), 255));
+						}
+					}
 				}
 			}
+
 		} else if (touching(touch, buttons[2])) {
 			int temp = Keyboard::setu8(Lang::get("ENTER_BLUE_RGB"));
 			if (temp != -1) {
@@ -166,6 +205,13 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), ColorHelper::getColorValue(config->buttonColor(), 1), blue, 255));
 				} else if (this->colorMode == 4) {
 					config->selectorColor(RGBA8(ColorHelper::getColorValue(config->selectorColor(), 2), ColorHelper::getColorValue(config->selectorColor(), 1), blue, 255));
+				} else if (this->colorMode > 4) {
+
+					for (int i = 0; i < 16; i++) {
+						if (this->colorMode - 5 == i) {
+							config->carColor(i, RGBA8(ColorHelper::getColorValue(config->carColor(i), 2), ColorHelper::getColorValue(config->carColor(i), 1), blue, 255));
+						}
+					}
 				}
 			}
 		}

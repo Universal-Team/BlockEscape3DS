@@ -49,7 +49,7 @@ namespace GFX {
 	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
 	void DrawButtonSelector(int x, int y, float ScaleX = 1, float ScaleY = 1, bool useSmall = false);
 
-	u32 getColor(Car cr);
+	u32 getCarColor(Car cr);
 
 	// Buttons.
 	void Button(const ButtonStruct btn);
