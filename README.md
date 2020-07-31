@@ -1,7 +1,31 @@
 # RushHour3D
 A Rush Hour clone for Nintendo 3DS.
 
-The ReadMe will be properly created before the first release.
+RushHour3D is a Rush Hour clone for Nintendo 3DS, including...
+
+* Level Creator, though without any out of bounds checks yet.
+* RGB Overlay for the UI Colors. Also includes custom car colors!
+* Including 40 Levels.. including 10 Beginner, 10 Intermediate, 10 Advanced and 10 Expert Levels.
+
+## Screenshots of RushHour3D
+### Color Settings
+![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/color_settings.png) ![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/rgb_overlay.png)
+
+### Credits
+![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/credits.png) ![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/developed_by.png)
+
+### Game Screens
+![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/level_select.png) ![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/level_select_2.png) ![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/game_screen.png) ![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/game_sub.png)
+
+### Level Creator
+![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/level_creator.png)
+
+### MainMenu
+![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/mainmenu.png)
+
+### Other
+![](https://github.com/Universal-Team/RushHour3D/blob/master/screenshots/ui_settings.png)
+
 
 ## Credits
 ### Main Developer
