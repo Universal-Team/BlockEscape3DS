@@ -92,6 +92,7 @@ void LevelCreator::DrawGameField() const {
 void LevelCreator::Draw(void) const {
 	GFX::DrawTop();
 	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("LEVEL_CREATOR"), 390);
+	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, "You need to take care by yourself about the cars.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0."))/2, 0.7f, config->textColor(), "You need to take care by yourself about the cars.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0.", 390, 70);
 	Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), this->getSelectMsg(), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 
