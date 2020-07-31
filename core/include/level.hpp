@@ -48,11 +48,12 @@ public:
 	void loadLevel(const std::string &file);
 	void prepareLevel();
 	void unload();
+	void reload();
 
 	int getXRow(int cr);
-	void setXRow(int cr, int pos);
+	void setXRow(int cr, int xPos, int yPos, int pos);
 	int getYRow(int cr);
-	void setYRow(int cr, int pos);
+	void setYRow(int cr, int xPos, int yPos, int pos);
 	int getSize(int cr);
 	Direction getDirection(int cr);
 	Car getCar(int cr);
@@ -68,6 +69,7 @@ public:
 
 	int returnField(int i) { return this->gamefield[i].cartype; }
 	Direction returnDirection(int i) { return this->gamefield[i].direction; }
+	int returnIndex(int i) { return this->gamefield[i].index; }
 private:
 	const u8* levelPointer() {
 		if (this->levelData) return this->levelData.get() + 0x4;
@@ -80,7 +82,7 @@ private:
 	int movement = 0;
 	bool validLevel = false;
 	std::vector<std::unique_ptr<Cars>> cars;
-	std::array<GameField, 36> gamefield = {-1, Direction::None};
+	std::array<GameField, 36> gamefield = {-1, Direction::None, -1};
 };
 
 #endif

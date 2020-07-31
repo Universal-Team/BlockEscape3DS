@@ -42,6 +42,11 @@ void Game::loadLevel(const std::string &file) {
 	this->currentLevel->loadLevel(file);
 }
 
+// Reload a Level.
+void Game::reload() {
+	this->currentLevel->reload();
+}
+
 // Prepare the level here.
 void Game::prepareLevel() {
 	this->currentLevel->prepareLevel();
@@ -52,16 +57,16 @@ int Game::getXRow(int cr) {
 	return this->currentLevel->getXRow(cr);
 }
 
-void Game::setXRow(int cr, int pos) {
-	this->currentLevel->setXRow(cr, pos);
+void Game::setXRow(int cr, int xPos, int yPos, int pos) {
+	this->currentLevel->setXRow(cr, xPos, yPos, pos);
 }
 
 int Game::getYRow(int cr) {
 	return this->currentLevel->getYRow(cr);
 }
 
-void Game::setYRow(int cr, int pos) {
-	this->currentLevel->setYRow(cr, pos);
+void Game::setYRow(int cr, int xPos, int yPos, int pos) {
+	this->currentLevel->setYRow(cr, xPos, yPos, pos);
 }
 
 int Game::getSize(int cr) {

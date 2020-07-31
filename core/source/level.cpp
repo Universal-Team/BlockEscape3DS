@@ -41,7 +41,7 @@ void Level::unload() {
 	this->resetMovement();
 
 	for (int i = 0; i < 36; i++) {
-		this->gamefield[i] = {-1, Direction::None};
+		this->gamefield[i] = {-1, Direction::None, -1};
 	}
 }
 
@@ -85,6 +85,18 @@ void Level::loadLevel(const std::string &file) {
 	this->prepareLevel(); // Also do prepare!
 }
 
+void Level::reload() {
+	// Reset cars.
+	this->cars.clear();
+	this->resetMovement();
+
+	for (int i = 0; i < 36; i++) {
+		this->gamefield[i] = {-1, Direction::None, -1};
+	}
+
+	this->prepareLevel();
+}
+
 // Prepare the level here.
 void Level::prepareLevel() {
 	if (this->validLevel && this->levelData) {
@@ -116,14 +128,14 @@ void Level::prepareLevel() {
 				if (this->levelPointer()[0 + (i * 0x3)] == 1) {
 					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Car(i + 1))});
 					for (int i2 = 0; i2 < 2; i2++) {
-						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)])};
+						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)]), this->getCarAmount()-1};
 					}
 					
 					// Direction check. Horizontal.
 				} else if (this->levelPointer()[0 + (i * 0x3)] == 2) {
 					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Car(i + 1))});
 					for (int i2 = 0; i2 < 2; i2++) {
-						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)])};
+						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)]), this->getCarAmount()-1};
 					}
 				}
 			}
@@ -156,7 +168,7 @@ void Level::prepareLevel() {
 					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Car(11 + i))});
 
 					for (int i2 = 0; i2 < 3; i2++) {
-						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)])};
+						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)]), this->getCarAmount()-1};
 					}
 
 					// Direction check. Horizontal.
@@ -164,7 +176,7 @@ void Level::prepareLevel() {
 					this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Car(11 + i))});
 
 					for (int i2 = 0; i2 < 3; i2++) {
-						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)])};
+						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)]), this->getCarAmount()-1};
 					}
 
 				}
@@ -197,7 +209,7 @@ void Level::prepareLevel() {
 				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Car::Red)});
 
 				for (int i2 = 0; i2 < 2; i2++) {
-					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + i2 - 1] = {(int)Car::Red, Direction(this->levelPointer()[0x2D])};
+					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + i2 - 1] = {(int)Car::Red, Direction(this->levelPointer()[0x2D]), this->getCarAmount()-1};
 				}
 
 				// Direction check. Horizontal.
@@ -205,7 +217,7 @@ void Level::prepareLevel() {
 				this->cars.push_back({std::make_unique<Cars>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Car::Red)});
 
 				for (int i2 = 0; i2 < 2; i2++) {
-					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + (i2 * 6) - 1] = {(int)Car::Red, Direction(this->levelPointer()[0x2D])};
+					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + (i2 * 6) - 1] = {(int)Car::Red, Direction(this->levelPointer()[0x2D]), this->getCarAmount()-1};
 				}
 
 			}
@@ -219,10 +231,19 @@ int Level::getXRow(int cr) {
 	return this->cars[cr]->getX();
 }
 
-void Level::setXRow(int cr, int pos) {
+void Level::setXRow(int cr, int xPos, int yPos, int pos) {
 	if (this->getCarAmount() < cr) return;
 
 	this->cars[cr]->setX(pos);
+
+	// Field stuff.
+	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+		this->gamefield[((yPos * 6) - 6) + xPos + i - 1] = {-1, Direction::None, -1};
+	}
+
+	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+		this->gamefield[((yPos * 6) - 6) + pos + i - 1] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
+	}
 }
 
 int Level::getYRow(int cr) {
@@ -231,10 +252,19 @@ int Level::getYRow(int cr) {
 	return this->cars[cr]->getY();
 }
 
-void Level::setYRow(int cr, int pos) {
+void Level::setYRow(int cr, int xPos, int yPos, int pos) {
 	if (this->getCarAmount() < cr) return;
 
 	this->cars[cr]->setY(pos);
+
+	// Field stuff.
+	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+		this->gamefield[xPos + ((yPos * 6) - 6) + (i * 6) - 1] = {-1, Direction::None, -1};
+	}
+
+	for (int i = 0; i < this->cars[cr]->getSize(); i++) {
+		this->gamefield[xPos + ((pos * 6) - 6) + (i * 6) - 1] = {(int)this->cars[cr]->getCar(), this->cars[cr]->getDirection(), cr};
+	}
 }
 
 int Level::getSize(int cr) {

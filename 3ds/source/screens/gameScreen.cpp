@@ -30,6 +30,7 @@
 
 extern std::unique_ptr<Config> config;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern bool btnTouch(touchPosition touch, ButtonStruct button);
 
 GameScreen::GameScreen() {
 	// Call Game Constructor here.
@@ -80,139 +81,256 @@ void GameScreen::DrawGameField() const {
 
 	if (this->currentGame && this->currentGame->isValid()) {
 		DrawSelectedCar(this->selectedCar);
-
-		Gui::Draw_Rect(230, 0, 80, this->currentGame->getCarAmount() * 15, config->barColor());
-
-		for (int i = 0; i < this->currentGame->getCarAmount(); i++) {
-			Gui::Draw_Rect(this->carList[i].x, this->carList[i].y, (this->currentGame->getSize(i) * 20), 10, GFX::getColor(this->currentGame->getCar(i)));
-		}
 	}
 }
 
 void GameScreen::Draw(void) const {
-	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("GAME_SCREEN"), 390);
+	if (this->mode == 0) {
+		GFX::DrawTop();
+		Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("GAME_SCREEN"), 390);
 	
-	if (this->currentGame->isValid()) {
-		Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("MOVEMENTS") + std::to_string(this->currentGame->getMovement()), 390);
-	} else {
-		Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("LEVEL_NOT_LOADED"), 390);
-	}
+		if (this->currentGame->isValid()) {
+			Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("MOVEMENTS") + std::to_string(this->currentGame->getMovement()), 390);
+		} else {
+			Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("LEVEL_NOT_LOADED"), 390);
+		}
 
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 
-	if (this->currentGame->isValid()) {
-		this->DrawGameField();
+		if (this->currentGame->isValid()) {
+			this->DrawGameField();
+		} else {
+			GFX::DrawBottom(true);
+		}
+
+		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	} else {
+		GFX::DrawTop();
+		Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("GAME_SCREEN_SUB_MENU"), 390);
+		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 		GFX::DrawBottom(true);
-	}
 
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+		for (int i = 0; i < 3; i++) {
+			GFX::Button(this->subPos[i]);
+		}
+
+		GFX::DrawButtonSelector(subPos[this->subSel].X, subPos[this->subSel].Y);
+		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+	}
 }
 
 
 void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	// Checking...
-	if (this->currentGame && this->currentGame->isValid()) {
-		if (this->currentGame->getCar(this->selectedCar) == Car::Red) {
-			if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
-				if (this->currentGame->getXRow(this->selectedCar) == 5) {
-					Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
+	if (this->mode == 0) {
+		// Checking...
+		if (this->currentGame && this->currentGame->isValid()) {
+			if (this->currentGame->getCar(this->selectedCar) == Car::Red) {
+				if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
+					if (this->currentGame->getXRow(this->selectedCar) == 5) {
+						Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
 
+						if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
+							const std::string path = Overlays::SelectLevel();
+							if (path != "!NO_LEVEL") {
+								this->currentGame->loadLevel(path);
+								return;
+							} else {
+								Msg::DisplayWaitMsg(Lang::get("LEVEL_NOT_SELECTED"));
+								Gui::screenBack(true);
+								return;
+							}
+						} else {
+							Gui::screenBack(true);
+							return;
+						}
+					}
+				} else if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
+					if (this->currentGame->getYRow(this->selectedCar) == 5) {
+						Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
+
+						if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
+							const std::string path = Overlays::SelectLevel();
+							if (path != "!NO_LEVEL") {
+								this->currentGame->loadLevel(path);
+								return;
+							} else {
+								Msg::DisplayWaitMsg(Lang::get("LEVEL_NOT_SELECTED"));
+								Gui::screenBack(true);
+								return;
+							}
+						} else {
+							Gui::screenBack(true);
+							return;
+						}
+					}
+				}
+			}
+
+			// Switch cars with L/R.
+			if (hDown & KEY_R) {
+				if (this->selectedCar < this->currentGame->getCarAmount()-1) this->selectedCar++;
+			}
+
+			if (hDown & KEY_L) {
+				if (this->selectedCar > 0) this->selectedCar--;
+			}
+
+			if (hDown & KEY_DOWN) {
+				if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
+					if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
+						this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) + 1);
+						this->currentGame->doMovement();
+					}
+				}
+			}
+
+			if (hDown & KEY_UP) {
+				if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
+					if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
+						this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) - 1);
+						this->currentGame->doMovement();
+					}
+				}
+			}
+
+			if (hDown & KEY_LEFT) {
+				if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
+					if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
+						this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) - 1);
+						this->currentGame->doMovement();
+					}
+				}
+			}
+
+			if (hDown & KEY_RIGHT) {
+				if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
+					if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
+						this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) + 1);
+						this->currentGame->doMovement();
+					}
+				}
+			}
+
+			if (hHeld & KEY_TOUCH) {
+				for (int i = 0; i < 36; i++) {
+					if (touching(touch, gridPos[i])) {
+						if (this->currentGame->returnIndex(i) != -1) {
+							this->selectedCar = this->currentGame->returnIndex(i);
+						}
+					}
+				}
+
+				// Get available fields.
+				if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
+
+					for (int i = 0; i < 6; i++) {
+						if (this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < 6 && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) * 6) - 6) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
+								this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) + 1);
+								this->currentGame->doMovement();
+							}
+
+						} else if (this->currentGame->getYRow(this->selectedCar) > 1 && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) - 1) * 6) - 6) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
+								this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) - 1);
+								this->currentGame->doMovement();
+							}
+						}
+					}
+
+				} else if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
+
+					for (int i = 0; i < 6; i++) {
+						if (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < 6 && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * 6) - 6) + (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
+								this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) + 1);
+								this->currentGame->doMovement();
+							}
+
+						} else if (this->currentGame->getXRow(this->selectedCar) > 1 && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * 6) - 6) + (this->currentGame->getXRow(this->selectedCar) - 1) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
+								this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) - 1);
+								this->currentGame->doMovement();
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (hDown & KEY_SELECT) {
+			this->mode = 1; // Go submenu!
+		}
+
+	} else {
+		if (hDown & KEY_DOWN) {
+			if (this->subSel < 2) this->subSel++;
+		}
+
+		if (hDown & KEY_UP) {
+			if (this->subSel > 0) this->subSel--;
+		}
+
+		if (hDown & KEY_A) {
+			switch(this->subSel) {
+				case 0:
 					if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
 						const std::string path = Overlays::SelectLevel();
 						if (path != "!NO_LEVEL") {
 							this->currentGame->loadLevel(path);
-							return;
-						} else {
-							Msg::DisplayWaitMsg(Lang::get("LEVEL_NOT_SELECTED"));
-							Gui::screenBack(true);
-							return;
+							this->mode = 0;
 						}
-					} else {
+					}
+					break;
+				case 1:
+					if (Msg::promptMsg(Lang::get("RESTART_LEVEL"))) {
+						this->currentGame->reload();
+						this->selectedCar = 0;
+						this->mode = 0;
+					}
+					break;
+				case 2:
+					if (Msg::promptMsg(Lang::get("EXIT_GAME_TXT"))) {
 						Gui::screenBack(true);
 						return;
 					}
-				}
-			} else if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
-				if (this->currentGame->getYRow(this->selectedCar) == 5) {
-					Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
-
-					if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
-						const std::string path = Overlays::SelectLevel();
-						if (path != "!NO_LEVEL") {
-							this->currentGame->loadLevel(path);
-							return;
-						} else {
-							Msg::DisplayWaitMsg(Lang::get("LEVEL_NOT_SELECTED"));
-							Gui::screenBack(true);
-							return;
-						}
-					} else {
-						Gui::screenBack(true);
-						return;
-					}
-				}
+					break;
 			}
 		}
 
 		if (hDown & KEY_TOUCH) {
-			for (int i = 0; i < this->currentGame->getCarAmount(); i++) {
-				if (touching(touch, this->carList[i])) {
-					this->selectedCar = i;
+			if (btnTouch(touch, subPos[0])) {
+				if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
+					const std::string path = Overlays::SelectLevel();
+					if (path != "!NO_LEVEL") {
+						this->currentGame->loadLevel(path);
+						this->mode = 0;
+					}
+				}
+			} else if (btnTouch(touch, subPos[1])) {
+				if (Msg::promptMsg(Lang::get("RESTART_LEVEL"))) {
+					this->currentGame->reload();
+					this->selectedCar = 0;
+					this->mode = 0;
+				}
+			} else if (btnTouch(touch, subPos[2])) {
+				if (Msg::promptMsg(Lang::get("EXIT_GAME_TXT"))) {
+					Gui::screenBack(true);
+					return;
 				}
 			}
 		}
 
-		// Switch cars with L/R.
-		if (hDown & KEY_R) {
-			if (this->selectedCar < this->currentGame->getCarAmount()-1) this->selectedCar++;
-		}
-
-		if (hDown & KEY_L) {
-			if (this->selectedCar > 0) this->selectedCar--;
-		}
-
-		if (hDown & KEY_DOWN) {
-			if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
-				if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
-					this->currentGame->setYRow(this->selectedCar, this->currentGame->getYRow(this->selectedCar) + 1);
-					this->currentGame->doMovement();
-				}
-			}
-		}
-
-		if (hDown & KEY_UP) {
-			if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
-				if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
-					this->currentGame->setYRow(this->selectedCar, this->currentGame->getYRow(this->selectedCar) - 1);
-					this->currentGame->doMovement();
-				}
-			}
-		}
-
-		if (hDown & KEY_LEFT) {
-			if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
-				if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
-					this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar) - 1);
-					this->currentGame->doMovement();
-				}
-			}
-		}
-
-		if (hDown & KEY_RIGHT) {
-			if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
-				if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
-					this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar) + 1);
-					this->currentGame->doMovement();
-				}
-			}
+		if (hDown & KEY_B) {
+			this->mode = 0;
 		}
 	}
 
 	// Go screen back.
 	if (hDown & KEY_START) {
-		Gui::screenBack(true);
-		return;
+		if (Msg::promptMsg(Lang::get("EXIT_GAME_TXT"))) {
+			Gui::screenBack(true);
+			return;
+		}
 	}
 }

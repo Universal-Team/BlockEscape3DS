@@ -39,11 +39,12 @@ public:
 	void loadLevel(const std::string &file);
 	void prepareLevel();
 	void unload();
+	void reload();
 
 	int getXRow(int cr);
-	void setXRow(int cr, int pos);
+	void setXRow(int cr, int xPos, int yPos, int pos);
 	int getYRow(int cr);
-	void setYRow(int cr, int pos);
+	void setYRow(int cr, int xPos, int yPos, int pos);
 	int getSize(int cr);
 	Direction getDirection(int cr);
 	Car getCar(int cr);
@@ -58,7 +59,8 @@ public:
 
 	// Gamefield.
 	int returnField(int i) { return this->currentLevel->returnField(i); }
-	Direction returnDirection(int i) { return this->currentLevel->returnDirection(i);}
+	Direction returnDirection(int i) { return this->currentLevel->returnDirection(i); }
+	int returnIndex(int i) { return this->currentLevel->returnIndex(i); }
 private:
 	std::unique_ptr<Level> currentLevel;
 };
