@@ -24,18 +24,15 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_OVERLAY_HPP
-#define _RUSH_HOUR_3D_OVERLAY_HPP
+#ifndef _RUSH_HOUR_3D_CREDITS_HPP
+#define _RUSH_HOUR_3D_CREDITS_HPP
 
 #include "common.hpp"
-#include <citro2d.h>
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	void SplashOverlay();
-	void SelectLanguage();
-	std::string SelectLevel();
-	std::string SelectDirectory();
-}
+class Credits : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+};
 
 #endif

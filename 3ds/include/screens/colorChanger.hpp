@@ -24,18 +24,28 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_OVERLAY_HPP
-#define _RUSH_HOUR_3D_OVERLAY_HPP
+#ifndef _RUSH_HOUR_3D_COLOR_CHANGER_HPP
+#define _RUSH_HOUR_3D_COLOR_CHANGER_HPP
 
 #include "common.hpp"
-#include <citro2d.h>
+#include "structs.hpp"
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	void SplashOverlay();
-	void SelectLanguage();
-	std::string SelectLevel();
-	std::string SelectDirectory();
-}
+#include <vector>
+
+class ColorChanger : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+private:
+	void DrawPreview(void) const;
+	int colorMode = 0;
+	const std::vector<Structs::ButtonPos> buttons = {
+		{10, 85, 95, 41},
+		{115, 85, 95, 41},
+		{220, 85, 95, 41}
+	};
+
+	const Structs::ButtonPos btn = { 90, 100, 140, 40 };
+};
 
 #endif

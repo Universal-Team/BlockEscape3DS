@@ -44,17 +44,21 @@
 class Cars;
 class Level {
 public:
-	Level();
+	Level(bool useField = true);
 	void loadLevel(const std::string &file);
+	void createNew();
+	void setCreatorStuff();
 	void prepareLevel();
 	void unload();
+	void reload();
 
 	int getXRow(int cr);
+	void setXRow(int cr, int xPos, int yPos, int pos);
 	int getYRow(int cr);
+	void setYRow(int cr, int xPos, int yPos, int pos);
 	int getSize(int cr);
-	int getPosition(int cr);
-	void setPosition(int cr, int pos);
 	Direction getDirection(int cr);
+	void setDirection(int cr, int xPos, int yPos, Direction dr);
 	Car getCar(int cr);
 	int getCarAmount();
 	bool isValid();
@@ -65,18 +69,27 @@ public:
 	void resetMovement() { this->movement = 0; }
 	
 	bool returnIfMovable(int cr, bool mv); // if movement is true, do forward.
-private:
+
+	int returnField(int i) { return this->gamefield[i].cartype; }
+	Direction returnDirection(int i) { return this->gamefield[i].direction; }
+	int returnIndex(int i) { return this->gamefield[i].index; }
+
+
+	std::unique_ptr<u8[]> &levelDt() { return this->levelData; }
+
 	const u8* levelPointer() {
 		if (this->levelData) return this->levelData.get() + 0x4;
 		else return nullptr;
 	}
-
+private:
+	bool useField = true;
 	std::unique_ptr<u8[]> levelData = nullptr; // Our level buffer.
 	FILE *levelFile = nullptr; // Our FILE variable.
 	u32 size = 0;
 	int movement = 0;
 	bool validLevel = false;
 	std::vector<std::unique_ptr<Cars>> cars;
+	std::array<GameField, 36> gamefield = {-1, Direction::None, -1};
 };
 
 #endif

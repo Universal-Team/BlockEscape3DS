@@ -2,7 +2,7 @@ name: Build RushHour3D
 
 on:
   push:
-    branches-ignore: [translation]
+    branches-ignore: [translation, core-rework]
   pull_request:
     branches: ["*"]
   release:

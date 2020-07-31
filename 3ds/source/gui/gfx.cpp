@@ -100,42 +100,42 @@ void GFX::Button(const ButtonStruct btn) {
 }
 
 // Colors for cars.
-u32 GFX::getColor(Car cr) {
+u32 GFX::getCarColor(Car cr) {
 	switch(cr) {
 		case Car::Lock_Invalid:
 			return 0;
 		case Car::Lock1:
-			return C2D_Color32(1, 199, 24, 255);
+			return config->carColor(0);
 		case Car::Lock2:
-			return C2D_Color32(248, 138, 15, 255);
+			return config->carColor(1);
 		case Car::Lock3:
-			return C2D_Color32(4, 173, 194, 255);
+			return config->carColor(2);
 		case Car::Lock4:
-			return C2D_Color32(133, 136, 119, 255);
+			return config->carColor(3);
 		case Car::Lock5:
-			return C2D_Color32(228, 135, 145, 255);
+			return config->carColor(4);
 		case Car::Lock6:
-			return C2D_Color32(231, 193, 144, 255);
+			return config->carColor(5);
 		case Car::Lock7:
-			return C2D_Color32(143, 105, 86, 255);
+			return config->carColor(6);
 		case Car::Lock8:
-			return C2D_Color32(223, 212, 106, 255);
+			return config->carColor(7);
 		case Car::Lock9:
-			return C2D_Color32(126, 219, 162, 255);
+			return config->carColor(8);
 		case Car::Lock10:
-			return C2D_Color32(117, 119, 180, 255);
+			return config->carColor(9);
 		case Car::Lock11:
-			return C2D_Color32(145, 145, 33, 255);
+			return config->carColor(10);
 		case Car::Lock12:
-			return C2D_Color32(178, 143, 163, 255);
+			return config->carColor(11);
 		case Car::Lock13:
-			return C2D_Color32(5, 123, 151, 255);
+			return config->carColor(12);
 		case Car::Lock14:
-			return C2D_Color32(253, 209, 42, 255);
+			return config->carColor(13);
 		case Car::Lock15:
-			return C2D_Color32(7, 179, 97, 255);
+			return config->carColor(14);
 		case Car::Red:
-			return C2D_Color32(248, 5, 0, 255);
+			return config->carColor(15);
 	}
 
 	return 0;

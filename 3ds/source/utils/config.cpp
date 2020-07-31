@@ -34,6 +34,48 @@
 
 #define SETTINGS_FILE "sdmc:/3ds/RushHour3D/Settings.json"
 
+// Colors for default cars.
+static u32 getColor(Car cr) {
+	switch(cr) {
+		case Car::Lock_Invalid:
+			return 0;
+		case Car::Lock1:
+			return C2D_Color32(1, 199, 24, 255);
+		case Car::Lock2:
+			return C2D_Color32(248, 138, 15, 255);
+		case Car::Lock3:
+			return C2D_Color32(4, 173, 194, 255);
+		case Car::Lock4:
+			return C2D_Color32(133, 136, 119, 255);
+		case Car::Lock5:
+			return C2D_Color32(228, 135, 145, 255);
+		case Car::Lock6:
+			return C2D_Color32(231, 193, 144, 255);
+		case Car::Lock7:
+			return C2D_Color32(143, 105, 86, 255);
+		case Car::Lock8:
+			return C2D_Color32(223, 212, 106, 255);
+		case Car::Lock9:
+			return C2D_Color32(126, 219, 162, 255);
+		case Car::Lock10:
+			return C2D_Color32(117, 119, 180, 255);
+		case Car::Lock11:
+			return C2D_Color32(145, 145, 33, 255);
+		case Car::Lock12:
+			return C2D_Color32(178, 143, 163, 255);
+		case Car::Lock13:
+			return C2D_Color32(5, 123, 151, 255);
+		case Car::Lock14:
+			return C2D_Color32(253, 209, 42, 255);
+		case Car::Lock15:
+			return C2D_Color32(7, 179, 97, 255);
+		case Car::Red:
+			return C2D_Color32(248, 5, 0, 255);
+	}
+
+	return 0;
+}
+
 // Used to add missing stuff for the JSON.
 void Config::addMissingThings() { }
 
@@ -48,6 +90,12 @@ void Config::initialize() {
 	this->setInt("BG_Color", BG_COLOR);
 	this->setInt("Button_Color", BUTTON_COLOR);
 	this->setInt("Selector_Color", SELECTED_COLOR);
+
+	// Car Colors.
+	for (int i = 1; i < 17; i++) {
+		this->setInt("Car_" + std::to_string(i), getColor((Car(i))));
+	}
+
 	this->setInt("Version", this->configVersion);
 	this->setInt("Language", 2);
 
@@ -106,6 +154,15 @@ Config::Config() {
 		this->selectorColor(this->getInt("Selector_Color"));
 	}
 
+
+	for (int i = 1; i < 17; i++) {
+		if (!this->json.contains("Car_" + std::to_string(i))) {
+			this->carColor(i - 1, getColor(Car(i)));
+		} else {
+			this->carColor(i - 1, this->getInt("Car_" + std::to_string(i)));
+		}
+	}
+
 	if (!this->json.contains("Debug")) {
 		this->v_debug = false;
 	} else {
@@ -138,6 +195,11 @@ void Config::save() {
 		this->setInt("BG_Color", this->bgColor());
 		this->setInt("Button_Color", this->buttonColor());
 		this->setInt("Selector_Color", this->selectorColor());
+
+		for (int i = 1; i < 17; i++) {
+			this->setInt("Car_" + std::to_string(i), this->carColor(i - 1));
+		}
+
 		this->setInt("Language", this->language());
 		this->setInt("Version", this->configVersion);
 

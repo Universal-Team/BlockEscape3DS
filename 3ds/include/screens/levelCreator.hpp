@@ -24,30 +24,58 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_GAME_SCREEN_HPP
-#define _RUSH_HOUR_3D_GAME_SCREEN_HPP
+#ifndef _RUSH_HOUR_3D_LEVEL_CREATOR_HPP
+#define _RUSH_HOUR_3D_LEVEL_CREATOR_HPP
 
 #include "common.hpp"
-#include "game.hpp"
+#include "level.hpp"
 #include "structs.hpp"
 
-class GameScreen : public Screen {
+class LevelCreator : public Screen {
 public:
-	GameScreen();
+	LevelCreator();
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 private:
 	void DrawCar(int car) const;
-	void DrawSelectedCar(int car) const;
-	std::unique_ptr<Game> currentGame; // Our current game.
+	std::unique_ptr<Level> level;
 	void DrawGameField() const;
-	int selectedCar = 0, mode = 0, subSel = 0;
+	const std::string getSelectMsg() const;
+	int X = 0, Y = 0;
+	int sltF = 0;
+	
 
-	const std::vector<ButtonStruct> subPos = {
-		{90, 40, 140, 40, Lang::get("LOAD_LEVEL")},
-		{90, 100, 140, 40, Lang::get("RESTART")},
-		{90, 160, 140, 40, Lang::get("EXIT_GAME")}
+		/* Modes. */
+	/*
+		0 -> Car Select.
+		1 -> Direction Select.
+		2 -> YRow Select.
+		3 -> XRow Select.
+	*/
+	int selectedMode = 0;
+	int selectedCar = 0;
+
+	// Car Selection.
+	const std::vector<Structs::ButtonPos> carList = {
+		{240, 2, 60, 10},
+		{240, 17, 60, 10},
+		{240, 32, 60, 10},
+		{240, 47, 60, 10},
+		{240, 62, 60, 10},
+		{240, 77, 60, 10},
+		{240, 92, 60, 10},
+		{240, 107, 60, 10},
+		{240, 122, 60, 10},
+		{240, 137, 60, 10},
+		{240, 152, 60, 10},
+		{240, 167, 60, 10},
+		{240, 182, 60, 10},
+		{240, 197, 60, 10},
+		{240, 212, 60, 10},
+		{240, 227, 60, 10}
 	};
+
+	const Structs::ButtonPos saveIcon = {5, 215, 25, 25};
 
 	const std::vector<Structs::ButtonPos> gridPos = {
 		{30, 30, 30, 30},

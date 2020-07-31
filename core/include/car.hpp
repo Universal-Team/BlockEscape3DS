@@ -33,13 +33,12 @@
 
 class Cars {
 public:
-	Cars(int xRow, int yRow, int size, Direction direction, Car index, int position) {
+	Cars(int xRow, int yRow, int size, Direction direction, Car index) {
 		this->rowX = xRow;
 		this->rowY = yRow;
 		this->size = size;
 		this->direction = direction;
 		this->index = index;
-		this->position = position;
 	}
 
 	int getX() { return this->rowX; }
@@ -51,10 +50,8 @@ public:
 	Direction getDirection() { return this->direction; }
 	void setDirection(Direction dr) { this->direction = dr; }
 	Car getCar() { return this->index; }
-	int getPosition() { return this->position; }
-	void setPosition(int pos) { this->position = pos; }
 private:
-	int rowX, rowY, size, position;
+	int rowX, rowY, size;
 	Car index;
 	Direction direction;
 };

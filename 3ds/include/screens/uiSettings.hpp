@@ -24,18 +24,27 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_OVERLAY_HPP
-#define _RUSH_HOUR_3D_OVERLAY_HPP
+#ifndef _RUSH_HOUR_3D_UI_SETTINGS_HPP
+#define _RUSH_HOUR_3D_UI_SETTINGS_HPP
 
 #include "common.hpp"
-#include <citro2d.h>
+#include "structs.hpp"
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	void SplashOverlay();
-	void SelectLanguage();
-	std::string SelectLevel();
-	std::string SelectDirectory();
-}
+#include <vector>
+
+class UISettings : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+private:
+	int Selection = 0;
+
+	const std::vector<Structs::ButtonPos> mainButtons = {
+		{10, 70, 140, 40}, // Colors.
+		{170, 70, 140, 40}, // Language.
+		{10, 145, 140, 40}, // Credits.
+		{170, 145, 140, 40} // ?.
+	};
+};
 
 #endif

@@ -24,18 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_OVERLAY_HPP
-#define _RUSH_HOUR_3D_OVERLAY_HPP
+#ifndef _RUSH_HOUR_3D_KEYBOARD_HPP
+#define _RUSH_HOUR_3D_KEYBOARD_HPP
 
-#include "common.hpp"
-#include <citro2d.h>
+#include <3ds.h>
+#include <string>
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	void SplashOverlay();
-	void SelectLanguage();
-	std::string SelectLevel();
-	std::string SelectDirectory();
+namespace Keyboard {
+	std::string setkbdString(uint maxLength, std::string Text);
+	int setu8(std::string Text);
+	int setInt(int maxValue, std::string Text);
 }
 
 #endif
