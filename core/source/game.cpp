@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -53,38 +53,38 @@ void Game::prepareLevel() {
 }
 
 
-int Game::getXRow(int cr) {
-	return this->currentLevel->getXRow(cr);
+int Game::getXRow(int bl) {
+	return this->currentLevel->getXRow(bl);
 }
 
-void Game::setXRow(int cr, int xPos, int yPos, int pos) {
-	this->currentLevel->setXRow(cr, xPos, yPos, pos);
+void Game::setXRow(int bl, int xPos, int yPos, int pos) {
+	this->currentLevel->setXRow(bl, xPos, yPos, pos);
 }
 
-int Game::getYRow(int cr) {
-	return this->currentLevel->getYRow(cr);
+int Game::getYRow(int bl) {
+	return this->currentLevel->getYRow(bl);
 }
 
-void Game::setYRow(int cr, int xPos, int yPos, int pos) {
-	this->currentLevel->setYRow(cr, xPos, yPos, pos);
+void Game::setYRow(int bl, int xPos, int yPos, int pos) {
+	this->currentLevel->setYRow(bl, xPos, yPos, pos);
 }
 
-int Game::getSize(int cr) {
-	return this->currentLevel->getSize(cr);
+int Game::getSize(int bl) {
+	return this->currentLevel->getSize(bl);
 }
 
-Direction Game::getDirection(int cr) {
-	return this->currentLevel->getDirection(cr);
+Direction Game::getDirection(int bl) {
+	return this->currentLevel->getDirection(bl);
 }
 
-Car Game::getCar(int cr) {
-	return this->currentLevel->getCar(cr);
+Blocks Game::getBlock(int bl) {
+	return this->currentLevel->getBlock(bl);
 }
 
-int Game::getCarAmount() { return this->currentLevel->getCarAmount(); }
+int Game::getBlockAmount() { return this->currentLevel->getBlockAmount(); }
 
 bool Game::isValid() { return this->currentLevel->isValid(); }
 
-bool Game::returnIfMovable(int cr, bool mv) {
-	return this->currentLevel->returnIfMovable(cr, mv);
+bool Game::returnIfMovable(int bl, bool mv) {
+	return this->currentLevel->returnIfMovable(bl, mv);
 }

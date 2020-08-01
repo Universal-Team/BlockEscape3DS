@@ -1,6 +1,6 @@
 BasicInfo:
-  Title                   : "RushHour3D"
-  ProductCode             : "CTR-H-RH3D"
+  Title                   : "BlockEscape3DS"
+  ProductCode             : "CTR-H-BE3D"
   Logo                    : Homebrew # Nintendo / Licensed / Distributed / iQue / iQueForSystem
 
 RomFs:

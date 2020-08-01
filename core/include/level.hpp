@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,24 +24,24 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_CORE_LEVEL_HPP
-#define _RUSH_HOUR_3D_CORE_LEVEL_HPP
+#ifndef _BLOCK_ESCAPE_3DS_CORE_LEVEL_HPP
+#define _BLOCK_ESCAPE_3DS_CORE_LEVEL_HPP
 
-#include <3ds.h>
-#include "car.hpp"
+#include "block.hpp"
 #include "coreHelper.hpp"
+#include <3ds.h>
 #include <memory>
 #include <vector>
 
-/* RushHour3D Level Structure.
-	first 4 bytes: 52 48 33 44 (Magic Header "RH3D").
-	5th byte: Direction of first car. (0 = not included, 1 = Vertical, 2 = Horizontal.)
-	6th byte: RowX of first car. (0 = not included. 1 - 6: Included.)
-	7th byte: RowY of first car. (0 = not included. 1 - 6: Included.)
+/* BlockEscape3DS Level Structure.
+	first 4 bytes: 42 45 33 44 (Magic Header "BE3D").
+	5th byte: Direction of first block. (0 = not included, 1 = Vertical, 2 = Horizontal.)
+	6th byte: RowX of first block. (0 = not included. 1 - 6: Included.)
+	7th byte: RowY of first block. (0 = not included. 1 - 6: Included.)
 	8th byte: Repeat same steps as 6 - 8 byte until 0x33.
 */
 
-class Cars;
+class Block;
 class Level {
 public:
 	Level(bool useField = true);
@@ -52,15 +52,15 @@ public:
 	void unload();
 	void reload();
 
-	int getXRow(int cr);
-	void setXRow(int cr, int xPos, int yPos, int pos);
-	int getYRow(int cr);
-	void setYRow(int cr, int xPos, int yPos, int pos);
-	int getSize(int cr);
-	Direction getDirection(int cr);
-	void setDirection(int cr, int xPos, int yPos, Direction dr);
-	Car getCar(int cr);
-	int getCarAmount();
+	int getXRow(int bl);
+	void setXRow(int bl, int xPos, int yPos, int pos);
+	int getYRow(int bl);
+	void setYRow(int bl, int xPos, int yPos, int pos);
+	int getSize(int bl);
+	Direction getDirection(int bl);
+	void setDirection(int bl, int xPos, int yPos, Direction dr);
+	Blocks getBlock(int bl);
+	int getBlockAmount();
 	bool isValid();
 
 	// Movement stuff here.
@@ -68,9 +68,9 @@ public:
 	void doMovement() { this->movement++; }
 	void resetMovement() { this->movement = 0; }
 	
-	bool returnIfMovable(int cr, bool mv); // if movement is true, do forward.
+	bool returnIfMovable(int bl, bool mv); // if movement is true, do forward.
 
-	int returnField(int i) { return this->gamefield[i].cartype; }
+	int returnField(int i) { return this->gamefield[i].blocktype; }
 	Direction returnDirection(int i) { return this->gamefield[i].direction; }
 	int returnIndex(int i) { return this->gamefield[i].index; }
 
@@ -88,7 +88,7 @@ private:
 	u32 size = 0;
 	int movement = 0;
 	bool validLevel = false;
-	std::vector<std::unique_ptr<Cars>> cars;
+	std::vector<std::unique_ptr<Block>> blocks;
 	std::array<GameField, 36> gamefield = {-1, Direction::None, -1};
 };
 

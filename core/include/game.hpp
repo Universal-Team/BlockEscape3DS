@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_CORE_GAME_HPP
-#define _RUSH_HOUR_3D_CORE_GAME_HPP
+#ifndef _BLOCK_ESCAPE_3DS_CORE_GAME_HPP
+#define _BLOCK_ESCAPE_3DS_CORE_GAME_HPP
 
 #include <3ds.h>
 #include "coreHelper.hpp"
@@ -41,21 +41,21 @@ public:
 	void unload();
 	void reload();
 
-	int getXRow(int cr);
-	void setXRow(int cr, int xPos, int yPos, int pos);
-	int getYRow(int cr);
-	void setYRow(int cr, int xPos, int yPos, int pos);
-	int getSize(int cr);
-	Direction getDirection(int cr);
-	Car getCar(int cr);
-	int getCarAmount();
+	int getXRow(int bl);
+	void setXRow(int bl, int xPos, int yPos, int pos);
+	int getYRow(int bl);
+	void setYRow(int bl, int xPos, int yPos, int pos);
+	int getSize(int bl);
+	Direction getDirection(int bl);
+	Blocks getBlock(int bl);
+	int getBlockAmount();
 	bool isValid();
 
 	// Movement stuff here.
 	int getMovement() { return this->currentLevel->getMovement(); }
 	void doMovement() { this->currentLevel->doMovement(); }
 	void resetMovement() { this->currentLevel->resetMovement(); }
-	bool returnIfMovable(int cr, bool mv); // if movement is true, do forward.
+	bool returnIfMovable(int bl, bool mv); // if movement is true, do forward.
 
 	// Gamefield.
 	int returnField(int i) { return this->currentLevel->returnField(i); }

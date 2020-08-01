@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -30,9 +30,9 @@ extern std::unique_ptr<Config> config;
 
 void Credits::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("CREDITS"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("CREDITS"), 390);
 	GFX::DrawSprite(sprites_stackz_idx, -2, 70);
-	GFX::DrawSprite(sprites_banner_idx, 137, 65);
+	//GFX::DrawSprite(sprites_banner_idx, 137, 65);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("DEVELOPED_BY"), 390);
 	Gui::DrawStringCentered(0, 45, 0.6f, config->textColor(), Lang::get("MAIN_DEV"), 390);
 	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 219, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);

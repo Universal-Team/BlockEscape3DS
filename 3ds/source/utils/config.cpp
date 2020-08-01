@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -32,44 +32,44 @@
 #include <string>
 #include <unistd.h>
 
-#define SETTINGS_FILE "sdmc:/3ds/RushHour3D/Settings.json"
+#define SETTINGS_FILE "sdmc:/3ds/BlockEscape3DS/Settings.json"
 
-// Colors for default cars.
-static u32 getColor(Car cr) {
-	switch(cr) {
-		case Car::Lock_Invalid:
+// Colors for default Blocks.
+static u32 getColor(Blocks bl) {
+	switch(bl) {
+		case Blocks::Lock_Invalid:
 			return 0;
-		case Car::Lock1:
+		case Blocks::Lock1:
 			return C2D_Color32(1, 199, 24, 255);
-		case Car::Lock2:
+		case Blocks::Lock2:
 			return C2D_Color32(248, 138, 15, 255);
-		case Car::Lock3:
+		case Blocks::Lock3:
 			return C2D_Color32(4, 173, 194, 255);
-		case Car::Lock4:
+		case Blocks::Lock4:
 			return C2D_Color32(133, 136, 119, 255);
-		case Car::Lock5:
+		case Blocks::Lock5:
 			return C2D_Color32(228, 135, 145, 255);
-		case Car::Lock6:
+		case Blocks::Lock6:
 			return C2D_Color32(231, 193, 144, 255);
-		case Car::Lock7:
+		case Blocks::Lock7:
 			return C2D_Color32(143, 105, 86, 255);
-		case Car::Lock8:
+		case Blocks::Lock8:
 			return C2D_Color32(223, 212, 106, 255);
-		case Car::Lock9:
+		case Blocks::Lock9:
 			return C2D_Color32(126, 219, 162, 255);
-		case Car::Lock10:
+		case Blocks::Lock10:
 			return C2D_Color32(117, 119, 180, 255);
-		case Car::Lock11:
+		case Blocks::Lock11:
 			return C2D_Color32(145, 145, 33, 255);
-		case Car::Lock12:
+		case Blocks::Lock12:
 			return C2D_Color32(178, 143, 163, 255);
-		case Car::Lock13:
+		case Blocks::Lock13:
 			return C2D_Color32(5, 123, 151, 255);
-		case Car::Lock14:
+		case Blocks::Lock14:
 			return C2D_Color32(253, 209, 42, 255);
-		case Car::Lock15:
+		case Blocks::Lock15:
 			return C2D_Color32(7, 179, 97, 255);
-		case Car::Red:
+		case Blocks::Escape:
 			return C2D_Color32(248, 5, 0, 255);
 	}
 
@@ -91,9 +91,9 @@ void Config::initialize() {
 	this->setInt("Button_Color", BUTTON_COLOR);
 	this->setInt("Selector_Color", SELECTED_COLOR);
 
-	// Car Colors.
+	// Block Colors.
 	for (int i = 1; i < 17; i++) {
-		this->setInt("Car_" + std::to_string(i), getColor((Car(i))));
+		this->setInt("Block_" + std::to_string(i), getColor((Blocks(i))));
 	}
 
 	this->setInt("Version", this->configVersion);
@@ -156,10 +156,10 @@ Config::Config() {
 
 
 	for (int i = 1; i < 17; i++) {
-		if (!this->json.contains("Car_" + std::to_string(i))) {
-			this->carColor(i - 1, getColor(Car(i)));
+		if (!this->json.contains("Block_" + std::to_string(i))) {
+			this->blockColor(i - 1, getColor(Blocks(i)));
 		} else {
-			this->carColor(i - 1, this->getInt("Car_" + std::to_string(i)));
+			this->blockColor(i - 1, this->getInt("Block_" + std::to_string(i)));
 		}
 	}
 
@@ -197,7 +197,7 @@ void Config::save() {
 		this->setInt("Selector_Color", this->selectorColor());
 
 		for (int i = 1; i < 17; i++) {
-			this->setInt("Car_" + std::to_string(i), this->carColor(i - 1));
+			this->setInt("Block_" + std::to_string(i), this->blockColor(i - 1));
 		}
 
 		this->setInt("Language", this->language());

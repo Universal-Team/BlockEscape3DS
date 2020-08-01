@@ -53,7 +53,7 @@ VERSION_MICRO := 0
 
 VERSION_STRING := "$(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_MICRO)"
 #---------------------------------------------------------------------------------
-TARGET		:=	RushHour3D
+TARGET		:=	BlockEscape3DS
 BUILD		:=	build
 SRCCORE		:= ../core/source
 INCCORE		:= ../core/include
@@ -67,7 +67,7 @@ GRAPHICS	:=	assets/gfx
 ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx
 APP_AUTHOR	:=	Universal-Team
-APP_DESCRIPTION := A Rush Hour clone for Nintendo 3DS.
+APP_DESCRIPTION := A block escape puzzle game for Nintendo 3DS.
 ICON		:=	app/icon.png
 BNR_IMAGE	:=  app/banner.png
 RSF_FILE	:=	app/build-cia.rsf

@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -63,14 +63,14 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents, bool romf
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
-// Draw Cars from a level unique_ptr.
-static void DrawCar(std::unique_ptr<Level> &level, int car) {
+// Draw blocks from a level unique_ptr.
+static void DrawBlock(std::unique_ptr<Level> &level, int block) {
 	if (level && level->isValid()) {
-		if (level->getDirection(car) != Direction::None || level->getCar(car) != Car::Lock_Invalid) {
-			if (level->getDirection(car) == Direction::Vertical) {
-				Gui::Draw_Rect((30 * level->getXRow(car)), ((30 * level->getYRow(car)) -1), level->getSize(car) * 30, (30), GFX::getCarColor(level->getCar(car)));
-			} else if (level->getDirection(car) == Direction::Horizontal) {
-				Gui::Draw_Rect(((30 * level->getXRow(car)) - 1), (30 * level->getYRow(car)), 30, (level->getSize(car) * 30), GFX::getCarColor(level->getCar(car)));
+		if (level->getDirection(block) != Direction::None || level->getBlock(block) != Blocks::Lock_Invalid) {
+			if (level->getDirection(block) == Direction::Vertical) {
+				Gui::Draw_Rect((30 * level->getXRow(block)), ((30 * level->getYRow(block)) -1), level->getSize(block) * 30, (30), GFX::getBlockColor(level->getBlock(block)));
+			} else if (level->getDirection(block) == Direction::Horizontal) {
+				Gui::Draw_Rect(((30 * level->getXRow(block)) - 1), (30 * level->getYRow(block)), 30, (level->getSize(block) * 30), GFX::getBlockColor(level->getBlock(block)));
 			}
 		}
 	}
@@ -84,8 +84,8 @@ static void DrawBottom(std::unique_ptr<Level> &currentLevel) {
 
 	// Display Level here!
 	if (currentLevel && currentLevel->isValid()) {
-		for (int i = 0; i < currentLevel->getCarAmount(); i++) {
-			DrawCar(currentLevel, i);
+		for (int i = 0; i < currentLevel->getBlockAmount(); i++) {
+			DrawBlock(currentLevel, i);
 		}
 
 		for (int i = 0; i < 36; i++) {
@@ -180,7 +180,7 @@ std::string Overlays::SelectLevel() {
 		if (hDown & KEY_B) {
 			char path[PATH_MAX];
 			getcwd(path, PATH_MAX);
-			if (strcmp(path, "sdmc:/3ds/RushHour3D/Levels/") == 0 || strcmp(path, "/3ds/RushHour3D/Levels/") == 0 || strcmp(path, "romfs:/Levels/") == 0) {
+			if (strcmp(path, "sdmc:/3ds/BlockEscape3DS/Levels/") == 0 || strcmp(path, "/3ds/BlockEscape3DS/Levels/") == 0 || strcmp(path, "romfs:/Levels/") == 0) {
 				if (Msg::promptMsg(Lang::get("LEVEL_SELECT_CANCEL"))) {
 					return "!NO_LEVEL";
 				}
@@ -194,7 +194,7 @@ std::string Overlays::SelectLevel() {
 		if (hDown & KEY_X) {
 			if (romfsMode) {
 				romfsMode = false;
-				chdir("sdmc:/3ds/RushHour3D/Levels/");
+				chdir("sdmc:/3ds/BlockEscape3DS/Levels/");
 			} else {
 				romfsMode = true;
 				chdir("romfs:/Levels/");

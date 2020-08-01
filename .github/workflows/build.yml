@@ -1,4 +1,4 @@
-name: Build RushHour3D
+name: Build BlockEscape3DS
 
 on:
   push:
@@ -36,13 +36,13 @@ jobs:
           sudo chmod +x makerom
           mv makerom /usr/local/bin
           rm makerom-v0.17-ubuntu_x86_64.zip
-      - name: "Build & Prepare RushHour3D"
+      - name: "Build & Prepare BlockEscape3DS"
         id: build
         run: |
           make
           mkdir -p ~/artifacts
-          cp 3ds/RushHour3D.3dsx ~/artifacts
-          cp 3ds/RushHour3D.cia ~/artifacts
+          cp 3ds/BlockEscape3DS.3dsx ~/artifacts
+          cp 3ds/BlockEscape3DS.cia ~/artifacts
           echo "::set-output name=commit_tag::$(git log --format=%h -1)"
           echo "::set-output name=commit_message::$(git log --pretty=format:'%an - %s' -1)"
       - name: "Publish build to GH Actions"
@@ -97,12 +97,12 @@ jobs:
           git config --global user.email "flamekat54@aol.com"
           git config --global user.name "TWLBot"
           git clone --depth 1 https://${{ secrets.TWLBOT_TOKEN }}@github.com/Universal-Team/extras.git
-          mkdir -p extras/builds/RushHour3D/
-          qrencode -o extras/builds/RushHour3D/RushHour3D-release.png https://github.com/Universal-Team/RushHour3D/releases/download/$(git describe --abbrev=0 --tags)/RushHour3D.cia
-          cd extras/builds/RushHour3D/
+          mkdir -p extras/builds/BlockEscape3DS/
+          qrencode -o extras/builds/BlockEscape3DS/BlockEscape3DS-release.png https://github.com/Universal-Team/BlockEscape3DS/releases/download/$(git describe --abbrev=0 --tags)/BlockEscape3DS.cia
+          cd extras/builds/BlockEscape3DS/
           cp ${{ github.workspace }}/build/* .
           git stage .
-          git commit -m "RushHour3D | $COMMIT_TAG"
+          git commit -m "BlockEscape3DS | $COMMIT_TAG"
           git tag v$CURRENT_DATE
           git push origin master v$CURRENT_DATE
           echo "::set-output name=twlbot_commit::$(git log --format=%H -1)"
@@ -111,7 +111,7 @@ jobs:
           AUTH_HEADER="Authorization: token ${{ secrets.TWLBOT_TOKEN }}"
           CONTENT_TYPE="Content-Type: application/json"
           API_URL="https://api.github.com/repos/Universal-Team/extras/releases"
-          RELEASE_INFO="{\"tag_name\": \"v${{ steps.commit.outputs.current_date }}\", \"name\": \"RushHour3D | $COMMIT_TAG\", \"body\": \"$COMMIT_MESSAGE\", \"prerelease\": true}"
+          RELEASE_INFO="{\"tag_name\": \"v${{ steps.commit.outputs.current_date }}\", \"name\": \"BlockEscape3DS | $COMMIT_TAG\", \"body\": \"$COMMIT_MESSAGE\", \"prerelease\": true}"
 
           RESPONSE=$(curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_TYPE" "$API_URL" -d "$RELEASE_INFO")
 
@@ -143,7 +143,7 @@ jobs:
         run: |
           curl -o send.sh https://raw.githubusercontent.com/Universal-Team/discord-webhooks/master/send-ghactions.sh
           chmod +x send.sh
-          export IMAGE=https://raw.githubusercontent.com/Universal-Team/extras/v$CURRENT_DATE/builds/RushHour3D/RushHour3D.png
+          export IMAGE=https://raw.githubusercontent.com/Universal-Team/extras/v$CURRENT_DATE/builds/BlockEscape3DS/BlockEscape3DS.png
           ./send.sh success ${{ secrets.WEBHOOK_URL }}
 
   send_webhook_failure:

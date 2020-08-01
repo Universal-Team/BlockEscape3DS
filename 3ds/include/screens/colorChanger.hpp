@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_COLOR_CHANGER_HPP
-#define _RUSH_HOUR_3D_COLOR_CHANGER_HPP
+#ifndef _BLOCK_ESCAPE_3DS_COLOR_CHANGER_HPP
+#define _BLOCK_ESCAPE_3DS_COLOR_CHANGER_HPP
 
 #include "common.hpp"
 #include "structs.hpp"

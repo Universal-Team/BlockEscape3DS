@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -79,7 +79,7 @@ std::string Overlays::SelectDirectory() {
 	// Initial dir change.
 	dirContents.clear();
 
-	chdir("sdmc:/3ds/RushHour3D/Levels/");
+	chdir("sdmc:/3ds/BlockEscape3DS/Levels/");
 	std::vector<DirEntry> dirContentsTemp;
 	getDirectoryContents(dirContentsTemp, {"lvl"});
 	for(uint i = 0; i < dirContentsTemp.size(); i++) {
@@ -140,9 +140,9 @@ std::string Overlays::SelectDirectory() {
 		if (hDown & KEY_B) {
 			char path[PATH_MAX];
 			getcwd(path, PATH_MAX);
-			if (strcmp(path, "sdmc:/3ds/RushHour3D/Levels/") == 0 || strcmp(path, "/3ds/RushHour3D/Levels/") == 0) {
+			if (strcmp(path, "sdmc:/3ds/BlockEscape3DS/Levels/") == 0 || strcmp(path, "/3ds/BlockEscape3DS/Levels/") == 0) {
 				if (Msg::promptMsg(Lang::get("DIRECTORY_NO_SELECT"))) {
-					return "sdmc:/3ds/RushHour3D/Levels/";
+					return "sdmc:/3ds/BlockEscape3DS/Levels/";
 				}
 			} else {
 				chdir("..");

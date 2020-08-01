@@ -1,6 +1,5 @@
 --atlas -f rgba8888 -z auto
 
-sprites/banner.png
 sprites/bottom_screen_bot.png
 sprites/bottom_screen_top.png
 sprites/btnSelector.png

@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -42,14 +42,14 @@ void ColorChanger::DrawPreview(void) const {
 		GFX::DrawButtonSelector(120, 65, 1.5, 1.5);
 	} else if (this->colorMode > 4) {
 		for (int i = 0; i < 16; i++) {
-			if (this->colorMode - 5 == i) Gui::Draw_Rect(130, 120, 150, 40, config->carColor(i));
+			if (this->colorMode - 5 == i) Gui::Draw_Rect(130, 120, 150, 40, config->blockColor(i));
 		}
 	}
 }
 
 void ColorChanger::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("COLOR_SETTINGS"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("COLOR_SETTINGS"), 390);
 	this->DrawPreview();
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
@@ -87,10 +87,10 @@ void ColorChanger::Draw(void) const {
 	} else if (this->colorMode > 4) {
 		for (int i = 0; i < 16; i++) {
 			if (this->colorMode - 5 == i) {
-				Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("CAR") + " " + std::to_string(i + 1), 320);
-				Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->carColor(i), 2).c_str(), 400);
-				Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->carColor(i), 1).c_str(), 400);
-				Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->carColor(i), 0).c_str(), 400);
+				Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("BLOCK") + " " + std::to_string(i + 1), 320);
+				Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->blockColor(i), 2).c_str(), 400);
+				Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->blockColor(i), 1).c_str(), 400);
+				Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->blockColor(i), 0).c_str(), 400);
 			}
 		}
 	}
@@ -136,7 +136,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (this->colorMode > 4) {
 			for (int i = 0; i < 16; i++) {
 				if (this->colorMode - 5 == i) {
-					config->carColor(i, Overlays::SelectRGB(config->carColor(i)));
+					config->blockColor(i, Overlays::SelectRGB(config->blockColor(i)));
 				}
 			}
 		}
@@ -161,7 +161,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 					for (int i = 0; i < 16; i++) {
 						if (this->colorMode - 5 == i) {
-							config->carColor(i, RGBA8(red, ColorHelper::getColorValue(config->carColor(i), 1), ColorHelper::getColorValue(config->carColor(i), 0), 255));
+							config->blockColor(i, RGBA8(red, ColorHelper::getColorValue(config->blockColor(i), 1), ColorHelper::getColorValue(config->blockColor(i), 0), 255));
 						}
 					}
 				}
@@ -185,7 +185,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 					for (int i = 0; i < 16; i++) {
 						if (this->colorMode - 5 == i) {
-							config->carColor(i, RGBA8(ColorHelper::getColorValue(config->carColor(i), 2), green, ColorHelper::getColorValue(config->carColor(i), 0), 255));
+							config->blockColor(i, RGBA8(ColorHelper::getColorValue(config->blockColor(i), 2), green, ColorHelper::getColorValue(config->blockColor(i), 0), 255));
 						}
 					}
 				}
@@ -209,7 +209,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 					for (int i = 0; i < 16; i++) {
 						if (this->colorMode - 5 == i) {
-							config->carColor(i, RGBA8(ColorHelper::getColorValue(config->carColor(i), 2), ColorHelper::getColorValue(config->carColor(i), 1), blue, 255));
+							config->blockColor(i, RGBA8(ColorHelper::getColorValue(config->blockColor(i), 2), ColorHelper::getColorValue(config->blockColor(i), 1), blue, 255));
 						}
 					}
 				}

@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -42,22 +42,22 @@ GameScreen::GameScreen() {
 	}
 }
 
-void GameScreen::DrawCar(int car) const {
-	if (this->currentGame->getDirection(car) != Direction::None || this->currentGame->getCar(car) != Car::Lock_Invalid) {
-		if (this->currentGame->getDirection(car) == Direction::Vertical) {
-			Gui::Draw_Rect((30 * this->currentGame->getXRow(car)), ((30 * this->currentGame->getYRow(car)) -1), this->currentGame->getSize(car) * 30, (30), GFX::getCarColor(this->currentGame->getCar(car)));
-		} else if (this->currentGame->getDirection(car) == Direction::Horizontal) {
-			Gui::Draw_Rect(((30 * this->currentGame->getXRow(car)) - 1), (30 * this->currentGame->getYRow(car)), 30, (this->currentGame->getSize(car) * 30), GFX::getCarColor(this->currentGame->getCar(car)));
+void GameScreen::DrawBlock(int block) const {
+	if (this->currentGame->getDirection(block) != Direction::None || this->currentGame->getBlock(block) != Blocks::Lock_Invalid) {
+		if (this->currentGame->getDirection(block) == Direction::Vertical) {
+			Gui::Draw_Rect((30 * this->currentGame->getXRow(block)), ((30 * this->currentGame->getYRow(block)) -1), this->currentGame->getSize(block) * 30, (30), GFX::getBlockColor(this->currentGame->getBlock(block)));
+		} else if (this->currentGame->getDirection(block) == Direction::Horizontal) {
+			Gui::Draw_Rect(((30 * this->currentGame->getXRow(block)) - 1), (30 * this->currentGame->getYRow(block)), 30, (this->currentGame->getSize(block) * 30), GFX::getBlockColor(this->currentGame->getBlock(block)));
 		}
 	}
 }
 
-void GameScreen::DrawSelectedCar(int car) const {
-	if (this->currentGame->getDirection(car) != Direction::None || this->currentGame->getCar(car) != Car::Lock_Invalid) {
-		if (this->currentGame->getDirection(car) == Direction::Vertical) {
-			Gui::drawGrid((30 * this->currentGame->getXRow(car)), ((30 * this->currentGame->getYRow(car)) -1), this->currentGame->getSize(car) * 30, (30), C2D_Color32(255, 255, 255, 255));
-		} else if (this->currentGame->getDirection(car) == Direction::Horizontal) {
-			Gui::drawGrid(((30 * this->currentGame->getXRow(car)) - 1), (30 * this->currentGame->getYRow(car)), 30, (this->currentGame->getSize(car) * 30), C2D_Color32(255, 255, 255, 255));
+void GameScreen::DrawSelectedBlock(int block) const {
+	if (this->currentGame->getDirection(block) != Direction::None || this->currentGame->getBlock(block) != Blocks::Lock_Invalid) {
+		if (this->currentGame->getDirection(block) == Direction::Vertical) {
+			Gui::drawGrid((30 * this->currentGame->getXRow(block)), ((30 * this->currentGame->getYRow(block)) -1), this->currentGame->getSize(block) * 30, (30), C2D_Color32(255, 255, 255, 255));
+		} else if (this->currentGame->getDirection(block) == Direction::Horizontal) {
+			Gui::drawGrid(((30 * this->currentGame->getXRow(block)) - 1), (30 * this->currentGame->getYRow(block)), 30, (this->currentGame->getSize(block) * 30), C2D_Color32(255, 255, 255, 255));
 		}
 	}
 }
@@ -66,8 +66,8 @@ void GameScreen::DrawGameField() const {
 	GFX::DrawBottom(false);
 
 	if (this->currentGame && this->currentGame->isValid()) {
-		for (int i = 0; i < this->currentGame->getCarAmount(); i++) {
-			DrawCar(i);
+		for (int i = 0; i < this->currentGame->getBlockAmount(); i++) {
+			DrawBlock(i);
 		}
 	}
 
@@ -80,14 +80,14 @@ void GameScreen::DrawGameField() const {
 	}
 
 	if (this->currentGame && this->currentGame->isValid()) {
-		DrawSelectedCar(this->selectedCar);
+		DrawSelectedBlock(this->selectedBlock);
 	}
 }
 
 void GameScreen::Draw(void) const {
 	if (this->mode == 0) {
 		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("GAME_SCREEN"), 390);
+		Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("GAME_SCREEN"), 390);
 	
 		if (this->currentGame->isValid()) {
 			Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("MOVEMENTS") + std::to_string(this->currentGame->getMovement()), 390);
@@ -106,7 +106,7 @@ void GameScreen::Draw(void) const {
 		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	} else {
 		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "RushHour3D - " + Lang::get("GAME_SCREEN_SUB_MENU"), 390);
+		Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("GAME_SCREEN_SUB_MENU"), 390);
 		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 		GFX::DrawBottom(true);
 
@@ -124,9 +124,9 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->mode == 0) {
 		// Checking...
 		if (this->currentGame && this->currentGame->isValid()) {
-			if (this->currentGame->getCar(this->selectedCar) == Car::Red) {
-				if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
-					if (this->currentGame->getXRow(this->selectedCar) == GRIDSIZE - 1) {
+			if (this->currentGame->getBlock(this->selectedBlock) == Blocks::Escape) {
+				if (this->currentGame->getDirection(this->selectedBlock) == Direction::Vertical) {
+					if (this->currentGame->getXRow(this->selectedBlock) == GRIDSIZE - 1) {
 						Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
 
 						if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
@@ -144,8 +144,8 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							return;
 						}
 					}
-				} else if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
-					if (this->currentGame->getYRow(this->selectedCar) == GRIDSIZE - 1) {
+				} else if (this->currentGame->getDirection(this->selectedBlock) == Direction::Horizontal) {
+					if (this->currentGame->getYRow(this->selectedBlock) == GRIDSIZE - 1) {
 						Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));
 
 						if (Msg::promptMsg(Lang::get("ANOTHER_LEVEL"))) {
@@ -166,46 +166,46 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				}
 			}
 
-			// Switch cars with L/R.
+			// Switch blocks with L/R.
 			if (hDown & KEY_R) {
-				if (this->selectedCar < this->currentGame->getCarAmount()-1) this->selectedCar++;
+				if (this->selectedBlock < this->currentGame->getBlockAmount()-1) this->selectedBlock++;
 			}
 
 			if (hDown & KEY_L) {
-				if (this->selectedCar > 0) this->selectedCar--;
+				if (this->selectedBlock > 0) this->selectedBlock--;
 			}
 
 			if (hDown & KEY_DOWN) {
-				if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
-					if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
-						this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) + 1);
+				if (this->currentGame->getDirection(this->selectedBlock) == Direction::Horizontal) {
+					if (this->currentGame->returnIfMovable(this->selectedBlock, true)) {
+						this->currentGame->setYRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock) + 1);
 						this->currentGame->doMovement();
 					}
 				}
 			}
 
 			if (hDown & KEY_UP) {
-				if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
-					if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
-						this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) - 1);
+				if (this->currentGame->getDirection(this->selectedBlock) == Direction::Horizontal) {
+					if (this->currentGame->returnIfMovable(this->selectedBlock, false)) {
+						this->currentGame->setYRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock) - 1);
 						this->currentGame->doMovement();
 					}
 				}
 			}
 
 			if (hDown & KEY_LEFT) {
-				if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
-					if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
-						this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) - 1);
+				if (this->currentGame->getDirection(this->selectedBlock) == Direction::Vertical) {
+					if (this->currentGame->returnIfMovable(this->selectedBlock, false)) {
+						this->currentGame->setXRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getXRow(this->selectedBlock) - 1);
 						this->currentGame->doMovement();
 					}
 				}
 			}
 
 			if (hDown & KEY_RIGHT) {
-				if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
-					if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
-						this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) + 1);
+				if (this->currentGame->getDirection(this->selectedBlock) == Direction::Vertical) {
+					if (this->currentGame->returnIfMovable(this->selectedBlock, true)) {
+						this->currentGame->setXRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getXRow(this->selectedBlock) + 1);
 						this->currentGame->doMovement();
 					}
 				}
@@ -215,41 +215,41 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				for (int i = 0; i < 36; i++) {
 					if (touching(touch, gridPos[i])) {
 						if (this->currentGame->returnIndex(i) != -1) {
-							this->selectedCar = this->currentGame->returnIndex(i);
+							this->selectedBlock = this->currentGame->returnIndex(i);
 						}
 					}
 				}
 
 				// Get available fields.
-				if (this->currentGame->getDirection(this->selectedCar) == Direction::Horizontal) {
+				if (this->currentGame->getDirection(this->selectedBlock) == Direction::Horizontal) {
 
 					for (int i = 0; i < 6; i++) {
-						if (this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < GRIDSIZE && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) * GRIDSIZE) - GRIDSIZE) - 1])) {
-							if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
-								this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) + 1);
+						if (this->currentGame->getYRow(this->selectedBlock) + this->currentGame->getSize(this->selectedBlock) -1 < GRIDSIZE && touching(touch, gridPos[this->currentGame->getXRow(this->selectedBlock) + (((this->currentGame->getYRow(this->selectedBlock) + this->currentGame->getSize(this->selectedBlock)) * GRIDSIZE) - GRIDSIZE) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedBlock, true)) {
+								this->currentGame->setYRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock) + 1);
 								this->currentGame->doMovement();
 							}
 
-						} else if (this->currentGame->getYRow(this->selectedCar) > STARTPOS && touching(touch, gridPos[this->currentGame->getXRow(this->selectedCar) + (((this->currentGame->getYRow(this->selectedCar) - 1) * GRIDSIZE) - GRIDSIZE) - 1])) {
-							if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
-								this->currentGame->setYRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar) - 1);
+						} else if (this->currentGame->getYRow(this->selectedBlock) > STARTPOS && touching(touch, gridPos[this->currentGame->getXRow(this->selectedBlock) + (((this->currentGame->getYRow(this->selectedBlock) - 1) * GRIDSIZE) - GRIDSIZE) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedBlock, false)) {
+								this->currentGame->setYRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock) - 1);
 								this->currentGame->doMovement();
 							}
 						}
 					}
 
-				} else if (this->currentGame->getDirection(this->selectedCar) == Direction::Vertical) {
+				} else if (this->currentGame->getDirection(this->selectedBlock) == Direction::Vertical) {
 
 					for (int i = 0; i < 6; i++) {
-						if (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar) -1 < GRIDSIZE && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * GRIDSIZE) - GRIDSIZE) + (this->currentGame->getXRow(this->selectedCar) + this->currentGame->getSize(this->selectedCar)) - 1])) {
-							if (this->currentGame->returnIfMovable(this->selectedCar, true)) {
-								this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) + 1);
+						if (this->currentGame->getXRow(this->selectedBlock) + this->currentGame->getSize(this->selectedBlock) -1 < GRIDSIZE && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedBlock) * GRIDSIZE) - GRIDSIZE) + (this->currentGame->getXRow(this->selectedBlock) + this->currentGame->getSize(this->selectedBlock)) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedBlock, true)) {
+								this->currentGame->setXRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getXRow(this->selectedBlock) + 1);
 								this->currentGame->doMovement();
 							}
 
-						} else if (this->currentGame->getXRow(this->selectedCar) > STARTPOS && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedCar) * GRIDSIZE) - GRIDSIZE) + (this->currentGame->getXRow(this->selectedCar) - 1) - 1])) {
-							if (this->currentGame->returnIfMovable(this->selectedCar, false)) {
-								this->currentGame->setXRow(this->selectedCar, this->currentGame->getXRow(this->selectedCar), this->currentGame->getYRow(this->selectedCar), this->currentGame->getXRow(this->selectedCar) - 1);
+						} else if (this->currentGame->getXRow(this->selectedBlock) > STARTPOS && touching(touch, gridPos[((this->currentGame->getYRow(this->selectedBlock) * GRIDSIZE) - GRIDSIZE) + (this->currentGame->getXRow(this->selectedBlock) - 1) - 1])) {
+							if (this->currentGame->returnIfMovable(this->selectedBlock, false)) {
+								this->currentGame->setXRow(this->selectedBlock, this->currentGame->getXRow(this->selectedBlock), this->currentGame->getYRow(this->selectedBlock), this->currentGame->getXRow(this->selectedBlock) - 1);
 								this->currentGame->doMovement();
 							}
 						}
@@ -285,7 +285,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				case 1:
 					if (Msg::promptMsg(Lang::get("RESTART_LEVEL"))) {
 						this->currentGame->reload();
-						this->selectedCar = 0;
+						this->selectedBlock = 0;
 						this->mode = 0;
 					}
 					break;
@@ -310,7 +310,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			} else if (btnTouch(touch, subPos[1])) {
 				if (Msg::promptMsg(Lang::get("RESTART_LEVEL"))) {
 					this->currentGame->reload();
-					this->selectedCar = 0;
+					this->selectedBlock = 0;
 					this->mode = 0;
 				}
 			} else if (btnTouch(touch, subPos[2])) {

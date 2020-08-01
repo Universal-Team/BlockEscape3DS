@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,16 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_CORE_CAR_HPP
-#define _RUSH_HOUR_3D_CORE_CAR_HPP
+#ifndef _BLOCK_ESCAPE_3DS_CORE_BLOCK_HPP
+#define _BLOCK_ESCAPE_3DS_CORE_BLOCK_HPP
 
 #include <3ds.h>
 #include "coreHelper.hpp"
 #include <memory>
 
-class Cars {
+class Block {
 public:
-	Cars(int xRow, int yRow, int size, Direction direction, Car index) {
+	Block(int xRow, int yRow, int size, Direction direction, Blocks index) {
 		this->rowX = xRow;
 		this->rowY = yRow;
 		this->size = size;
@@ -49,10 +49,10 @@ public:
 	void setSize(int sz) { this->size = sz; }
 	Direction getDirection() { return this->direction; }
 	void setDirection(Direction dr) { this->direction = dr; }
-	Car getCar() { return this->index; }
+	Blocks getBlock() { return this->index; }
 private:
 	int rowX, rowY, size;
-	Car index;
+	Blocks index;
 	Direction direction;
 };
 

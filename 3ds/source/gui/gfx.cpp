@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -99,43 +99,43 @@ void GFX::Button(const ButtonStruct btn) {
 	Gui::DrawStringCentered(btn.X - 160 + (btn.xSize/2), btn.Y + (btn.ySize/2) - 10, 0.6f, config->textColor(), btn.Text, btn.X-10, btn.Y-5);
 }
 
-// Colors for cars.
-u32 GFX::getCarColor(Car cr) {
-	switch(cr) {
-		case Car::Lock_Invalid:
+// Colors for blocks.
+u32 GFX::getBlockColor(Blocks bl) {
+	switch(bl) {
+		case Blocks::Lock_Invalid:
 			return 0;
-		case Car::Lock1:
-			return config->carColor(0);
-		case Car::Lock2:
-			return config->carColor(1);
-		case Car::Lock3:
-			return config->carColor(2);
-		case Car::Lock4:
-			return config->carColor(3);
-		case Car::Lock5:
-			return config->carColor(4);
-		case Car::Lock6:
-			return config->carColor(5);
-		case Car::Lock7:
-			return config->carColor(6);
-		case Car::Lock8:
-			return config->carColor(7);
-		case Car::Lock9:
-			return config->carColor(8);
-		case Car::Lock10:
-			return config->carColor(9);
-		case Car::Lock11:
-			return config->carColor(10);
-		case Car::Lock12:
-			return config->carColor(11);
-		case Car::Lock13:
-			return config->carColor(12);
-		case Car::Lock14:
-			return config->carColor(13);
-		case Car::Lock15:
-			return config->carColor(14);
-		case Car::Red:
-			return config->carColor(15);
+		case Blocks::Lock1:
+			return config->blockColor(0);
+		case Blocks::Lock2:
+			return config->blockColor(1);
+		case Blocks::Lock3:
+			return config->blockColor(2);
+		case Blocks::Lock4:
+			return config->blockColor(3);
+		case Blocks::Lock5:
+			return config->blockColor(4);
+		case Blocks::Lock6:
+			return config->blockColor(5);
+		case Blocks::Lock7:
+			return config->blockColor(6);
+		case Blocks::Lock8:
+			return config->blockColor(7);
+		case Blocks::Lock9:
+			return config->blockColor(8);
+		case Blocks::Lock10:
+			return config->blockColor(9);
+		case Blocks::Lock11:
+			return config->blockColor(10);
+		case Blocks::Lock12:
+			return config->blockColor(11);
+		case Blocks::Lock13:
+			return config->blockColor(12);
+		case Blocks::Lock14:
+			return config->blockColor(13);
+		case Blocks::Lock15:
+			return config->blockColor(14);
+		case Blocks::Escape:
+			return config->blockColor(15);
 	}
 
 	return 0;

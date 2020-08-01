@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,13 +24,13 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_CORE_HELPER_HPP
-#define _RUSH_HOUR_3D_CORE_HELPER_HPP
+#ifndef _BLOCK_ESCAPE_3DS_CORE_HELPER_HPP
+#define _BLOCK_ESCAPE_3DS_CORE_HELPER_HPP
 
 #define GRIDSIZE 6 // The Grid size is 6x6.
 #define STARTPOS 1 // 1 is the start of Grid.
 
-enum class Car {
+enum class Blocks {
 	Lock_Invalid,
 	Lock1, // 2.
 	Lock2, // 2.
@@ -47,7 +47,7 @@ enum class Car {
 	Lock13, // 3.
 	Lock14, // 3.
 	Lock15, // 3.
-	Red // 2.
+	Escape // 2.
 };
 
 enum class Direction {
@@ -57,7 +57,7 @@ enum class Direction {
 };
 
 struct GameField {
-	int cartype;
+	int blocktype;
 	Direction direction;
 	int index;
 };

@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_CONFIG_HPP
-#define _RUSH_HOUR_3D_CONFIG_HPP
+#ifndef _BLOCK_ESCAPE_3DS_CONFIG_HPP
+#define _BLOCK_ESCAPE_3DS_CONFIG_HPP
 
 #include "json.hpp"
 
@@ -54,9 +54,9 @@ public:
 	// Selector Color.
 	u32 selectorColor() { return this->v_selectorColor; }
 	void selectorColor(u32 v) { this->v_selectorColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Car Colors.
-	u32 carColor(int car) { return this->v_carColors[car]; }
-	void carColor(int car, u32 v) { this->v_carColors[car] = v; if (!this->changesMade)	this->changesMade = true; }
+	// Block Colors.
+	u32 blockColor(int block) { return this->v_blockColors[block]; }
+	void blockColor(int block, u32 v) { this->v_blockColors[block] = v; if (!this->changesMade)	this->changesMade = true; }
 	// Debug.
 	bool debug() { return this->v_debug; }
 	// Language.
@@ -80,7 +80,7 @@ private:
 
 	// Color variables and more.
 	u32 v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;
-	u32 v_carColors[16];
+	u32 v_blockColors[16];
 	int v_language, v_version;
 	bool v_debug;
 };

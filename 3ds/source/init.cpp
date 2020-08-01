@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -59,8 +59,8 @@ Result Init::Initialize() {
 	cfguInit();
 	// Create missing directories.
 	mkdir("sdmc:/3ds", 0777); // For DSP dump.
-	mkdir("sdmc:/3ds/RushHour3D", 0777); // main Path.
-	mkdir("sdmc:/3ds/RushHour3D/Levels", 0777); // Levels path.
+	mkdir("sdmc:/3ds/BlockEscape3DS", 0777); // main Path.
+	mkdir("sdmc:/3ds/BlockEscape3DS/Levels", 0777); // Levels path.
 
 	config = std::make_unique<Config>();
 	Lang::load();

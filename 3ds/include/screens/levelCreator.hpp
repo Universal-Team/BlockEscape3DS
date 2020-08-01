@@ -1,5 +1,5 @@
 /*
-*   This file is part of RushHour3D
+*   This file is part of BlockEscape3DS
 *   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _RUSH_HOUR_3D_LEVEL_CREATOR_HPP
-#define _RUSH_HOUR_3D_LEVEL_CREATOR_HPP
+#ifndef _BLOCK_ESCAPE_3DS_LEVEL_CREATOR_HPP
+#define _BLOCK_ESCAPE_3DS_LEVEL_CREATOR_HPP
 
 #include "common.hpp"
 #include "level.hpp"
@@ -37,26 +37,25 @@ public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 private:
-	void DrawCar(int car) const;
+	void DrawBlock(int block) const;
 	std::unique_ptr<Level> level;
 	void DrawGameField() const;
 	const std::string getSelectMsg() const;
 	int X = 0, Y = 0;
-	int sltF = 0;
 	
 
 		/* Modes. */
 	/*
-		0 -> Car Select.
+		0 -> Block Select.
 		1 -> Direction Select.
 		2 -> YRow Select.
 		3 -> XRow Select.
 	*/
 	int selectedMode = 0;
-	int selectedCar = 0;
+	int selectedBlock = 0;
 
-	// Car Selection.
-	const std::vector<Structs::ButtonPos> carList = {
+	// Block Selection.
+	const std::vector<Structs::ButtonPos> blockList = {
 		{240, 2, 60, 10},
 		{240, 17, 60, 10},
 		{240, 32, 60, 10},
