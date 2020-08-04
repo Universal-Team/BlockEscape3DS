@@ -129,20 +129,21 @@ void Level::prepareLevel() {
 
 				// Direction check. Vertical.
 				if (this->levelPointer()[0 + (i * 0x3)] == 1) {
-					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Blocks(i + 1))});
+					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Blocks::Block2)});
 					for (int i2 = 0; i2 < 2; i2++) {
-						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)]), this->getBlockAmount()-1};
+						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {(int)Blocks::Block2, Direction(this->levelPointer()[0 + (i * 0x3)]), this->getBlockAmount()-1};
 					}
 					
 					// Direction check. Horizontal.
 				} else if (this->levelPointer()[0 + (i * 0x3)] == 2) {
-					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Blocks(i + 1))});
+					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Blocks::Block2)});
 					for (int i2 = 0; i2 < 2; i2++) {
-						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {i, Direction(this->levelPointer()[0 + (i * 0x3)]), this->getBlockAmount()-1};
+						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {(int)Blocks::Block2, Direction(this->levelPointer()[0 + (i * 0x3)]), this->getBlockAmount()-1};
 					}
 				}
 			}
 		}
+
 
 		// 3 size blocks.
 		for (int i = 0; i < 4; i++) {
@@ -168,18 +169,18 @@ void Level::prepareLevel() {
 
 				// Direction check. Vertical.
 				if (this->levelPointer()[0x21 + (i * 0x3)] == 1) {
-					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Blocks(11 + i))});
+					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Blocks::Block3)});
 
 					for (int i2 = 0; i2 < 3; i2++) {
-						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)]), this->getBlockAmount()-1};
+						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {(int)Blocks::Block3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), this->getBlockAmount()-1};
 					}
 
 					// Direction check. Horizontal.
 				} else if (this->levelPointer()[0x21 + (i * 0x3)] == 2) {
-					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Blocks(11 + i))});
+					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Blocks::Block3)});
 
 					for (int i2 = 0; i2 < 3; i2++) {
-						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {11 + i, Direction(this->levelPointer()[0x21 + (i * 0x3)]), this->getBlockAmount()-1};
+						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + (i2 * 6) - 1] = {(int)Blocks::Block3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), this->getBlockAmount()-1};
 					}
 
 				}
@@ -209,18 +210,18 @@ void Level::prepareLevel() {
 
 			// Direction check. Vertical.
 			if (this->levelPointer()[0x2D] == 1) {
-				this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Blocks::Escape)});
+				this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Blocks::Block_Escape)});
 
 				for (int i2 = 0; i2 < 2; i2++) {
-					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + i2 - 1] = {(int)Blocks::Escape, Direction(this->levelPointer()[0x2D]), this->getBlockAmount()-1};
+					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + i2 - 1] = {(int)Blocks::Block_Escape, Direction(this->levelPointer()[0x2D]), this->getBlockAmount()-1};
 				}
 
 				// Direction check. Horizontal.
 			} else if (this->levelPointer()[0x2D] == 2) {
-				this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Blocks::Escape)});
+				this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Blocks::Block_Escape)});
 
 				for (int i2 = 0; i2 < 2; i2++) {
-					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + (i2 * 6) - 1] = {(int)Blocks::Escape, Direction(this->levelPointer()[0x2D]), this->getBlockAmount()-1};
+					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + (i2 * 6) - 1] = {(int)Blocks::Block_Escape, Direction(this->levelPointer()[0x2D]), this->getBlockAmount()-1};
 				}
 
 			}
@@ -345,7 +346,7 @@ void Level::setDirection(int bl, int xPos, int yPos, Direction dr) {
 }
 
 Blocks Level::getBlock(int bl) {
-	if (this->getBlockAmount() < bl) return Blocks::Lock_Invalid;
+	if (this->getBlockAmount() < bl) return Blocks::Block_Invalid;
 
 	return this->blocks[bl]->getBlock();
 }
@@ -460,14 +461,14 @@ void Level::createNew() {
 
 	// Push all blocks here! :P
 	for (int i = 0; i < 11; i++) {
-		this->blocks.push_back({std::make_unique<Block>(0, 0, 2, Direction(0), Blocks(1 + i))});
+		this->blocks.push_back({std::make_unique<Block>(0, 0, 2, Direction(0), Blocks::Block2)});
 	}
 
 	for (int i = 0; i < 4; i++) {
-		this->blocks.push_back({std::make_unique<Block>(0, 0, 3, Direction(0), Blocks(11 + i))});
+		this->blocks.push_back({std::make_unique<Block>(0, 0, 3, Direction(0), Blocks::Block3)});
 	}
 
-	this->blocks.push_back({std::make_unique<Block>(0, 0, 2, Direction(0), Blocks::Escape)});
+	this->blocks.push_back({std::make_unique<Block>(0, 0, 2, Direction(0), Blocks::Block_Escape)});
 
 	this->validLevel = true;
 }

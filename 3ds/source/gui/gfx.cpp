@@ -28,115 +28,103 @@
 #include "config.hpp"
 
 extern std::unique_ptr<Config> config;
-extern C2D_SpriteSheet sprites;
+extern C2D_SpriteSheet sprites, theme;
 
 void GFX::DrawTop(bool useBars) {
 	Gui::ScreenDraw(Top);
-	if (useBars) {
-		Gui::Draw_Rect(0, 0, 400, 30, config->barColor());
-		Gui::Draw_Rect(0, 30, 400, 180, config->bgColor());
-		Gui::Draw_Rect(0, 210, 400, 30, config->barColor());
-		GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0);
-		GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215);
-	} else {
-		Gui::Draw_Rect(0, 0, 400, 240, config->bgColor());
-	}
+	Gui::DrawSprite(theme, theme_top_bg_idx, 0, 0);
 }
 
 void GFX::DrawBottom(bool useBars) {
 	Gui::ScreenDraw(Bottom);
-	if (useBars) {
-		Gui::Draw_Rect(0, 0, 320, 30, config->barColor());
-		Gui::Draw_Rect(0, 30, 320, 180, config->bgColor());
-		Gui::Draw_Rect(0, 210, 320, 30, config->barColor());
-		GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
-		GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
-	} else {
-		Gui::Draw_Rect(0, 0, 320, 240, config->bgColor());
-	}
+	Gui::DrawSprite(theme, theme_bg_bottom_idx, 0, 0);
 }
 
 void GFX::DrawSprite(int index, int x, int y, float ScaleX, float ScaleY) {
 	Gui::DrawSprite(sprites, index, x, y, ScaleX, ScaleY);
 }
 
-void GFX::DrawFileBrowseBG(bool isTop) {
-	isTop ? Gui::ScreenDraw(Top) : Gui::ScreenDraw(Bottom);
-	Gui::Draw_Rect(0, 0, isTop ? 400 : 320, 27, config->barColor());
-	Gui::Draw_Rect(0, 27, isTop ? 400 : 320, 31, config->bgColor());
-	Gui::Draw_Rect(0, 58, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-	Gui::Draw_Rect(0, 89, isTop ? 400 : 320, 31, config->bgColor());
-	Gui::Draw_Rect(0, 120, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-	Gui::Draw_Rect(0, 151, isTop ? 400 : 320, 31, config->bgColor());
-	Gui::Draw_Rect(0, 182, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-	Gui::Draw_Rect(0, 213, isTop ? 400 : 320, 27, config->barColor());
-
-	// Bars here.
-	isTop ? GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0) : GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
-	isTop ? GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215) : GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
+void GFX::DrawThemeSprite(int index, int x, int y, float ScaleX, float ScaleY) {
+	Gui::DrawSprite(theme, index, x, y, ScaleX, ScaleY);
 }
 
-void GFX::DrawButtonSelector(int x, int y, float ScaleX, float ScaleY, bool useSmall) {
-	static float timer			= 0.0f;
-	float highlight_multiplier	= fmax(0.0, fabs(fmod(timer, 1.0) - 0.5) / 0.5);
-	u8 r						= config->selectorColor() & 0xFF;
-	u8 g						= (config->selectorColor() >> 8) & 0xFF;
-	u8 b						= (config->selectorColor() >> 16) & 0xFF;
-	u32 color = C2D_Color32(r + (255 - r) * highlight_multiplier, g + (255 - g) * highlight_multiplier, b + (255 - b) * highlight_multiplier, 255);
-	C2D_ImageTint tint;
-	C2D_SetImageTint(&tint, C2D_TopLeft, color, 1);
-	C2D_SetImageTint(&tint, C2D_TopRight, color, 1);
-	C2D_SetImageTint(&tint, C2D_BotLeft, color, 1);
-	C2D_SetImageTint(&tint, C2D_BotRight, color, 1);
+// TODO.
+void GFX::DrawFileBrowseBG(bool isTop) {
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+}
 
-	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, useSmall ? sprites_btnSelector2_idx : sprites_btnSelector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
-
-	timer += .030;
+void GFX::DrawButtonSelector(int x, int y, float ScaleX, float ScaleY) {
+	GFX::DrawThemeSprite(theme_selector_idx, x, y);
 }
 
 void GFX::Button(const ButtonStruct btn) {
-	Gui::Draw_Rect(btn.X, btn.Y, btn.xSize, btn.ySize, config->buttonColor());
-	Gui::DrawStringCentered(btn.X - 160 + (btn.xSize/2), btn.Y + (btn.ySize/2) - 10, 0.6f, config->textColor(), btn.Text, btn.X-10, btn.Y-5);
+	GFX::DrawThemeSprite(theme_button_idx, btn.X, btn.Y);
+	Gui::DrawStringCentered(btn.X - 160 + (btn.xSize/2), btn.Y + (btn.ySize/2) - 10, 0.6f, currentTheme->ButtonTextColor, btn.Text, btn.X-10, btn.Y-5);
 }
 
-// Colors for blocks.
-u32 GFX::getBlockColor(Blocks bl) {
-	switch(bl) {
-		case Blocks::Lock_Invalid:
-			return 0;
-		case Blocks::Lock1:
-			return config->blockColor(0);
-		case Blocks::Lock2:
-			return config->blockColor(1);
-		case Blocks::Lock3:
-			return config->blockColor(2);
-		case Blocks::Lock4:
-			return config->blockColor(3);
-		case Blocks::Lock5:
-			return config->blockColor(4);
-		case Blocks::Lock6:
-			return config->blockColor(5);
-		case Blocks::Lock7:
-			return config->blockColor(6);
-		case Blocks::Lock8:
-			return config->blockColor(7);
-		case Blocks::Lock9:
-			return config->blockColor(8);
-		case Blocks::Lock10:
-			return config->blockColor(9);
-		case Blocks::Lock11:
-			return config->blockColor(10);
-		case Blocks::Lock12:
-			return config->blockColor(11);
-		case Blocks::Lock13:
-			return config->blockColor(12);
-		case Blocks::Lock14:
-			return config->blockColor(13);
-		case Blocks::Lock15:
-			return config->blockColor(14);
-		case Blocks::Escape:
-			return config->blockColor(15);
-	}
+void GFX::DrawBox(Direction dr, Blocks bl, int x, int y) {
+	if (dr == Direction::Horizontal) {
+		switch(bl) {
+			case Blocks::Block_Invalid:
+				break;
+			case Blocks::Block2:
+				GFX::DrawThemeSprite(theme_block_2_hz_idx, x, y);
+				break;
+			case Blocks::Block3:
+				GFX::DrawThemeSprite(theme_block_3_hz_idx, x, y);
+				break;
+			case Blocks::Block_Escape:
+				GFX::DrawThemeSprite(theme_keyblock_hz_idx, x, y);
+				break;
 
-	return 0;
+		}
+	} else if (dr == Direction::Vertical) {
+		switch(bl) {
+			case Blocks::Block_Invalid:
+				break;
+			case Blocks::Block2:
+				GFX::DrawThemeSprite(theme_block_2_vc_idx, x, y);
+				break;
+			case Blocks::Block3:
+				GFX::DrawThemeSprite(theme_block_3_vc_idx, x, y);
+				break;
+			case Blocks::Block_Escape:
+				GFX::DrawThemeSprite(theme_keyblock_vc_idx, x, y);
+				break;
+		}
+	}
+}
+
+void GFX::DrawBoxSelected(Direction dr, Blocks bl, int x, int y) {
+	if (dr == Direction::Horizontal) {
+		switch(bl) {
+			case Blocks::Block_Invalid:
+				break;
+			case Blocks::Block2:
+				GFX::DrawThemeSprite(theme_block_2_hz_selected_idx, x, y);
+				break;
+			case Blocks::Block3:
+				GFX::DrawThemeSprite(theme_block_3_hz_selected_idx, x, y);
+				break;
+			case Blocks::Block_Escape:
+				GFX::DrawThemeSprite(theme_keyblock_hz_selected_idx, x, y);
+				break;
+
+		}
+	} else if (dr == Direction::Vertical) {
+		switch(bl) {
+			case Blocks::Block_Invalid:
+				break;
+			case Blocks::Block2:
+				GFX::DrawThemeSprite(theme_block_2_vc_selected_idx, x, y);
+				break;
+			case Blocks::Block3:
+				GFX::DrawThemeSprite(theme_block_3_vc_selected_idx, x, y);
+				break;
+			case Blocks::Block_Escape:
+				GFX::DrawThemeSprite(theme_keyblock_vc_selected_idx, x, y);
+				break;
+		}
+	}
 }

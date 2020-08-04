@@ -41,33 +41,31 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
-	GFX::DrawFileBrowseBG();
-	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("DIRECTORY_SELECT"), 390);
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	Gui::DrawStringCentered(0, currentTheme->browseTitle1, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("DIRECTORY_SELECT"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
-		if (i == Selection) {
-			dirs += "> " + dirContents[i].name + "\n\n";
-		} else {
-			dirs += dirContents[i].name + "\n\n";
-		}
+		dirs += dirContents[i].name + "\n\n";
 	}
 
 	for (uint i = 0; i < ((dirContents.size() < 6) ? 6 - dirContents.size() : 0); i++) {
 		dirs += "\n\n";
 	}
 
-	Gui::DrawString(26, 32, 0.53f, config->textColor(), dirs, 360);
-	Gui::DrawStringCentered(0, 217, 0.6f, config->textColor(), Lang::get("REFRESH"), 390);
+	Gui::DrawString(currentTheme->browseListBeginX, currentTheme->browseListBeginY, currentTheme->browseListSize, currentTheme->browseTextColor, dirs, 360);
+	Gui::DrawStringCentered(0, currentTheme->browseTitle2, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("REFRESH"), 390);
+	if (Selection < 6) GFX::DrawThemeSprite(theme_fbSelector_idx, 3, 31 + (Selection * 32));
+	else GFX::DrawThemeSprite(theme_fbSelector_idx, 3, 31 + (5 * 32));
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 // The Preview part.
 static void DrawBottom() {
-	GFX::DrawBottom(true);
-	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.7f, config->textColor(), Lang::get("X_TO_SELECT"), 310);
-	Gui::DrawStringCentered(0, 215, 0.7f, config->textColor(), Lang::get("DIRECTORY_SELECT_NOTE"), 310);
+	Gui::ScreenDraw(Bottom);
+	GFX::DrawThemeSprite(theme_filebrowse_bottom_idx, 0, 0);
+	Gui::DrawStringCentered(0, currentTheme->browseTitle3, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("X_TO_SELECT"), 310);
+	Gui::DrawStringCentered(0, currentTheme->browseTitlePrev, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("DIRECTORY_SELECT_NOTE"), 310);
 	C3D_FrameEnd(0);
 }
 

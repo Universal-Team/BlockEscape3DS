@@ -29,23 +29,25 @@
 extern std::unique_ptr<Config> config;
 
 void Credits::Draw(void) const {
-	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("CREDITS"), 390);
-	GFX::DrawSprite(sprites_stackz_idx, -2, 70);
-	//GFX::DrawSprite(sprites_banner_idx, 137, 65);
-	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("DEVELOPED_BY"), 390);
-	Gui::DrawStringCentered(0, 45, 0.6f, config->textColor(), Lang::get("MAIN_DEV"), 390);
-	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 219, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_credits_top_idx, 0, 0);
+	Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, "BlockEscape3DS - " + Lang::get("CREDITS"), 390);
+	GFX::DrawSprite(sprites_stackz_idx, currentTheme->stackX, currentTheme->stackY);
+	Gui::DrawStringCentered(0, currentTheme->dev_by, currentTheme->CreditsTitleSize, currentTheme->TitleTextColor, Lang::get("DEVELOPED_BY"), 390);
+	Gui::DrawStringCentered(0, currentTheme->main_dev, currentTheme->CreditsTitleSize, currentTheme->TitleTextColor, Lang::get("MAIN_DEV"), 390);
+	Gui::DrawStringCentered(0, currentTheme->TitleYBottom, currentTheme->TitleTextSize, currentTheme->TitleTextColor, (Lang::get("CURRENT_VERSION") + V_STRING), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
-	GFX::DrawBottom();
 
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
-	Gui::DrawStringCentered(0, 30, 0.7f, config->textColor(), "SuperSaiyajinStackZ", 310);
-	Gui::DrawStringCentered(0, 60, 0.6f, config->textColor(), Lang::get("DEVELOPING_CORE"), 310);
-	Gui::DrawStringCentered(0, 90, 0.7f, config->textColor(), "Universal-Team", 310);
-	Gui::DrawStringCentered(0, 120, 0.6f, config->textColor(), Lang::get("UNIVERSAL_CORE"), 310);
-	Gui::DrawStringCentered(0, 150, 0.7f, config->textColor(), "devkitPro", 310);
-	Gui::DrawStringCentered(0, 180, 0.6f, config->textColor(), Lang::get("DEVKIT"), 310);
+	Gui::ScreenDraw(Bottom);
+	GFX::DrawThemeSprite(theme_credits_bottom_idx, 0, 0);
+
+	Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("GENERAL_CREDITS"), 310);
+	Gui::DrawStringCentered(0, currentTheme->SSSZ, currentTheme->CreditsTitleSize, currentTheme->TitleTextColor, "SuperSaiyajinStackZ", 310);
+	Gui::DrawStringCentered(0, currentTheme->Dev_BE, currentTheme->CreditsDescSize, currentTheme->TitleTextColor, Lang::get("DEVELOPING_CORE"), 310);
+	Gui::DrawStringCentered(0, currentTheme->UT, currentTheme->CreditsTitleSize, currentTheme->TitleTextColor, "Universal-Team", 310);
+	Gui::DrawStringCentered(0, currentTheme->UC, currentTheme->CreditsDescSize, currentTheme->TitleTextColor, Lang::get("UNIVERSAL_CORE"), 310);
+	Gui::DrawStringCentered(0, currentTheme->DKP, currentTheme->CreditsTitleSize, currentTheme->TitleTextColor, "devkitPro", 310);
+	Gui::DrawStringCentered(0, currentTheme->DKA, currentTheme->CreditsDescSize, currentTheme->TitleTextColor, Lang::get("DEVKIT"), 310);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 

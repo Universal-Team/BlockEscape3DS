@@ -41,63 +41,52 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents, bool romf
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-
-	GFX::DrawFileBrowseBG();
-	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("LEVEL_SELECT") + " " + std::string(romfs ? "[RomFS]" : "[SD Card]"), 390);
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	Gui::DrawStringCentered(0, currentTheme->browseTitle1, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("LEVEL_SELECT") + " " + std::string(romfs ? "[RomFS]" : "[SD Card]"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
-		if (i == Selection) {
-			levels += "> " + dirContents[i].name + "\n\n";
-		} else {
-			levels += dirContents[i].name + "\n\n";
-		}
+		levels += dirContents[i].name + "\n\n";
 	}
 
 	for (uint i = 0; i < ((dirContents.size() < 6) ? 6 - dirContents.size() : 0); i++) {
 		levels += "\n\n";
 	}
 
-	Gui::DrawString(26, 32, 0.53f, config->textColor(), levels, 360);
-	Gui::DrawStringCentered(0, 217, 0.6f, config->textColor(), Lang::get("REFRESH"), 390);
+	Gui::DrawString(currentTheme->browseListBeginX, currentTheme->browseListBeginY, currentTheme->browseListSize, currentTheme->browseTextColor, levels, 360);
+	Gui::DrawStringCentered(0, currentTheme->browseTitle2, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("REFRESH"), 390);
+
+	if (Selection < 6) GFX::DrawThemeSprite(theme_fbSelector_idx, currentTheme->browseSelectorX, currentTheme->browseSelectorY + (Selection * currentTheme->browseMultiply));
+	else GFX::DrawThemeSprite(theme_fbSelector_idx, currentTheme->browseSelectorX, currentTheme->browseSelectorY + (5 * currentTheme->browseMultiply));
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 // Draw blocks from a level unique_ptr.
 static void DrawBlock(std::unique_ptr<Level> &level, int block) {
 	if (level && level->isValid()) {
-		if (level->getDirection(block) != Direction::None || level->getBlock(block) != Blocks::Lock_Invalid) {
-			if (level->getDirection(block) == Direction::Vertical) {
-				Gui::Draw_Rect((30 * level->getXRow(block)), ((30 * level->getYRow(block)) -1), level->getSize(block) * 30, (30), GFX::getBlockColor(level->getBlock(block)));
-			} else if (level->getDirection(block) == Direction::Horizontal) {
-				Gui::Draw_Rect(((30 * level->getXRow(block)) - 1), (30 * level->getYRow(block)), 30, (level->getSize(block) * 30), GFX::getBlockColor(level->getBlock(block)));
-			}
+		if (level->getDirection(block) != Direction::None || level->getBlock(block) != Blocks::Block_Invalid) {
+			GFX::DrawBox(level->getDirection(block), level->getBlock(block), currentTheme->browseGridX + (currentTheme->GridBlockSize * (level->getXRow(block) - 1)), currentTheme->browseGridY + (currentTheme->GridBlockSize * (level->getYRow(block) -1)));
 		}
 	}
 }
 
 // The Preview part.
 static void DrawBottom(std::unique_ptr<Level> &currentLevel) {
-	GFX::DrawBottom(true);
-	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.7f, config->textColor(), Lang::get("CHANGE_LOCATION_MODE"), 310);
+	Gui::ScreenDraw(Bottom);
+	GFX::DrawThemeSprite(theme_filebrowse_bottom_idx, 0, 0);
+	Gui::DrawStringCentered(0, currentTheme->browseTitle3, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("CHANGE_LOCATION_MODE"), 310);
 
 	// Display Level here!
 	if (currentLevel && currentLevel->isValid()) {
+		GFX::DrawThemeSprite(theme_field_idx, currentTheme->browseGridX, currentTheme->browseGridY);
+
 		for (int i = 0; i < currentLevel->getBlockAmount(); i++) {
 			DrawBlock(currentLevel, i);
 		}
 
-		for (int i = 0; i < 36; i++) {
-			for (int y = 0; y < 6; y++) {
-				for (int x = 0; x < 6; x++, i++) {
-					Gui::drawGrid(30 + (30 * x), 30 + (30 * y), 30, (30), C2D_Color32(0, 0, 0, 255));
-				}
-			}
-		}
 	}
 
-	Gui::DrawStringCentered(0, 217, 0.6f, config->textColor(), Lang::get("Y_PREVIEW"), 310);
+	Gui::DrawStringCentered(0, currentTheme->browseTitlePrev, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("Y_PREVIEW"), 310);
 	C3D_FrameEnd(0);
 }
 

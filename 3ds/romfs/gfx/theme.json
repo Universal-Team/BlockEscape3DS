@@ -1,0 +1,83 @@
+{
+	"MainMenu": {
+		"Button1X": 10,
+		"Button1Y": 70,
+		"Button2X": 170,
+		"Button2Y": 70,
+		"Button3X": 10,
+		"Button3Y": 145,
+		"Button4X": 170,
+		"Button4Y": 145
+	},
+	"UI-Settings": {
+		"Button1X": 10,
+		"Button1Y": 70,
+		"Button2X": 170,
+		"Button2Y": 70
+	},
+	"Credits": {
+		"Stack_Img_X": 2,
+		"Stack_Img_Y": 83,
+		"Dev_By_Y": 30,
+		"Main_Dev_Y": 50,
+		"SuperSaiyajinStackZ": 30,
+		"Develope_BlockEscape": 50,
+		"Universal-Team": 80,
+		"Universal-Core": 100,
+		"devkitPro": 130,
+		"devkitARM": 150,
+		"TitleSize": 0.7,
+		"DescSize": 0.6
+	},
+	"Browse": {
+		"TitleY": -1,
+		"Title2Y": 221,
+		"Title3Y": -1,
+		"PreviewTxt": 221,
+		"ListBeginX": 26,
+		"ListBeginY": 32,
+		"ListSize": 0.53,
+		"ListColor": "#ffffff",
+		"SelectorX": 3,
+		"SelectorY": 31,
+		"SelectorMultiply": 32,
+		"GridX": 69,
+		"GridY": 29
+	},
+	"Level-Creator": {
+		"GridX": 10,
+		"GridY": 38,
+		"BlockX": 215,
+		"BlockY": 68,
+		"SaveX": 290,
+		"SaveY": 210
+	},
+	"Button": {
+		"Text_Size": 0.6,
+		"Button_XSize": 140,
+		"Button_YSize": 40,
+		"Text_Color": "#ffffff"
+	},
+	"Title": {
+		"ThemeName": "TerminalEscape3DS",
+		"Text_Size": 0.6,
+		"Text_Color": "#ffffff",
+		"Top_YTop": -1,
+		"Top_YBottom": 221
+	},
+	"Grid": {
+		"XPos": 69,
+		"YPos": 38,
+		"BlockSize": 30
+	},
+	"Msg": {
+		"XPos": 0,
+		"YPos": 46,
+		"MsgX": 19,
+		"MsgY": 16,
+		"XSize": 365,
+		"YSize": 104,
+		"Text_Size": 0.6,
+		"Text_Color": "#ffffff"
+	}
+}

@@ -54,19 +54,15 @@ const std::string LevelCreator::getSelectMsg() const {
 }
 
 void LevelCreator::DrawBlock(int block) const {
-	if (this->level->getDirection(block) != Direction::None || this->level->getBlock(block) != Blocks::Lock_Invalid) {
-		if (this->level->getXRow(block) != 0 || this->level->getYRow(block) != 0) {
-			if (this->level->getDirection(block) == Direction::Vertical) {
-				Gui::Draw_Rect((30 * this->level->getXRow(block)), ((30 * this->level->getYRow(block)) -1), this->level->getSize(block) * 30, (30), GFX::getBlockColor(this->level->getBlock(block)));
-			} else if (this->level->getDirection(block) == Direction::Horizontal) {
-				Gui::Draw_Rect(((30 * this->level->getXRow(block)) - 1), (30 * this->level->getYRow(block)), 30, (this->level->getSize(block) * 30), GFX::getBlockColor(this->level->getBlock(block)));
-			}
-		}
+	if (this->level->getDirection(block) != Direction::None || this->level->getBlock(block) != Blocks::Block_Invalid) {
+		GFX::DrawBox(this->level->getDirection(block), this->level->getBlock(block), currentTheme->creatorGridX + (currentTheme->GridBlockSize * (this->level->getXRow(block) - 1)), currentTheme->creatorGridY + (currentTheme->GridBlockSize * (this->level->getYRow(block) -1)));
 	}
-}	
+}
 
 void LevelCreator::DrawGameField() const {
-	GFX::DrawBottom(false);
+	Gui::ScreenDraw(Bottom);
+	GFX::DrawThemeSprite(theme_level_creator_bottom_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_field_idx, currentTheme->creatorGridX, currentTheme->creatorGridY);
 
 	if (this->level && this->level->isValid()) {
 		for (int i = 0; i < this->level->getBlockAmount(); i++) {
@@ -74,26 +70,21 @@ void LevelCreator::DrawGameField() const {
 		}
 	}
 
-	for (int i = 0; i < 36; i++) {
-		Gui::drawGrid(gridPos[i].x, gridPos[i].y, gridPos[i].w, gridPos[i].h, C2D_Color32(0, 0, 0, 255));
-	}
-
 	if (this->level && this->level->isValid()) {
-		Gui::Draw_Rect(230, 0, 80, this->level->getBlockAmount() * 15, config->barColor());
-
-		for (int i = 0; i < this->level->getBlockAmount(); i++) {
-			Gui::Draw_Rect(this->blockList[i].x, this->blockList[i].y, (this->level->getSize(i) * 20), 10, GFX::getBlockColor(this->level->getBlock(i)));
-		}
+		GFX::DrawBox(Direction::Vertical, Blocks::Block2, currentTheme->creatorXPos + 2, currentTheme->creatorYPos);
+		GFX::DrawBox(Direction::Vertical, Blocks::Block3, currentTheme->creatorXPos + 2, currentTheme->creatorYPos + 35);
+		GFX::DrawBox(Direction::Vertical, Blocks::Block_Escape, currentTheme->creatorXPos + 2, currentTheme->creatorYPos + 70);
 	}
 
-	GFX::DrawSprite(sprites_save_idx, saveIcon.x, saveIcon.y);
+	GFX::DrawThemeSprite(theme_save_idx, saveIcon.x, saveIcon.y);
 }
 
 void LevelCreator::Draw(void) const {
-	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("LEVEL_CREATOR"), 390);
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0."))/2, 0.7f, config->textColor(), "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0.", 390, 70);
-	Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), this->getSelectMsg(), 390);
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_level_creator_top_idx, 0, 0);
+	Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, "BlockEscape3DS - " + Lang::get("LEVEL_CREATOR"), 390);
+	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0."))/2, 0.7f, currentTheme->TitleTextColor, "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0.", 390, 70);
+	Gui::DrawStringCentered(0, currentTheme->TitleYBottom, currentTheme->TitleTextSize, currentTheme->TitleTextColor, this->getSelectMsg(), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 
 	if (this->level->isValid()) {
@@ -107,7 +98,7 @@ void LevelCreator::Draw(void) const {
 
 
 void LevelCreator::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (this->level && this->level->isValid()) {
+/*	if (this->level && this->level->isValid()) {
 
 		if (this->selectedMode == 0) {
 			// block Selection.
@@ -153,7 +144,7 @@ void LevelCreator::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			this->level->setYRow(this->selectedBlock, 0, 0, this->Y);
 			this->selectedMode = 0;
 		}
-	}
+	}*/
 
 	// Go screen back.
 	if (hDown & KEY_START) {
@@ -162,7 +153,7 @@ void LevelCreator::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 
 	// TODO: Overlay for location selection and KBD for name input.
-	if (hDown & KEY_TOUCH && touching(touch, saveIcon)) {
+/*	if (hDown & KEY_TOUCH && touching(touch, saveIcon)) {
 		if (this->level->getXRow(15) != 0 || this->level->getYRow(15) != 0) {
 			this->level->setCreatorStuff();
 			std::string temp = Overlays::SelectDirectory();
@@ -174,5 +165,5 @@ void LevelCreator::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		} else {
 			Msg::DisplayWaitMsg(Lang::get("ESCAPE_BLOCK_NEEDED"));
 		}
-	}
+	}*/
 }

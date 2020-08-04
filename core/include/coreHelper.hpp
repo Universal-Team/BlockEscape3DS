@@ -31,23 +31,10 @@
 #define STARTPOS 1 // 1 is the start of Grid.
 
 enum class Blocks {
-	Lock_Invalid,
-	Lock1, // 2.
-	Lock2, // 2.
-	Lock3, // 2.
-	Lock4, // 2.
-	Lock5, // 2.
-	Lock6, // 2.
-	Lock7, // 2.
-	Lock8, // 2.
-	Lock9, // 2.
-	Lock10, // 2.
-	Lock11, // 2.
-	Lock12, // 3.
-	Lock13, // 3.
-	Lock14, // 3.
-	Lock15, // 3.
-	Escape // 2.
+	Block_Invalid,
+	Block2, // 2.
+	Block3, // 2.
+	Block_Escape // 2.
 };
 
 enum class Direction {

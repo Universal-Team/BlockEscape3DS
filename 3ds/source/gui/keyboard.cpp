@@ -25,11 +25,8 @@
 */
 
 #include "common.hpp"
-#include "config.hpp"
 #include "keyboard.hpp"
 #include "screenCommon.hpp"
-
-extern std::unique_ptr<Config> config;
 
 std::string Keyboard::setkbdString(uint maxLength, std::string Text) {
 	C3D_FrameEnd(0);
@@ -52,9 +49,10 @@ int Keyboard::setInt(int maxValue, std::string Text) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
-	GFX::DrawTop();
-	Gui::Draw_Rect(0, 60, 400, 100, config->barColor());
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2-10, 0.8f, config->textColor(), Text, 390, 90);
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
+	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	C3D_FrameEnd(0);
 	SwkbdState state;
 	swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);
@@ -77,9 +75,10 @@ int Keyboard::setu8(std::string Text) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
-	GFX::DrawTop();
-	Gui::Draw_Rect(0, 60, 400, 100, config->barColor());
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2-10, 0.8f, config->textColor(), Text, 390, 90);
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
+	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	C3D_FrameEnd(0);
 	SwkbdState state;
 	swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);

@@ -28,10 +28,8 @@
 #define _BLOCK_ESCAPE_3DS_OVERLAY_HPP
 
 #include "common.hpp"
-#include <citro2d.h>
 
 namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
 	void SplashOverlay();
 	void SelectLanguage();
 	std::string SelectLevel();

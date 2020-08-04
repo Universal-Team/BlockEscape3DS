@@ -39,24 +39,6 @@ public:
 	void initialize();
 	void addMissingThings();
 
-	// Bar Color.
-	u32 barColor() { return this->v_barColor; }
-	void barColor(u32 v) { this->v_barColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// BG Color.
-	u32 bgColor() { return this->v_bgColor; }
-	void bgColor(u32 v) { this->v_bgColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Text Color.
-	u32 textColor() { return this->v_textColor; }
-	void textColor(u32 v) { this->v_textColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Button Color.
-	u32 buttonColor() { return this->v_buttonColor; }
-	void buttonColor(u32 v) { this->v_buttonColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Selector Color.
-	u32 selectorColor() { return this->v_selectorColor; }
-	void selectorColor(u32 v) { this->v_selectorColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Block Colors.
-	u32 blockColor(int block) { return this->v_blockColors[block]; }
-	void blockColor(int block, u32 v) { this->v_blockColors[block] = v; if (!this->changesMade)	this->changesMade = true; }
 	// Debug.
 	bool debug() { return this->v_debug; }
 	// Language.
@@ -78,9 +60,7 @@ private:
 	bool changesMade = false;
 	int configVersion = 1;
 
-	// Color variables and more.
-	u32 v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;
-	u32 v_blockColors[16];
+	// variables and more.
 	int v_language, v_version;
 	bool v_debug;
 };

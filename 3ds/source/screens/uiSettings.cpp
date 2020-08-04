@@ -24,57 +24,41 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "colorChanger.hpp"
 #include "credits.hpp"
 #include "config.hpp"
 #include "overlay.hpp"
 #include "uiSettings.hpp"
 
 extern std::unique_ptr<Config> config;
-extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern bool btnTouch(touchPosition touch, ButtonStruct button);
 
 void UISettings::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("UI_SETTINGS"), 390);
+	Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, "BlockEscape3DS - " + Lang::get("UI_SETTINGS"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
-	for (int i = 0; i < 3; i++) {
-		Gui::Draw_Rect(mainButtons[i].x, mainButtons[i].y, mainButtons[i].w, mainButtons[i].h, config->buttonColor());
-		if (this->Selection == i) {
-			GFX::DrawButtonSelector(mainButtons[i].x, mainButtons[i].y);
-		}
+	for (int i = 0; i < 2; i++) {
+		GFX::Button(mainButtons[i]);
 	}
 
-	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("COLOR_SETTINGS"), 130);
-	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("LANGUAGE"), 130);
-	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("CREDITS"), 130);
+	GFX::DrawButtonSelector(mainButtons[this->Selection].X, mainButtons[this->Selection].Y);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 
 void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_TOUCH) {
-		if (touching(touch, mainButtons[0])) {
-			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
-		} else if (touching(touch, mainButtons[1])) {
+		if (btnTouch(touch, mainButtons[0])) {
 			Msg::NotImplementedYet();
 			//Overlays::SelectLanguage();
-		} else if (touching(touch, mainButtons[2])) {
+		} else if (btnTouch(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<Credits>(), true, true);
 		}
 	}
 
 	if (hDown & KEY_RIGHT) {
-		if (this->Selection < 3) this->Selection++;
-	}
-
-	if (hDown & KEY_UP) {
-		if (this->Selection > 1) this->Selection -= 2;
-	}
-
-	if (hDown & KEY_DOWN) {
-		if (this->Selection < 2) this->Selection += 2;
+		if (this->Selection < 1) this->Selection++;
 	}
 
 	if (hDown & KEY_LEFT) {
@@ -83,11 +67,9 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_A) {
 		if (this->Selection == 0) {
-			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
-		} else if (this->Selection == 1) {
 			Msg::NotImplementedYet();
 			//Overlays::SelectLanguage();
-		} else if (this->Selection == 2) {
+		} else if (this->Selection == 1) {
 			Gui::setScreen(std::make_unique<Credits>(), true, true);
 		}
 	}

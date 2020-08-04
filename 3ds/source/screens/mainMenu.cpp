@@ -32,26 +32,22 @@
 
 extern std::unique_ptr<Config> config;
 extern bool exiting;
-extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern bool btnTouch(touchPosition touch, ButtonStruct button);
 
 void MainMenu::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "BlockEscape3DS - " + Lang::get("MAINMENU"), 390);
+	Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, "BlockEscape3DS - " + Lang::get("MAINMENU"), 390);
 	
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
 	for (int i = 0; i < 4; i++) {
-		Gui::Draw_Rect(mainButtons[i].x, mainButtons[i].y, mainButtons[i].w, mainButtons[i].h, config->buttonColor());
+		GFX::Button(mainButtons[i]);
 		if (this->Selection == i) {
-			GFX::DrawButtonSelector(mainButtons[i].x, mainButtons[i].y);
+			GFX::DrawButtonSelector(mainButtons[i].X, mainButtons[i].Y);
 		}
 	}
 
-	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("NEW_GAME"), 130);
-	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("LEVEL_CREATOR"), 130);
-	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("UI_SETTINGS"), 130);
-	Gui::DrawStringCentered(80, mainButtons[3].y+12, 0.6f, config->textColor(), "?", 130);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -80,7 +76,8 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				Gui::setScreen(std::make_unique<GameScreen>(), true, true);
 				break;
 			case 1:
-				Gui::setScreen(std::make_unique<LevelCreator>(), true, true);
+				Msg::NotImplementedYet();
+				//Gui::setScreen(std::make_unique<LevelCreator>(), true, true);
 				break;
 			case 2:
 				Gui::setScreen(std::make_unique<UISettings>(), true, true);
@@ -95,11 +92,12 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 
 	if (hDown & KEY_TOUCH) {
-		if (touching(touch, mainButtons[0])) {
+		if (btnTouch(touch, mainButtons[0])) {
 			Gui::setScreen(std::make_unique<GameScreen>(), true, true);
-		} else if (touching(touch, mainButtons[1])) {
-			Gui::setScreen(std::make_unique<LevelCreator>(), true, true);
-		} else if (touching(touch, mainButtons[2])) {
+		} else if (btnTouch(touch, mainButtons[1])) {
+			Msg::NotImplementedYet();
+			//Gui::setScreen(std::make_unique<LevelCreator>(), true, true);
+		} else if (btnTouch(touch, mainButtons[2])) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);
 		}
 	}

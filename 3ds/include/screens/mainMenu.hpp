@@ -39,11 +39,11 @@ public:
 private:
 	int Selection = 0;
 
-	const std::vector<Structs::ButtonPos> mainButtons = {
-		{10, 70, 140, 40}, // New Game.
-		{170, 70, 140, 40}, // ?.
-		{10, 145, 140, 40}, // ?.
-		{170, 145, 140, 40} // ?.
+	const std::vector<ButtonStruct> mainButtons = {
+		{currentTheme->mmButton1X, currentTheme->mmButton1Y, (float)currentTheme->ButtonXSize, (float)currentTheme->ButtonYSize, Lang::get("NEW_GAME")}, // New Game.
+		{currentTheme->mmButton2X, currentTheme->mmButton2Y, (float)currentTheme->ButtonXSize, (float)currentTheme->ButtonYSize, Lang::get("LEVEL_CREATOR")}, // Level Creator.
+		{currentTheme->mmButton3X, currentTheme->mmButton3Y, (float)currentTheme->ButtonXSize, (float)currentTheme->ButtonYSize, Lang::get("UI_SETTINGS")}, // UI Settings.
+		{currentTheme->mmButton4X, currentTheme->mmButton4Y, (float)currentTheme->ButtonXSize, (float)currentTheme->ButtonYSize, "?"} // ?.
 	};
 };
 

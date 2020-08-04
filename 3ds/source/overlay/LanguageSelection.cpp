@@ -45,6 +45,7 @@ static const std::vector<Structs::ButtonPos> langBlocks = {
 	{177, 188, 20, 20}
 };
 
+/* TODO!
 static void Draw(int selection) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -77,9 +78,11 @@ static void Draw(int selection) {
 	Gui::DrawString(langBlocks[9].x+25, langBlocks[9].y, 0.7f, config->textColor(), "日本語", 320);
 	C3D_FrameEnd(0);
 }
+*/
 
 // Select a Language.
 void Overlays::SelectLanguage() {
+/*
 	int selection = config->language();
 
 	while(1) {
@@ -130,4 +133,5 @@ void Overlays::SelectLanguage() {
 			return; // Exit overlay.
 		}
 	}
+*/
 }

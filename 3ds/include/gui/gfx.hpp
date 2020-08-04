@@ -29,6 +29,7 @@
 
 #include "game.hpp"
 #include "sprites.h"
+#include "theme.h"
 
 #include <string>
 
@@ -47,12 +48,15 @@ namespace GFX {
 	void DrawFileBrowseBG(bool isTop = true);
 
 	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
-	void DrawButtonSelector(int x, int y, float ScaleX = 1, float ScaleY = 1, bool useSmall = false);
+	void DrawThemeSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
+	void DrawButtonSelector(int x, int y, float ScaleX = 1, float ScaleY = 1);
 
-	u32 getBlockColor(Blocks bl);
+	void DrawBox(Direction dr, Blocks bl, int x, int y);
 
 	// Buttons.
 	void Button(const ButtonStruct btn);
+
+	void DrawBoxSelected(Direction dr, Blocks bl, int x, int y);
 }
 
 #endif

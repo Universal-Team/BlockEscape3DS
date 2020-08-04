@@ -31,14 +31,14 @@
 #include <vector>
 
 extern std::unique_ptr<Config> config;
-const std::vector<Structs::ButtonPos> promptBtn = {
-	{10, 100, 140, 40}, // Yes.
-	{170, 100, 140, 40}, // No.
-	{100, 100, 140, 40} // OK.
+const static std::vector<ButtonStruct> promptBtn = {
+	{10, 100, 140, 40, Lang::get("YES")}, // Yes.
+	{170, 100, 140, 40, Lang::get("NO")}, // No.
+	{100, 100, 140, 40, Lang::get("OK")} // OK.
 };
 
 extern touchPosition touch;
-extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern bool btnTouch(touchPosition touch, ButtonStruct button);
 
 // Display a Message, which needs to be confirmed with A/B.
 bool Msg::promptMsg2(std::string promptMsg) {
@@ -48,16 +48,19 @@ bool Msg::promptMsg2(std::string promptMsg) {
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-		GFX::DrawTop();
-		Gui::Draw_Rect(0, 60, 400, 100, config->barColor());
-		Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, promptMsg))/2-10, 0.8f, config->textColor(), promptMsg, 390, 90);
+
+		Gui::ScreenDraw(Top);
+		GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+		GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
+		Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, promptMsg))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, promptMsg, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 		GFX::DrawBottom();
+
 		// Draw Bottom Screen part.
-		Gui::Draw_Rect(10, 100, 140, 40, config->buttonColor());
-		Gui::Draw_Rect(170, 100, 140, 40, config->buttonColor());
-		Gui::DrawStringCentered(-150+70, 105, 0.8f, config->textColor(), Lang::get("YES"), 140);
-		Gui::DrawStringCentered(150-70, 105, 0.8f, config->textColor(), Lang::get("NO"), 140);
-		GFX::DrawButtonSelector(promptBtn[selection].x, promptBtn[selection].y);
+		GFX::Button(promptBtn[0]);
+		GFX::Button(promptBtn[1]);
+
+		GFX::DrawButtonSelector(promptBtn[selection].X, promptBtn[selection].Y);
+
 		C3D_FrameEnd(0);
 
 		// Selection part.
@@ -79,11 +82,11 @@ bool Msg::promptMsg2(std::string promptMsg) {
 			}
 		}
 		
-		if (hidKeysDown() & KEY_TOUCH && touching(touch, promptBtn[0])) {
+		if (hidKeysDown() & KEY_TOUCH && btnTouch(touch, promptBtn[0])) {
 			return true;
 		}
 
-		if (hidKeysDown() & KEY_TOUCH && touching(touch, promptBtn[1])) {
+		if (hidKeysDown() & KEY_TOUCH && btnTouch(touch, promptBtn[1])) {
 			return false;
 		}
 	}
@@ -99,9 +102,11 @@ void Msg::DisplayWarnMsg(std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-	GFX::DrawTop();
-	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2, 0.8f, config->textColor(), Text, 395, 70);
+
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
+	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	GFX::DrawBottom();
 	C3D_FrameEnd(0);
 	for (int i = 0; i < 60*2; i++) {
@@ -115,9 +120,11 @@ void Msg::DisplayWarnMsg2(std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-	GFX::DrawTop();
-	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2, 0.8f, config->textColor(), Text, 395, 70);
+
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
+	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	GFX::DrawBottom();
 	C3D_FrameEnd(0);
 	for (int i = 0; i < 60*2; i++) {
@@ -131,37 +138,22 @@ void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-	GFX::DrawTop();
-	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, waitMsg))/2, 0.8f, config->textColor(), waitMsg, 390, 70);
-	Gui::DrawStringCentered(0, 214, 0.8f, config->textColor(), Lang::get("A_CONTINUE"), 390);
+
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
+	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, waitMsg))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, waitMsg, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
+	Gui::DrawStringCentered(0, currentTheme->TitleYBottom, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("A_CONTINUE"), 390);
 	GFX::DrawBottom();
-	Gui::Draw_Rect(100, 100, 140, 40, config->buttonColor());
-	Gui::DrawStringCentered(-60+70, 105, 0.8f, config->textColor(), Lang::get("OK"), 140);
+	GFX::Button(promptBtn[2]);
 	C3D_FrameEnd(0);
 
 	while(1) {
 		gspWaitForVBlank();
 		hidScanInput();
 		hidTouchRead(&touch);
-		if ((hidKeysDown() & KEY_A) || (hidKeysDown() & KEY_TOUCH && touching(touch, promptBtn[2]))) break;
+		if ((hidKeysDown() & KEY_A) || (hidKeysDown() & KEY_TOUCH && btnTouch(touch, promptBtn[2]))) break;
 	}
-}
-
-void Msg::HelperBox(std::string Msg) {
-	Gui::clearTextBufs();
-	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-	Gui::ScreenDraw(Top);
-	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	int textBoxHeight = Gui::GetStringHeight(0.6f, Msg) + 5;
-
-	Gui::Draw_Rect(40, 211 - textBoxHeight, 320, textBoxHeight, config->barColor());
-	Gui::Draw_Rect(40, 211 - textBoxHeight, 320, textBoxHeight, C2D_Color32(0, 0, 0, 190));
-	Gui::Draw_Rect(44, 215 - textBoxHeight, 312, textBoxHeight - 8, config->barColor());
-	Gui::DrawStringCentered(0, 215 - textBoxHeight-2, 0.6, config->textColor(), Msg, 305, Gui::GetStringHeight(0.6f, Msg));
-	Gui::ScreenDraw(Bottom);
-	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	C3D_FrameEnd(0);
 }
 
 void Msg::DisplayMsg(std::string Message) {
@@ -169,9 +161,10 @@ void Msg::DisplayMsg(std::string Message) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-	GFX::DrawTop();
-	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Message))/2, 0.8f, config->textColor(), Message, 390, 70);
+	Gui::ScreenDraw(Top);
+	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
+	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Message))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Message, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	GFX::DrawBottom();
 	C3D_FrameEnd(0);
 }

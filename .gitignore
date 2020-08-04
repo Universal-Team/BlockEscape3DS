@@ -11,3 +11,4 @@
 *.cia
 *.elf
 *.smdh
+3ds/build/theme.h
