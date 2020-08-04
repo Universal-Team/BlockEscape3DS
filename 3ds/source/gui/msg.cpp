@@ -50,7 +50,7 @@ bool Msg::promptMsg2(std::string promptMsg) {
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 		Gui::ScreenDraw(Top);
-		GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+		GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 		GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
 		Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, promptMsg))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, promptMsg, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 		GFX::DrawBottom();
@@ -104,7 +104,7 @@ void Msg::DisplayWarnMsg(std::string Text) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
 	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	GFX::DrawBottom();
@@ -122,7 +122,7 @@ void Msg::DisplayWarnMsg2(std::string Text) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
 	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	GFX::DrawBottom();
@@ -140,7 +140,7 @@ void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
 	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, waitMsg))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, waitMsg, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	Gui::DrawStringCentered(0, currentTheme->TitleYBottom, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("A_CONTINUE"), 390);
@@ -162,7 +162,7 @@ void Msg::DisplayMsg(std::string Message) {
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
 	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Message))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Message, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	GFX::DrawBottom();

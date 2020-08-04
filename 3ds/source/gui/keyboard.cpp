@@ -50,7 +50,7 @@ int Keyboard::setInt(int maxValue, std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
 	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	C3D_FrameEnd(0);
@@ -76,7 +76,7 @@ int Keyboard::setu8(std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
 	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
 	C3D_FrameEnd(0);

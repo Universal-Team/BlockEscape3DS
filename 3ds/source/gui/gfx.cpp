@@ -51,7 +51,7 @@ void GFX::DrawThemeSprite(int index, int x, int y, float ScaleX, float ScaleY) {
 // TODO.
 void GFX::DrawFileBrowseBG(bool isTop) {
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 }
 
 void GFX::DrawButtonSelector(int x, int y, float ScaleX, float ScaleY) {

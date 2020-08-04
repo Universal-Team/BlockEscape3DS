@@ -42,7 +42,7 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_filebrowse_idx, 0, 0);
+	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
 	Gui::DrawStringCentered(0, currentTheme->browseTitle1, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("DIRECTORY_SELECT"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
