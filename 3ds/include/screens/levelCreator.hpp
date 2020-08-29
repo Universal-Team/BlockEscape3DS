@@ -55,9 +55,9 @@ private:
 	int selectedBlock = 0;
 
 	const std::vector<Structs::ButtonPos> blockListNew = {
-		{currentTheme->creatorXPos + 2, currentTheme->creatorYPos, currentTheme->GridBlockSize + currentTheme->GridBlockSize, currentTheme->GridBlockSize + currentTheme->GridBlockSize },
-		{currentTheme->creatorXPos + 2, currentTheme->creatorYPos + currentTheme->GridBlockSize + 5, currentTheme->GridBlockSize + currentTheme->GridBlockSize + currentTheme->GridBlockSize, currentTheme->GridBlockSize + currentTheme->GridBlockSize + currentTheme->GridBlockSize },
-		{currentTheme->creatorXPos + 2, currentTheme->creatorYPos + currentTheme->GridBlockSize + currentTheme->GridBlockSize + 10, currentTheme->GridBlockSize + currentTheme->GridBlockSize, currentTheme->GridBlockSize + currentTheme->GridBlockSize }
+		{10 + 2, 38, 30 + 30, 30 + 30 },
+		{10 + 2, 38 + 30 + 5, 30 + 30 + 30, 30 + 30 + 30 },
+		{10 + 2, 38 + 30 + 30 + 10, 30 + 30, 30 + 30 }
 	};
 
 	// Block Selection.
@@ -80,50 +80,50 @@ private:
 		{240, 227, 60, 10}
 	};
 
-	const Structs::ButtonPos saveIcon = {currentTheme->creatorSaveX, currentTheme->creatorSaveY, 25, 25};
+	const Structs::ButtonPos saveIcon = {290, 210, 25, 25};
 
 	const std::vector<Structs::ButtonPos> gridPos = {
-		{currentTheme->creatorGridX, currentTheme->creatorGridY, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (1 * currentTheme->GridBlockSize), currentTheme->creatorGridY, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (2 * currentTheme->GridBlockSize), currentTheme->creatorGridY, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (3 * currentTheme->GridBlockSize), currentTheme->creatorGridY, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (4 * currentTheme->GridBlockSize), currentTheme->creatorGridY, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (5 * currentTheme->GridBlockSize), currentTheme->creatorGridY, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{10, 38, 30, 30},
+		{10 + (1 * 30), 38, 30, 30},
+		{10 + (2 * 30), 38, 30, 30},
+		{10 + (3 * 30), 38, 30, 30},
+		{10 + (4 * 30), 38, 30, 30},
+		{10 + (5 * 30), 38, 30, 30},
 
-		{currentTheme->creatorGridX, currentTheme->creatorGridY + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (1 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (2 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (3 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (4 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (5 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{10, 38 + (1 * 30), 30, 30},
+		{10 + (1 * 30), 38 + (1 * 30), 30, 30},
+		{10 + (2 * 30), 38 + (1 * 30), 30, 30},
+		{10 + (3 * 30), 38 + (1 * 30), 30, 30},
+		{10 + (4 * 30), 38 + (1 * 30), 30, 30},
+		{10 + (5 * 30), 38 + (1 * 30), 30, 30},
 
-		{currentTheme->creatorGridX, currentTheme->creatorGridY + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (1 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (2 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (3 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (4 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (5 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{10, 38 + (2 * 30), 30, 30},
+		{10 + (1 * 30), 38 + (2 * 30), 30, 30},
+		{10 + (2 * 30), 38 + (2 * 30), 30, 30},
+		{10 + (3 * 30), 38 + (2 * 30), 30, 30},
+		{10 + (4 * 30), 38 + (2 * 30), 30, 30},
+		{10 + (5 * 30), 38 + (2 * 30), 30, 30},
 
-		{currentTheme->creatorGridX, currentTheme->creatorGridY + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (1 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (2 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (3 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (4 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (5 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{10, 38 + (3 * 30), 30, 30},
+		{10 + (1 * 30), 38 + (3 * 30), 30, 30},
+		{10 + (2 * 30), 38 + (3 * 30), 30, 30},
+		{10 + (3 * 30), 38 + (3 * 30), 30, 30},
+		{10 + (4 * 30), 38 + (3 * 30), 30, 30},
+		{10 + (5 * 30), 38 + (3 * 30), 30, 30},
 
-		{currentTheme->creatorGridX, currentTheme->creatorGridY + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (1 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (2 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (3 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (4 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (5 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{10, 38 + (4 * 30), 30, 30},
+		{10 + (1 * 30), 38 + (4 * 30), 30, 30},
+		{10 + (2 * 30), 38 + (4 * 30), 30, 30},
+		{10 + (3 * 30), 38 + (4 * 30), 30, 30},
+		{10 + (4 * 30), 38 + (4 * 30), 30, 30},
+		{10 + (5 * 30), 38 + (4 * 30), 30, 30},
 
-		{currentTheme->creatorGridX, currentTheme->creatorGridY + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (1 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (2 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (3 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (4 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->creatorGridX + (5 * currentTheme->GridBlockSize), currentTheme->creatorGridY + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize}
+		{10, 38 + (5 * 30), 30, 30},
+		{10 + (1 * 30), 38 + (5 * 30), 30, 30},
+		{10 + (2 * 30), 38 + (5 * 30), 30, 30},
+		{10 + (3 * 30), 38 + (5 * 30), 30, 30},
+		{10 + (4 * 30), 38 + (5 * 30), 30, 30},
+		{10 + (5 * 30), 38 + (5 * 30), 30, 30}
 	};
 };
 

@@ -28,39 +28,35 @@
 #include "config.hpp"
 
 extern std::unique_ptr<Config> config;
-extern C2D_SpriteSheet sprites, theme;
+extern C2D_SpriteSheet sprites;
 
 void GFX::DrawTop(bool useBars) {
 	Gui::ScreenDraw(Top);
-	Gui::DrawSprite(theme, theme_top_bg_idx, 0, 0);
+	Gui::DrawSprite(sprites, sprites_top_default_idx, 0, 0);
 }
 
 void GFX::DrawBottom(bool useBars) {
 	Gui::ScreenDraw(Bottom);
-	Gui::DrawSprite(theme, theme_bg_bottom_idx, 0, 0);
+	Gui::DrawSprite(sprites, sprites_bottom_default_idx, 0, 0);
 }
 
 void GFX::DrawSprite(int index, int x, int y, float ScaleX, float ScaleY) {
 	Gui::DrawSprite(sprites, index, x, y, ScaleX, ScaleY);
 }
 
-void GFX::DrawThemeSprite(int index, int x, int y, float ScaleX, float ScaleY) {
-	Gui::DrawSprite(theme, index, x, y, ScaleX, ScaleY);
-}
-
 // TODO.
 void GFX::DrawFileBrowseBG(bool isTop) {
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
+	GFX::DrawSprite(sprites_top_browse_idx, 0, 0);
 }
 
 void GFX::DrawButtonSelector(int x, int y, float ScaleX, float ScaleY) {
-	GFX::DrawThemeSprite(theme_selector_idx, x, y);
+	GFX::DrawSprite(sprites_selector_idx, x, y);
 }
 
 void GFX::Button(const ButtonStruct btn) {
-	GFX::DrawThemeSprite(theme_button_idx, btn.X, btn.Y);
-	Gui::DrawStringCentered(btn.X - 160 + (btn.xSize/2), btn.Y + (btn.ySize/2) - 10, 0.6f, currentTheme->ButtonTextColor, btn.Text, btn.X-10, btn.Y-5);
+	GFX::DrawSprite(sprites_button_idx, btn.X, btn.Y);
+	Gui::DrawStringCentered(btn.X - 160 + (btn.xSize/2), btn.Y + (btn.ySize/2) - 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get(btn.Text), btn.X-10, btn.Y-5);
 }
 
 void GFX::DrawBox(Direction dr, Blocks bl, int x, int y) {
@@ -69,13 +65,13 @@ void GFX::DrawBox(Direction dr, Blocks bl, int x, int y) {
 			case Blocks::Block_Invalid:
 				break;
 			case Blocks::Block2:
-				GFX::DrawThemeSprite(theme_block_2_hz_idx, x, y);
+				GFX::DrawSprite(sprites_block_2_hz_idx, x, y);
 				break;
 			case Blocks::Block3:
-				GFX::DrawThemeSprite(theme_block_3_hz_idx, x, y);
+				GFX::DrawSprite(sprites_block_3_hz_idx, x, y);
 				break;
 			case Blocks::Block_Escape:
-				GFX::DrawThemeSprite(theme_keyblock_hz_idx, x, y);
+				GFX::DrawSprite(sprites_keyblock_hz_idx, x, y);
 				break;
 
 		}
@@ -84,13 +80,13 @@ void GFX::DrawBox(Direction dr, Blocks bl, int x, int y) {
 			case Blocks::Block_Invalid:
 				break;
 			case Blocks::Block2:
-				GFX::DrawThemeSprite(theme_block_2_vc_idx, x, y);
+				GFX::DrawSprite(sprites_block_2_vc_idx, x, y);
 				break;
 			case Blocks::Block3:
-				GFX::DrawThemeSprite(theme_block_3_vc_idx, x, y);
+				GFX::DrawSprite(sprites_block_3_vc_idx, x, y);
 				break;
 			case Blocks::Block_Escape:
-				GFX::DrawThemeSprite(theme_keyblock_vc_idx, x, y);
+				GFX::DrawSprite(sprites_keyblock_vc_idx, x, y);
 				break;
 		}
 	}
@@ -102,13 +98,13 @@ void GFX::DrawBoxSelected(Direction dr, Blocks bl, int x, int y) {
 			case Blocks::Block_Invalid:
 				break;
 			case Blocks::Block2:
-				GFX::DrawThemeSprite(theme_block_2_hz_selected_idx, x, y);
+				GFX::DrawSprite(sprites_block_2_hz_selected_idx, x, y);
 				break;
 			case Blocks::Block3:
-				GFX::DrawThemeSprite(theme_block_3_hz_selected_idx, x, y);
+				GFX::DrawSprite(sprites_block_3_hz_selected_idx, x, y);
 				break;
 			case Blocks::Block_Escape:
-				GFX::DrawThemeSprite(theme_keyblock_hz_selected_idx, x, y);
+				GFX::DrawSprite(sprites_keyblock_hz_selected_idx, x, y);
 				break;
 
 		}
@@ -117,13 +113,13 @@ void GFX::DrawBoxSelected(Direction dr, Blocks bl, int x, int y) {
 			case Blocks::Block_Invalid:
 				break;
 			case Blocks::Block2:
-				GFX::DrawThemeSprite(theme_block_2_vc_selected_idx, x, y);
+				GFX::DrawSprite(sprites_block_2_vc_selected_idx, x, y);
 				break;
 			case Blocks::Block3:
-				GFX::DrawThemeSprite(theme_block_3_vc_selected_idx, x, y);
+				GFX::DrawSprite(sprites_block_3_vc_selected_idx, x, y);
 				break;
 			case Blocks::Block_Escape:
-				GFX::DrawThemeSprite(theme_keyblock_vc_selected_idx, x, y);
+				GFX::DrawSprite(sprites_keyblock_vc_selected_idx, x, y);
 				break;
 		}
 	}

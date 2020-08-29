@@ -38,10 +38,8 @@ bool exiting = false;
 touchPosition touch;
 u32 hDown, hHeld;
 std::unique_ptr<Config> config;
-std::unique_ptr<Theme> currentTheme;
-bool sheetLoaded = false;
 // Include all spritesheet's.
-C2D_SpriteSheet sprites, theme;
+C2D_SpriteSheet sprites;
 
 // If button Position pressed -> Do something.
 bool touching(touchPosition touch, Structs::ButtonPos button) {
@@ -50,13 +48,13 @@ bool touching(touchPosition touch, Structs::ButtonPos button) {
 }
 
 bool btnTouch(touchPosition touch, ButtonStruct button) {
-	if (touch.px >= button.X && touch.px <= (button.X + button.xSize) && touch.py >= button.Y && touch.py <= (button.Y + button.ySize))	return true;
-	else	return false;
+	if (touch.px >= button.X && touch.px <= (button.X + button.xSize) && touch.py >= button.Y && touch.py <= (button.Y + button.ySize)) return true;
+	else return false;
 }
 
 bool gridTouch(touchPosition touch, GridStruct grid) {
-	if (touch.px >= grid.X && touch.px <= (grid.X + 30) && touch.py >= grid.Y && touch.py <= (grid.Y + 30))	return true;
-	else	return false;
+	if (touch.px >= grid.X && touch.px <= (grid.X + 30) && touch.py >= grid.Y && touch.py <= (grid.Y + 30)) return true;
+	else return false;
 }
 
 Result Init::Initialize() {
@@ -70,17 +68,10 @@ Result Init::Initialize() {
 	mkdir("sdmc:/3ds/BlockEscape3DS/Levels", 0777); // Levels path.
 
 	config = std::make_unique<Config>();
-	currentTheme = std::make_unique<Theme>("romfs:/gfx/theme.json");
-
-	if (!currentTheme->isValid()) {
-		return -1; // Theme is invalid, and since we rely on that -> We cannot properly start the App.
-	}
 
 	Lang::load();
 
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
-	Gui::loadSheet("romfs:/gfx/theme.t3x", theme);
-	sheetLoaded = true;
 
 	osSetSpeedupEnable(true); // Enable speed-up for New 3DS users.
 	Overlays::SplashOverlay();
@@ -90,47 +81,39 @@ Result Init::Initialize() {
 
 Result Init::MainLoop() {
 	// Initialize everything.
-	Result res = Initialize();
+	Initialize();
+
 	// Loop as long as the status is not exiting.
-	if (res == 0) {
-		while (aptMainLoop()) {
-			// Scan all the Inputs.
-			hidScanInput();
-			hDown = hidKeysDown();
-			hHeld = hidKeysHeld();
-			hidTouchRead(&touch);
-			C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-			C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-			C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-			Gui::clearTextBufs();
-			Gui::DrawScreen(true);
-			Gui::ScreenLogic(hDown, hHeld, touch, true, true);
-			C3D_FrameEnd(0);
+	while (aptMainLoop()) {
+		// Scan all the Inputs.
+		hidScanInput();
+		hDown = hidKeysDown();
+		hHeld = hidKeysHeld();
+		hidTouchRead(&touch);
+		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+		Gui::clearTextBufs();
+		Gui::DrawScreen(true);
+		Gui::ScreenLogic(hDown, hHeld, touch, true, true);
+		C3D_FrameEnd(0);
 
-			if (exiting) {
-				if (!fadeout) break;
-			}
-
-			Gui::fadeEffects(16, 16, true);
+		if (exiting) {
+			if (!fadeout) break;
 		}
-		
-		// Exit all services and exit the app.
-		Exit();
-	} else {
-		// Exit all services and exit the app.
-		Exit();
+
+		Gui::fadeEffects(16, 16, true);
 	}
+		
+	// Exit all services and exit the app.
+	Exit();
 	
 	return 0;
 }
 
 Result Init::Exit() {
 	Gui::exit();
-	if (sheetLoaded) {
-		Gui::unloadSheet(sprites);
-		Gui::unloadSheet(theme);
-	}
-
+	Gui::unloadSheet(sprites);
 	config->save(); // Save Config if changes made.
 	cfguExit();
 	gfxExit();

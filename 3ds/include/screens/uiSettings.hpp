@@ -40,8 +40,8 @@ private:
 	int Selection = 0;
 
 	const std::vector<ButtonStruct> mainButtons = {
-		{currentTheme->uiButton1X, currentTheme->uiButton1Y, (float)currentTheme->ButtonXSize, (float)currentTheme->ButtonYSize, Lang::get("LANGUAGE")}, // Color Settings.
-		{currentTheme->uiButton2X, currentTheme->uiButton2Y, (float)currentTheme->ButtonXSize, (float)currentTheme->ButtonYSize, Lang::get("CREDITS")} // Language.
+		{10, 70, 140, 40, "LANGUAGE"}, // Color Settings.
+		{170, 70, 140, 40, "CREDITS"} // Language.
 	};
 };
 

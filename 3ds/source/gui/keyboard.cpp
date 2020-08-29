@@ -50,9 +50,9 @@ int Keyboard::setInt(int maxValue, std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
-	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
-	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
+	GFX::DrawSprite(sprites_top_browse_idx, 0, 0);
+	GFX::DrawSprite(sprites_msgBox_idx, 0, 46);
+	Gui::DrawStringCentered(19 - 200 + (365 / 2), (16 + (104 - (Gui::GetStringHeight(0.6, Text))/2)), 0.6, C2D_Color32(255, 255, 255, 255), Text, 365 - 10, 104 - 10);
 	C3D_FrameEnd(0);
 	SwkbdState state;
 	swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);
@@ -76,9 +76,9 @@ int Keyboard::setu8(std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
-	GFX::DrawThemeSprite(theme_msgBox_idx, currentTheme->MsgXPos, currentTheme->MsgYPos);
-	Gui::DrawStringCentered(currentTheme->MsgTextX - 200 + (currentTheme->MsgXSize / 2), (currentTheme->MsgTextY + (currentTheme->MsgYSize - (Gui::GetStringHeight(currentTheme->MsgTextSize, Text))/2)), currentTheme->MsgTextSize, currentTheme->MsgTextColor, Text, currentTheme->MsgXSize - 10, currentTheme->MsgYSize - 10);
+	GFX::DrawSprite(sprites_top_browse_idx, 0, 0);
+	GFX::DrawSprite(sprites_msgBox_idx, 0, 46);
+	Gui::DrawStringCentered(19 - 200 + (365 / 2), (16 + (104 - (Gui::GetStringHeight(0.6, Text))/2)), 0.6, C2D_Color32(255, 255, 255, 255), Text, 365 - 10, 104 - 10);
 	C3D_FrameEnd(0);
 	SwkbdState state;
 	swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);

@@ -43,6 +43,7 @@ private:
 	void DrawGameField() const;
 	int selectedBlock = 0, mode = 0, subSel = 0;
 	int selectedField = 0;
+	
 	const std::vector<ButtonStruct> subPos = {
 		{90, 40, 140, 40, Lang::get("LOAD_LEVEL")},
 		{90, 100, 140, 40, Lang::get("RESTART")},
@@ -50,47 +51,47 @@ private:
 	};
 
 	const std::vector<Structs::ButtonPos> gridPos = {
-		{currentTheme->GridXPos, currentTheme->GridYPos, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (1 * currentTheme->GridBlockSize), currentTheme->GridYPos, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (2 * currentTheme->GridBlockSize), currentTheme->GridYPos, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (3 * currentTheme->GridBlockSize), currentTheme->GridYPos, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (4 * currentTheme->GridBlockSize), currentTheme->GridYPos, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (5 * currentTheme->GridBlockSize), currentTheme->GridYPos, currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{69, 38, 30, 30},
+		{69 + (1 * 30), 38, 30, 30},
+		{69 + (2 * 30), 38, 30, 30},
+		{69 + (3 * 30), 38, 30, 30},
+		{69 + (4 * 30), 38, 30, 30},
+		{69 + (5 * 30), 38, 30, 30},
 
-		{currentTheme->GridXPos, currentTheme->GridYPos + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (1 * currentTheme->GridBlockSize), currentTheme->GridYPos + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (2 * currentTheme->GridBlockSize), currentTheme->GridYPos + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (3 * currentTheme->GridBlockSize), currentTheme->GridYPos + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (4 * currentTheme->GridBlockSize), currentTheme->GridYPos + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (5 * currentTheme->GridBlockSize), currentTheme->GridYPos + (1 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{69, 38 + (1 * 30), 30, 30},
+		{69 + (1 * 30), 38 + (1 * 30), 30, 30},
+		{69 + (2 * 30), 38 + (1 * 30), 30, 30},
+		{69 + (3 * 30), 38 + (1 * 30), 30, 30},
+		{69 + (4 * 30), 38 + (1 * 30), 30, 30},
+		{69 + (5 * 30), 38 + (1 * 30), 30, 30},
 
-		{currentTheme->GridXPos, currentTheme->GridYPos + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (1 * currentTheme->GridBlockSize), currentTheme->GridYPos + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (2 * currentTheme->GridBlockSize), currentTheme->GridYPos + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (3 * currentTheme->GridBlockSize), currentTheme->GridYPos + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (4 * currentTheme->GridBlockSize), currentTheme->GridYPos + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (5 * currentTheme->GridBlockSize), currentTheme->GridYPos + (2 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{69, 38 + (2 * 30), 30, 30},
+		{69 + (1 * 30), 38 + (2 * 30), 30, 30},
+		{69 + (2 * 30), 38 + (2 * 30), 30, 30},
+		{69 + (3 * 30), 38 + (2 * 30), 30, 30},
+		{69 + (4 * 30), 38 + (2 * 30), 30, 30},
+		{69 + (5 * 30), 38 + (2 * 30), 30, 30},
 
-		{currentTheme->GridXPos, currentTheme->GridYPos + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (1 * currentTheme->GridBlockSize), currentTheme->GridYPos + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (2 * currentTheme->GridBlockSize), currentTheme->GridYPos + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (3 * currentTheme->GridBlockSize), currentTheme->GridYPos + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (4 * currentTheme->GridBlockSize), currentTheme->GridYPos + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (5 * currentTheme->GridBlockSize), currentTheme->GridYPos + (3 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{69, 38 + (3 * 30), 30, 30},
+		{69 + (1 * 30), 38 + (3 * 30), 30, 30},
+		{69 + (2 * 30), 38 + (3 * 30), 30, 30},
+		{69 + (3 * 30), 38 + (3 * 30), 30, 30},
+		{69 + (4 * 30), 38 + (3 * 30), 30, 30},
+		{69 + (5 * 30), 38 + (3 * 30), 30, 30},
 
-		{currentTheme->GridXPos, currentTheme->GridYPos + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (1 * currentTheme->GridBlockSize), currentTheme->GridYPos + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (2 * currentTheme->GridBlockSize), currentTheme->GridYPos + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (3 * currentTheme->GridBlockSize), currentTheme->GridYPos + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (4 * currentTheme->GridBlockSize), currentTheme->GridYPos + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (5 * currentTheme->GridBlockSize), currentTheme->GridYPos + (4 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
+		{69, 38 + (4 * 30), 30, 30},
+		{69 + (1 * 30), 38 + (4 * 30), 30, 30},
+		{69 + (2 * 30), 38 + (4 * 30), 30, 30},
+		{69 + (3 * 30), 38 + (4 * 30), 30, 30},
+		{69 + (4 * 30), 38 + (4 * 30), 30, 30},
+		{69 + (5 * 30), 38 + (4 * 30), 30, 30},
 
-		{currentTheme->GridXPos, currentTheme->GridYPos + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (1 * currentTheme->GridBlockSize), currentTheme->GridYPos + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (2 * currentTheme->GridBlockSize), currentTheme->GridYPos + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (3 * currentTheme->GridBlockSize), currentTheme->GridYPos + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (4 * currentTheme->GridBlockSize), currentTheme->GridYPos + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize},
-		{currentTheme->GridXPos + (5 * currentTheme->GridBlockSize), currentTheme->GridYPos + (5 * currentTheme->GridBlockSize), currentTheme->GridBlockSize, currentTheme->GridBlockSize}
+		{69, 38 + (5 * 30), 30, 30},
+		{69 + (1 * 30), 38 + (5 * 30), 30, 30},
+		{69 + (2 * 30), 38 + (5 * 30), 30, 30},
+		{69 + (3 * 30), 38 + (5 * 30), 30, 30},
+		{69 + (4 * 30), 38 + (5 * 30), 30, 30},
+		{69 + (5 * 30), 38 + (5 * 30), 30, 30}
 	};
 };
 

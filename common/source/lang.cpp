@@ -41,7 +41,7 @@ extern std::unique_ptr<Config> config;
 
 std::string Lang::get(const std::string &key) {
 	if (!appJson.contains(key)) {
-		return "MISSING: " + key;
+		return "";
 	}
 	
 	return appJson.at(key).get_ref<const std::string&>();

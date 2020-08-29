@@ -42,8 +42,8 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents, bool romf
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
-	Gui::DrawStringCentered(0, currentTheme->browseTitle1, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("LEVEL_SELECT") + " " + std::string(romfs ? "[RomFS]" : "[SD Card]"), 390);
+	GFX::DrawSprite(sprites_top_browse_idx, 0, 0);
+	Gui::DrawStringCentered(0, -1, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("LEVEL_SELECT") + " " + std::string(romfs ? "[RomFS]" : "[SD Card]"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
 		levels += dirContents[i].name + "\n\n";
@@ -53,11 +53,11 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents, bool romf
 		levels += "\n\n";
 	}
 
-	Gui::DrawString(currentTheme->browseListBeginX, currentTheme->browseListBeginY, currentTheme->browseListSize, currentTheme->browseTextColor, levels, 360);
-	Gui::DrawStringCentered(0, currentTheme->browseTitle2, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("REFRESH"), 390);
+	Gui::DrawString(26, 32, 0.53, C2D_Color32(255, 255, 255, 255), levels, 360);
+	Gui::DrawStringCentered(0, 221, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("REFRESH"), 390);
 
-	if (Selection < 6) GFX::DrawThemeSprite(theme_fbSelector_idx, currentTheme->browseSelectorX, currentTheme->browseSelectorY + (Selection * currentTheme->browseMultiply));
-	else GFX::DrawThemeSprite(theme_fbSelector_idx, currentTheme->browseSelectorX, currentTheme->browseSelectorY + (5 * currentTheme->browseMultiply));
+	if (Selection < 6) GFX::DrawSprite(sprites_selector_fb_idx, 3, 31 + (Selection * 32));
+	else GFX::DrawSprite(sprites_selector_fb_idx, 3, 31 + (5 * 32));
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -65,7 +65,7 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents, bool romf
 static void DrawBlock(std::unique_ptr<Level> &level, int block) {
 	if (level && level->isValid()) {
 		if (level->getDirection(block) != Direction::None || level->getBlock(block) != Blocks::Block_Invalid) {
-			GFX::DrawBox(level->getDirection(block), level->getBlock(block), currentTheme->browseGridX + (currentTheme->GridBlockSize * (level->getXRow(block) - 1)), currentTheme->browseGridY + (currentTheme->GridBlockSize * (level->getYRow(block) -1)));
+			GFX::DrawBox(level->getDirection(block), level->getBlock(block), 69 + (30 * (level->getXRow(block) - 1)), 29 + (30 * (level->getYRow(block) -1)));
 		}
 	}
 }
@@ -73,12 +73,12 @@ static void DrawBlock(std::unique_ptr<Level> &level, int block) {
 // The Preview part.
 static void DrawBottom(std::unique_ptr<Level> &currentLevel) {
 	Gui::ScreenDraw(Bottom);
-	GFX::DrawThemeSprite(theme_filebrowse_bottom_idx, 0, 0);
-	Gui::DrawStringCentered(0, currentTheme->browseTitle3, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("CHANGE_LOCATION_MODE"), 310);
+	GFX::DrawSprite(sprites_bottom_browse_idx, 0, 0);
+	Gui::DrawStringCentered(0, -1, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("CHANGE_LOCATION_MODE"), 310);
 
 	// Display Level here!
 	if (currentLevel && currentLevel->isValid()) {
-		GFX::DrawThemeSprite(theme_field_idx, currentTheme->browseGridX, currentTheme->browseGridY);
+		GFX::DrawSprite(sprites_field_idx, 69, 29);
 
 		for (int i = 0; i < currentLevel->getBlockAmount(); i++) {
 			DrawBlock(currentLevel, i);
@@ -86,7 +86,7 @@ static void DrawBottom(std::unique_ptr<Level> &currentLevel) {
 
 	}
 
-	Gui::DrawStringCentered(0, currentTheme->browseTitlePrev, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("Y_PREVIEW"), 310);
+	Gui::DrawStringCentered(0, 221, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("Y_PREVIEW"), 310);
 	C3D_FrameEnd(0);
 }
 

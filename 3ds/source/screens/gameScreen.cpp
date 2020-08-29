@@ -44,19 +44,20 @@ GameScreen::GameScreen() {
 
 void GameScreen::DrawBlock(int block) const {
 	if (this->currentGame->getDirection(block) != Direction::None || this->currentGame->getBlock(block) != Blocks::Block_Invalid) {
-		GFX::DrawBox(this->currentGame->getDirection(block), this->currentGame->getBlock(block), currentTheme->GridXPos + (currentTheme->GridBlockSize * (this->currentGame->getXRow(block) - 1)), currentTheme->GridYPos + (currentTheme->GridBlockSize * (this->currentGame->getYRow(block) -1)));
+		GFX::DrawBox(this->currentGame->getDirection(block), this->currentGame->getBlock(block), 69 + (30 * (this->currentGame->getXRow(block) - 1)), 38 + (30 * (this->currentGame->getYRow(block) -1)));
 	}
 }
 
 void GameScreen::DrawSelectedBlock(int block) const {
 	if (this->currentGame->getDirection(block) != Direction::None || this->currentGame->getBlock(block) != Blocks::Block_Invalid) {
-		GFX::DrawBoxSelected(this->currentGame->getDirection(block), this->currentGame->getBlock(block), currentTheme->GridXPos + (currentTheme->GridBlockSize * (this->currentGame->getXRow(block) - 1)), currentTheme->GridYPos + (currentTheme->GridBlockSize * (this->currentGame->getYRow(block) -1)));
+		GFX::DrawBoxSelected(this->currentGame->getDirection(block), this->currentGame->getBlock(block), 69 + (30 * (this->currentGame->getXRow(block) - 1)), 38 + (30 * (this->currentGame->getYRow(block) -1)));
 	}
 }
 
 void GameScreen::DrawGameField() const {
 	Gui::ScreenDraw(Bottom);
-	GFX::DrawThemeSprite(theme_gamefield_idx, 0, 0);
+	GFX::DrawSprite(sprites_bottom_default_idx, 0, 0);
+	GFX::DrawSprite(sprites_bulkfield_idx, 41, 24);
 
 	if (this->currentGame && this->currentGame->isValid()) {
 		for (int i = 0; i < this->currentGame->getBlockAmount(); i++) {
@@ -69,13 +70,14 @@ void GameScreen::DrawGameField() const {
 
 void GameScreen::Draw(void) const {
 	if (this->mode == 0) {
-		GFX::DrawTop();
-		Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, "BlockEscape3DS - " + Lang::get("GAME_SCREEN"), 390);
+		Gui::ScreenDraw(Top);
+		GFX::DrawSprite(sprites_top_browse_idx, 0, 0);
+		Gui::DrawStringCentered(0, -1, 0.6, C2D_Color32(255, 255, 255, 255), "BlockEscape3DS - " + Lang::get("GAME_SCREEN"), 390);
 	
 		if (this->currentGame->isValid()) {
-			Gui::DrawStringCentered(0, 214, 0.8f, currentTheme->TitleTextColor, Lang::get("MOVEMENTS") + std::to_string(this->currentGame->getMovement()), 390);
+			Gui::DrawStringCentered(0, 221, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("MOVEMENTS") + std::to_string(this->currentGame->getMovement()), 390);
 		} else {
-			Gui::DrawStringCentered(0, 214, 0.8f, currentTheme->TitleTextColor, Lang::get("LEVEL_NOT_LOADED"), 390);
+			Gui::DrawStringCentered(0, 221, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("LEVEL_NOT_LOADED"), 390);
 		}
 
 		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
@@ -87,9 +89,10 @@ void GameScreen::Draw(void) const {
 		}
 
 		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+
 	} else {
 		GFX::DrawTop();
-		Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, "BlockEscape3DS - " + Lang::get("GAME_SCREEN_SUB_MENU"), 390);
+		Gui::DrawStringCentered(0, -1, 0.6, C2D_Color32(255, 255, 255, 255), "BlockEscape3DS - " + Lang::get("GAME_SCREEN_SUB_MENU"), 390);
 		if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 		GFX::DrawBottom(true);
 
@@ -127,6 +130,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							return;
 						}
 					}
+					
 				} else if (this->currentGame->getDirection(this->selectedBlock) == Direction::Horizontal) {
 					if (this->currentGame->getYRow(this->selectedBlock) == GRIDSIZE - 1) {
 						Msg::DisplayWaitMsg(Lang::get("LEVEL_WON"));

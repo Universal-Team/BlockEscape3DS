@@ -55,14 +55,14 @@ const std::string LevelCreator::getSelectMsg() const {
 
 void LevelCreator::DrawBlock(int block) const {
 	if (this->level->getDirection(block) != Direction::None || this->level->getBlock(block) != Blocks::Block_Invalid) {
-		GFX::DrawBox(this->level->getDirection(block), this->level->getBlock(block), currentTheme->creatorGridX + (currentTheme->GridBlockSize * (this->level->getXRow(block) - 1)), currentTheme->creatorGridY + (currentTheme->GridBlockSize * (this->level->getYRow(block) -1)));
+		GFX::DrawBox(this->level->getDirection(block), this->level->getBlock(block), 10 + (30 * (this->level->getXRow(block) - 1)), 38 + (30 * (this->level->getYRow(block) -1)));
 	}
 }
 
 void LevelCreator::DrawGameField() const {
 	Gui::ScreenDraw(Bottom);
-	GFX::DrawThemeSprite(theme_level_creator_bottom_idx, 0, 0);
-	GFX::DrawThemeSprite(theme_field_idx, currentTheme->creatorGridX, currentTheme->creatorGridY);
+	GFX::DrawSprite(sprites_bottom_default_idx, 0, 0);
+	GFX::DrawSprite(sprites_field_idx, 10, 38);
 
 	if (this->level && this->level->isValid()) {
 		for (int i = 0; i < this->level->getBlockAmount(); i++) {
@@ -71,20 +71,20 @@ void LevelCreator::DrawGameField() const {
 	}
 
 	if (this->level && this->level->isValid()) {
-		GFX::DrawBox(Direction::Vertical, Blocks::Block2, currentTheme->creatorXPos + 2, currentTheme->creatorYPos);
-		GFX::DrawBox(Direction::Vertical, Blocks::Block3, currentTheme->creatorXPos + 2, currentTheme->creatorYPos + 35);
-		GFX::DrawBox(Direction::Vertical, Blocks::Block_Escape, currentTheme->creatorXPos + 2, currentTheme->creatorYPos + 70);
+		GFX::DrawBox(Direction::Vertical, Blocks::Block2, 10 + 2, 38);
+		GFX::DrawBox(Direction::Vertical, Blocks::Block3, 10 + 2, 38 + 35);
+		GFX::DrawBox(Direction::Vertical, Blocks::Block_Escape, 10 + 2, 38 + 70);
 	}
 
-	GFX::DrawThemeSprite(theme_save_idx, saveIcon.x, saveIcon.y);
+	GFX::DrawSprite(sprites_save_idx, saveIcon.x, saveIcon.y);
 }
 
 void LevelCreator::Draw(void) const {
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_level_creator_top_idx, 0, 0);
-	Gui::DrawStringCentered(0, currentTheme->TitleYTop, currentTheme->TitleTextSize, currentTheme->TitleTextColor, "BlockEscape3DS - " + Lang::get("LEVEL_CREATOR"), 390);
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0."))/2, 0.7f, currentTheme->TitleTextColor, "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0.", 390, 70);
-	Gui::DrawStringCentered(0, currentTheme->TitleYBottom, currentTheme->TitleTextSize, currentTheme->TitleTextColor, this->getSelectMsg(), 390);
+	GFX::DrawSprite(sprites_top_browse_idx, 0, 0);
+	Gui::DrawStringCentered(0, -1, 0.6, C2D_Color32(255, 255, 255, 255), "BlockEscape3DS - " + Lang::get("LEVEL_CREATOR"), 390);
+	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0."))/2, 0.7f, C2D_Color32(255, 255, 255, 255), "You need to take care by yourself about the blocks.\nThere aren't any checks added yet.\nChecks might be added with v0.2.0.", 390, 70);
+	Gui::DrawStringCentered(0, 221, 0.6, C2D_Color32(255, 255, 255, 255), this->getSelectMsg(), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 
 	if (this->level->isValid()) {

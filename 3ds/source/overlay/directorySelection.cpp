@@ -42,8 +42,8 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	Gui::ScreenDraw(Top);
-	GFX::DrawThemeSprite(theme_fileBrowse_idx, 0, 0);
-	Gui::DrawStringCentered(0, currentTheme->browseTitle1, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("DIRECTORY_SELECT"), 390);
+	GFX::DrawSprite(sprites_top_browse_idx, 0, 0);
+	Gui::DrawStringCentered(0, -1, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("DIRECTORY_SELECT"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
 		dirs += dirContents[i].name + "\n\n";
@@ -53,19 +53,19 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 		dirs += "\n\n";
 	}
 
-	Gui::DrawString(currentTheme->browseListBeginX, currentTheme->browseListBeginY, currentTheme->browseListSize, currentTheme->browseTextColor, dirs, 360);
-	Gui::DrawStringCentered(0, currentTheme->browseTitle2, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("REFRESH"), 390);
-	if (Selection < 6) GFX::DrawThemeSprite(theme_fbSelector_idx, 3, 31 + (Selection * 32));
-	else GFX::DrawThemeSprite(theme_fbSelector_idx, 3, 31 + (5 * 32));
+	Gui::DrawString(26, 32, 0.53, C2D_Color32(255, 255, 255, 255), dirs, 360);
+	Gui::DrawStringCentered(0, 221, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("REFRESH"), 390);
+	if (Selection < 6) GFX::DrawSprite(sprites_selector_fb_idx, 3, 31 + (Selection * 32));
+	else GFX::DrawSprite(sprites_selector_fb_idx, 3, 31 + (5 * 32));
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 // The Preview part.
 static void DrawBottom() {
 	Gui::ScreenDraw(Bottom);
-	GFX::DrawThemeSprite(theme_filebrowse_bottom_idx, 0, 0);
-	Gui::DrawStringCentered(0, currentTheme->browseTitle3, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("X_TO_SELECT"), 310);
-	Gui::DrawStringCentered(0, currentTheme->browseTitlePrev, currentTheme->TitleTextSize, currentTheme->TitleTextColor, Lang::get("DIRECTORY_SELECT_NOTE"), 310);
+	GFX::DrawSprite(sprites_bottom_browse_idx, 0, 0);
+	Gui::DrawStringCentered(0, -1, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("X_TO_SELECT"), 310);
+	Gui::DrawStringCentered(0, 221, 0.6, C2D_Color32(255, 255, 255, 255), Lang::get("DIRECTORY_SELECT_NOTE"), 310);
 	C3D_FrameEnd(0);
 }
 

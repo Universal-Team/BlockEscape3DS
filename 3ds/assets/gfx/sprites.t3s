@@ -1,5 +1,28 @@
 --atlas -f rgba8888 -z auto
 
+sprites/block_2_hz.png
+sprites/block_2_hz_selected.png
+sprites/block_2_vc.png
+sprites/block_2_vc_selected.png
+sprites/block_3_hz.png
+sprites/block_3_hz_selected.png
+sprites/block_3_vc.png
+sprites/block_3_vc_selected.png
+sprites/bottom_browse.png
+sprites/bottom_default.png
+sprites/bulkfield.png
+sprites/button.png
 sprites/dev_by.png
+sprites/field.png
+sprites/keyblock_hz.png
+sprites/keyblock_hz_selected.png
+sprites/keyblock_vc.png
+sprites/keyblock_vc_selected.png
+sprites/msgBox.png
+sprites/save.png
+sprites/selector.png
+sprites/selector_fb.png
 sprites/stackz.png
+sprites/top_browse.png
+sprites/top_default.png
 sprites/universal-core.png

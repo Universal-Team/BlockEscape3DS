@@ -33,9 +33,7 @@
 #include "lang.hpp"
 #include "msg.hpp"
 #include "screenCommon.hpp"
-#include "theme.hpp"
 
-extern std::unique_ptr<Theme> currentTheme;
 struct GridStruct {
     float X;
     float Y;
