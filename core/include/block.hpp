@@ -41,15 +41,15 @@ public:
 		this->index = index;
 	}
 
-	int getX() { return this->rowX; }
+	int getX() const { return this->rowX; }
 	void setX(int x) { this->rowX = x; }
-	int getY() { return this->rowY; }
+	int getY() const { return this->rowY; }
 	void setY(int y) { this->rowY = y; }
-	int getSize() { return this->size; }
+	int getSize() const { return this->size; }
 	void setSize(int sz) { this->size = sz; }
-	Direction getDirection() { return this->direction; }
+	Direction getDirection() const { return this->direction; }
 	void setDirection(Direction dr) { this->direction = dr; }
-	Blocks getBlock() { return this->index; }
+	Blocks getBlock() const { return this->index; }
 private:
 	int rowX, rowY, size;
 	Blocks index;

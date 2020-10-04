@@ -31,24 +31,36 @@
 
 #include <cstring>
 
+/*
+	Level Constructor.
+
+	bool useField: If the field should be used. (Likely won't be used in the future).
+*/
 Level::Level(bool useField) {
 	this->validLevel = false;
 	this->useField = useField;
 }
 
+/*
+	Unload a level.
+*/
 void Level::unload() {
-	// Reset blocks.
+	/* Reset blocks. */
 	this->blocks.clear();
 	this->levelData = nullptr;
 	this->validLevel = false;
 	this->resetMovement();
 
 	for (int i = 0; i < 36; i++) {
-		this->gamefield[i] = {-1, Direction::None, -1};
+		this->gamefield[i] = { -1, Direction::None, -1 };
 	}
 }
 
-// Load a level.
+/*
+	Load a level.
+
+	const std::string &file: path to the level file.
+*/
 void Level::loadLevel(const std::string &file) {
 	this->unload(); // Unload before loading.
 
@@ -62,6 +74,7 @@ void Level::loadLevel(const std::string &file) {
 
 	fseek(this->levelFile, 0, SEEK_END);
 	this->size = ftell(this->levelFile);
+
 	if (this->size != 0x34) {
 		Msg::DisplayWaitMsg(Lang::get("LEVEL_SIZE_INCORRECT"));
 		fclose(this->levelFile);
@@ -76,7 +89,7 @@ void Level::loadLevel(const std::string &file) {
 
 	static const char MAGIC[4] = {'B','E','3','D'};
 
-	// Verify Magic header.
+	/* Verify Magic header. */
 	if (memcmp(MAGIC, this->levelData.get(), 0x4) != 0) {
 		Msg::DisplayWaitMsg(Lang::get("LEVEL_INVALID_MAGIC"));
 		this->validLevel = false;
@@ -88,8 +101,11 @@ void Level::loadLevel(const std::string &file) {
 	this->prepareLevel(); // Also do prepare!
 }
 
+/*
+	Reload a level.
+*/
 void Level::reload() {
-	// Reset blocks.
+	/* Reset blocks. */
 	this->blocks.clear();
 	this->resetMovement();
 
@@ -100,11 +116,13 @@ void Level::reload() {
 	this->prepareLevel();
 }
 
-// Prepare the level here.
+/*
+	Prepare a level.
+*/
 void Level::prepareLevel() {
 	if (this->validLevel && this->levelData) {
 
-		// 2 size blocks.
+		/* 2 size blocks. */
 		for (int i = 0; i < 11; i++) {
 			if (this->levelPointer()[0 + (i * 0x3)] != 0) {
 
@@ -127,14 +145,14 @@ void Level::prepareLevel() {
 				}
 
 
-				// Direction check. Vertical.
+				/* Direction check. Vertical. */
 				if (this->levelPointer()[0 + (i * 0x3)] == 1) {
 					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Blocks::Block2)});
 					for (int i2 = 0; i2 < 2; i2++) {
 						this->gamefield[this->levelPointer()[1 + (i * 0x3)] + (((this->levelPointer()[2 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {(int)Blocks::Block2, Direction(this->levelPointer()[0 + (i * 0x3)]), this->getBlockAmount()-1};
 					}
-					
-					// Direction check. Horizontal.
+
+				/* Direction check. Horizontal. */
 				} else if (this->levelPointer()[0 + (i * 0x3)] == 2) {
 					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[1 + (i * 0x3)], this->levelPointer()[2 + (i * 0x3)], 2, Direction(this->levelPointer()[0 + (i * 0x3)]), Blocks::Block2)});
 					for (int i2 = 0; i2 < 2; i2++) {
@@ -145,7 +163,7 @@ void Level::prepareLevel() {
 		}
 
 
-		// 3 size blocks.
+		/* 3 size blocks. */
 		for (int i = 0; i < 4; i++) {
 			if (this->levelPointer()[0x21 + (i * 0x3)] != 0) {
 
@@ -167,7 +185,7 @@ void Level::prepareLevel() {
 					return;
 				}
 
-				// Direction check. Vertical.
+				/* Direction check. Vertical. */
 				if (this->levelPointer()[0x21 + (i * 0x3)] == 1) {
 					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Blocks::Block3)});
 
@@ -175,7 +193,7 @@ void Level::prepareLevel() {
 						this->gamefield[this->levelPointer()[0x22 + (i * 0x3)] + (((this->levelPointer()[0x23 + (i * 0x3)]) * 6) - 6) + i2 - 1] = {(int)Blocks::Block3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), this->getBlockAmount()-1};
 					}
 
-					// Direction check. Horizontal.
+				/* Direction check. Horizontal. */
 				} else if (this->levelPointer()[0x21 + (i * 0x3)] == 2) {
 					this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x22 + (i * 0x3)], this->levelPointer()[0x23 + (i * 0x3)], 3, Direction(this->levelPointer()[0x21 + (i * 0x3)]), Blocks::Block3)});
 
@@ -187,7 +205,7 @@ void Level::prepareLevel() {
 			}
 		}
 
-		// the needed block.
+		/* the needed block. */
 		if (this->levelPointer()[0x2D] != 0) {
 
 			if (this->levelPointer()[0x2D] < STARTPOS ||this->levelPointer()[0x2D] > 2) {
@@ -208,7 +226,7 @@ void Level::prepareLevel() {
 				return;
 			}
 
-			// Direction check. Vertical.
+			/* Direction check. Vertical. */
 			if (this->levelPointer()[0x2D] == 1) {
 				this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Blocks::Block_Escape)});
 
@@ -216,7 +234,7 @@ void Level::prepareLevel() {
 					this->gamefield[this->levelPointer()[0x2E] + (((this->levelPointer()[0x2F]) * 6) - 6) + i2 - 1] = {(int)Blocks::Block_Escape, Direction(this->levelPointer()[0x2D]), this->getBlockAmount()-1};
 				}
 
-				// Direction check. Horizontal.
+			/* Direction check. Horizontal. */
 			} else if (this->levelPointer()[0x2D] == 2) {
 				this->blocks.push_back({std::make_unique<Block>(this->levelPointer()[0x2E], this->levelPointer()[0x2F], 2, Direction(this->levelPointer()[0x2D]), Blocks::Block_Escape)});
 
@@ -229,32 +247,47 @@ void Level::prepareLevel() {
 	}
 }
 
-int Level::getXRow(int bl) {
+/*
+	Return the X Row from a block.
+
+	int bl: The block-Index.
+*/
+int Level::getXRow(int bl) const {
 	if (this->getBlockAmount() < bl) return 0;
 
 	return this->blocks[bl]->getX();
 }
 
+/*
+	Set the X Row from a block.
+
+	int bl: The block-Index.
+	int xPos: The X Position of the block.
+	int yPos : The Y Position of the block.
+	int pos: The "index" which is forward | backward.
+*/
 void Level::setXRow(int bl, int xPos, int yPos, int pos) {
 	if (this->getBlockAmount() < bl) return;
 
-	// Field stuff.
+	/* Field stuff. */
 	if (this->useField) {
 		for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 			if (this->blocks[bl]->getX() >= STARTPOS || this->blocks[bl]->getY() >= STARTPOS) {
 				if (this->blocks[bl]->getDirection() == Direction::Vertical) {
-					this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + xPos + i - 1] = {-1, Direction::None, -1};
+					this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + xPos + i - 1] = { -1, Direction::None, -1 };
+
 				} else if (this->blocks[bl]->getDirection() == Direction::Horizontal) {
-					this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + xPos - 1] = {-1, Direction::None, -1};
+					this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + xPos - 1] = { -1, Direction::None, -1 };
 				}
 			}
 		}
 
 		for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 			if (this->blocks[bl]->getDirection() == Direction::Vertical) {
-				this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + pos + (i - 1)] = {(int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl};
+				this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + pos + (i - 1)] = { (int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl };
+
 			} else if (this->blocks[bl]->getDirection() == Direction::Horizontal) {
-				this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + pos - 1] = {(int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl};
+				this->gamefield[((yPos * GRIDSIZE) - GRIDSIZE) + pos - 1] = { (int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl };
 			}
 		}
 	}
@@ -262,32 +295,47 @@ void Level::setXRow(int bl, int xPos, int yPos, int pos) {
 	this->blocks[bl]->setX(pos);
 }
 
-int Level::getYRow(int bl) {
+/*
+	Return the Y Row from a block.
+
+	int bl: The block-Index.
+*/
+int Level::getYRow(int bl) const{
 	if (this->getBlockAmount() < bl) return 0;
 
 	return this->blocks[bl]->getY();
 }
 
+/*
+	Set the Y Row from a block.
+
+	int bl: The block-Index.
+	int xPos: The X Position of the block.
+	int yPos : The Y Position of the block.
+	int pos: The "index" which is forward | backward.
+*/
 void Level::setYRow(int bl, int xPos, int yPos, int pos) {
 	if (this->getBlockAmount() < bl) return;
 
-	// Field stuff.
+	/* Field stuff. */
 	if (this->useField) {
 		for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 			if (this->blocks[bl]->getX() >= STARTPOS || this->blocks[bl]->getY() >= STARTPOS) {
 				if (this->blocks[bl]->getDirection() == Direction::Horizontal) {
-					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {-1, Direction::None, -1};
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = { -1, Direction::None, -1 };
+
 				} else if (this->blocks[bl]->getDirection() == Direction::Vertical) {
-					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) - 1] = {-1, Direction::None, -1};
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) - 1] = { -1, Direction::None, -1 };
 				}
 			}
 		}
 
 		for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 			if (this->blocks[bl]->getDirection() == Direction::Horizontal) {
-				this->gamefield[xPos + ((pos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {(int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl};
+				this->gamefield[xPos + ((pos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = { (int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl };
+
 			} else if (this->blocks[bl]->getDirection() == Direction::Vertical) {
-				this->gamefield[xPos + ((pos * GRIDSIZE) - GRIDSIZE) - 1] = {(int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl};
+				this->gamefield[xPos + ((pos * GRIDSIZE) - GRIDSIZE) - 1] = { (int)this->blocks[bl]->getBlock(), this->blocks[bl]->getDirection(), bl };
 			}
 		}
 	}
@@ -295,36 +343,54 @@ void Level::setYRow(int bl, int xPos, int yPos, int pos) {
 	this->blocks[bl]->setY(pos);
 }
 
-int Level::getSize(int bl) {
+/*
+	Return the size of a block.
+
+	int bl: The block-index.
+*/
+int Level::getSize(int bl) const {
 	if (this->getBlockAmount() < bl) return 0;
 
 	return this->blocks[bl]->getSize();
 }
 
-Direction Level::getDirection(int bl) {
+/*
+	Return the Direction of a block.
+
+	int bl: The block-index.
+*/
+Direction Level::getDirection(int bl) const {
 	if (this->getBlockAmount() < bl) return Direction::None;
 
 	return this->blocks[bl]->getDirection();
 }
 
+/*
+	Set the Direction of a block.
+
+	int bl: The block-index.
+	int xPos: The X Position.
+	int yPos: The Y Position.
+	Direction dr: The Direction.
+*/
 void Level::setDirection(int bl, int xPos, int yPos, Direction dr) {
 	if (this->getBlockAmount() < bl) return;
 
 	this->blocks[bl]->setDirection(dr);
 
 
-	// Field stuff.
+	/* Field stuff. */
 	if (this->useField) {
 		if (dr == Direction::Horizontal) {
 			for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 				if (xPos != 0 || yPos != 0) {
-					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {-1, Direction::None, -1};
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = { -1, Direction::None, -1 };
 				}
 			}
 
 			for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 				if (xPos != 0 || yPos != 0) {
-					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {(int)this->blocks[bl]->getBlock(), dr, bl};
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = { (int)this->blocks[bl]->getBlock(), dr, bl };
 				}
 			}
 
@@ -332,36 +398,53 @@ void Level::setDirection(int bl, int xPos, int yPos, Direction dr) {
 		} else if (dr == Direction::Vertical) {
 			for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 				if (xPos != 0 || yPos != 0) {
-					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {-1, Direction::None, -1};
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = { -1, Direction::None, -1 };
 				}
 			}
 
 			for (int i = 0; i < this->blocks[bl]->getSize(); i++) {
 				if (xPos != 0 || yPos != 0) {
-					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = {(int)this->blocks[bl]->getBlock(), dr, bl};
+					this->gamefield[xPos + ((yPos * GRIDSIZE) - GRIDSIZE) + (i * GRIDSIZE) - 1] = { (int)this->blocks[bl]->getBlock(), dr, bl };
 				}
 			}
 		}
 	}
 }
 
-Blocks Level::getBlock(int bl) {
+/*
+	Return the Blocktype of a block.
+
+	int bl: The block-index.
+*/
+Blocks Level::getBlock(int bl) const{
 	if (this->getBlockAmount() < bl) return Blocks::Block_Invalid;
 
 	return this->blocks[bl]->getBlock();
 }
 
-int Level::getBlockAmount() { return (int)this->blocks.size(); }
+/*
+	Return the used Block Amount.
+*/
+int Level::getBlockAmount() const { return (int)this->blocks.size(); }
 
-bool Level::isValid() { return this->validLevel; }
+/*
+	Return if the current level is valid.
+*/
+bool Level::isValid() const { return this->validLevel; }
 
+/*
+	Return if a block can move.
+
+	int bl: The block-index.
+	bool mv: forward (true) or backward (false).
+*/
 bool Level::returnIfMovable(int bl, bool mv) {
 	if (this->getBlockAmount() < bl) return false; // No No.
 
 	int distance = 0;
 
 
-	// Do not do anything, if 6 / 1.
+	/* Do not do anything, if 6 / 1. */
 	if (mv) {
 		if (this->blocks[bl]->getDirection() == Direction::Vertical) {
 			if (this->blocks[bl]->getX() + this->blocks[bl]->getSize() - 1 == GRIDSIZE) return false;
@@ -383,15 +466,18 @@ bool Level::returnIfMovable(int bl, bool mv) {
 		}
 	}
 
-	// Up / Down.
+	/* Up / Down. */
 	if (this->blocks[bl]->getDirection() == Direction::Horizontal) {
 		for (int i = 0; i < this->getBlockAmount(); i++) {
 			if (this->blocks[i]->getDirection() == Direction::Vertical) {
+
 				if (this->blocks[i]->getY() == distance) {
+
 					if (this->blocks[i]->getSize() == 2) {
 						if (this->blocks[i]->getX() == this->blocks[bl]->getX() || this->blocks[i]->getX() + 1 == this->blocks[bl]->getX()) {
 							return false; // Blocked!
 						}
+
 					} else if (this->blocks[i]->getSize() == 3) {
 						if (this->blocks[i]->getX() == this->blocks[bl]->getX() || this->blocks[i]->getX() + 1 == this->blocks[bl]->getX() || this->blocks[i]->getX() + 2 == this->blocks[bl]->getX()) {
 							return false; // Blocked!
@@ -403,10 +489,13 @@ bool Level::returnIfMovable(int bl, bool mv) {
 
 			} else if (this->blocks[i]->getDirection() == Direction::Horizontal) {
 				if (this->blocks[i]->getX() == this->blocks[bl]->getX()) {
+
 					if (this->blocks[i]->getSize() == 2) {
+
 						if (this->blocks[i]->getY() == distance || this->blocks[i]->getY() + 1 == distance) {
 							return false; // Blocked!
 						}
+
 					} else if (this->blocks[i]->getSize() == 3) {
 						if (this->blocks[i]->getY() == distance || this->blocks[i]->getY() + 1 == distance || this->blocks[i]->getY() + 2 == distance) {
 							return false; // Blocked!
@@ -416,25 +505,30 @@ bool Level::returnIfMovable(int bl, bool mv) {
 			}
 		}
 
-		// Right / Left.
+	/* Right / Left. */
 	} else if (this->blocks[bl]->getDirection() == Direction::Vertical) {
 		for (int i = 0; i < this->getBlockAmount(); i++) {
 			if (this->blocks[i]->getDirection() == Direction::Horizontal) {
+
 				if (this->blocks[i]->getX() == distance) {
+
 					if (this->blocks[i]->getSize() == 2) {
 						if (this->blocks[i]->getY() == this->blocks[bl]->getY() || this->blocks[i]->getY() + 1 == this->blocks[bl]->getY()) {
 							return false; // Blocked!
 						}
+
 					} else if (this->blocks[i]->getSize() == 3) {
 						if (this->blocks[i]->getY() == this->blocks[bl]->getY() || this->blocks[i]->getY() + 1 == this->blocks[bl]->getY() || this->blocks[i]->getY() + 2 == this->blocks[bl]->getY()) {
 							return false; // Blocked!
 						}
 					}
 				}
-				
+
 			} else if (this->blocks[i]->getDirection() == Direction::Vertical) {
 				if (this->blocks[i]->getY() == this->blocks[bl]->getY()) {
+
 					if (this->blocks[i]->getSize() == 2) {
+
 						if (this->blocks[i]->getX() == distance || this->blocks[i]->getX() + 1 == distance) {
 							return false; // Blocked!
 						}
@@ -452,14 +546,16 @@ bool Level::returnIfMovable(int bl, bool mv) {
 	return true;
 }
 
-// Create a new Level!
+/*
+	Create a new Level!
+*/
 void Level::createNew() {
 	this->unload();
 
 	this->levelData = std::unique_ptr<u8[]>(new u8[0x34]);
 	this->levelData[0] = 'B'; this->levelData[1] = 'E'; this->levelData[2] = '3'; this->levelData[3] = 'D';
 
-	// Push all blocks here! :P
+	/* Push all blocks here. */
 	for (int i = 0; i < 11; i++) {
 		this->blocks.push_back({std::make_unique<Block>(0, 0, 2, Direction(0), Blocks::Block2)});
 	}
@@ -473,6 +569,9 @@ void Level::createNew() {
 	this->validLevel = true;
 }
 
+/*
+	Set the Level Creator stuff to level data.
+*/
 void Level::setCreatorStuff() {
 	for (int i = 0; i < 16; i++) {
 		this->levelData[0x4 + (i * 0x3)] = (int)this->blocks[i]->getDirection();

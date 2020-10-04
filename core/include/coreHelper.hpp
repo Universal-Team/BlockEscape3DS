@@ -33,7 +33,7 @@
 enum class Blocks {
 	Block_Invalid,
 	Block2, // 2.
-	Block3, // 2.
+	Block3, // 3.
 	Block_Escape // 2.
 };
 

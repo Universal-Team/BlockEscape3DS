@@ -41,26 +41,26 @@ public:
 	void unload();
 	void reload();
 
-	int getXRow(int bl);
+	int getXRow(int bl) const;
 	void setXRow(int bl, int xPos, int yPos, int pos);
-	int getYRow(int bl);
+	int getYRow(int bl) const;
 	void setYRow(int bl, int xPos, int yPos, int pos);
-	int getSize(int bl);
-	Direction getDirection(int bl);
-	Blocks getBlock(int bl);
-	int getBlockAmount();
-	bool isValid();
+	int getSize(int bl) const;
+	Direction getDirection(int bl) const;
+	Blocks getBlock(int bl) const;
+	int getBlockAmount() const;
+	bool isValid() const;
 
-	// Movement stuff here.
-	int getMovement() { return this->currentLevel->getMovement(); }
+	/* Movement stuff here. */
+	int getMovement() const { return this->currentLevel->getMovement(); }
 	void doMovement() { this->currentLevel->doMovement(); }
 	void resetMovement() { this->currentLevel->resetMovement(); }
 	bool returnIfMovable(int bl, bool mv); // if movement is true, do forward.
 
-	// Gamefield.
-	int returnField(int i) { return this->currentLevel->returnField(i); }
-	Direction returnDirection(int i) { return this->currentLevel->returnDirection(i); }
-	int returnIndex(int i) { return this->currentLevel->returnIndex(i); }
+	/* Gamefield. */
+	int returnField(int i) const { return this->currentLevel->returnField(i); }
+	Direction returnDirection(int i) const { return this->currentLevel->returnDirection(i); }
+	int returnIndex(int i) const { return this->currentLevel->returnIndex(i); }
 private:
 	std::unique_ptr<Level> currentLevel;
 };

@@ -52,32 +52,32 @@ public:
 	void unload();
 	void reload();
 
-	int getXRow(int bl);
+	int getXRow(int bl) const;
 	void setXRow(int bl, int xPos, int yPos, int pos);
-	int getYRow(int bl);
+	int getYRow(int bl) const;
 	void setYRow(int bl, int xPos, int yPos, int pos);
-	int getSize(int bl);
-	Direction getDirection(int bl);
+	int getSize(int bl) const;
+	Direction getDirection(int bl) const;
 	void setDirection(int bl, int xPos, int yPos, Direction dr);
-	Blocks getBlock(int bl);
-	int getBlockAmount();
-	bool isValid();
+	Blocks getBlock(int bl) const;
+	int getBlockAmount() const;
+	bool isValid() const;
 
-	// Movement stuff here.
-	int getMovement() { return this->movement; }
+	/* Movement stuff here. */
+	int getMovement() const { return this->movement; }
 	void doMovement() { this->movement++; }
 	void resetMovement() { this->movement = 0; }
-	
+
 	bool returnIfMovable(int bl, bool mv); // if movement is true, do forward.
 
-	int returnField(int i) { return this->gamefield[i].blocktype; }
-	Direction returnDirection(int i) { return this->gamefield[i].direction; }
-	int returnIndex(int i) { return this->gamefield[i].index; }
+	int returnField(int i) const { return this->gamefield[i].blocktype; }
+	Direction returnDirection(int i) const { return this->gamefield[i].direction; }
+	int returnIndex(int i) const { return this->gamefield[i].index; }
 
 
 	std::unique_ptr<u8[]> &levelDt() { return this->levelData; }
 
-	const u8* levelPointer() {
+	u8* levelPointer() const {
 		if (this->levelData) return this->levelData.get() + 0x4;
 		else return nullptr;
 	}
@@ -89,7 +89,7 @@ private:
 	int movement = 0;
 	bool validLevel = false;
 	std::vector<std::unique_ptr<Block>> blocks;
-	std::array<GameField, 36> gamefield = {-1, Direction::None, -1};
+	std::array<GameField, 36> gamefield = { -1, Direction::None, -1 };
 };
 
 #endif

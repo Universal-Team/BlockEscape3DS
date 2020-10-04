@@ -28,63 +28,99 @@
 #include "game.hpp"
 #include "msg.hpp"
 
-// Your constructor here for the Game.
-Game::Game() {
-	this->currentLevel = std::make_unique<Level>();
-}
+Game::Game() { this->currentLevel = std::make_unique<Level>(); }
 
-void Game::unload() {
-	this->currentLevel->unload();
-}
+/*
+	Unload a level.
+*/
+void Game::unload() { this->currentLevel->unload(); }
 
-// Load a level.
-void Game::loadLevel(const std::string &file) {
-	this->currentLevel->loadLevel(file);
-}
+/*
+	Load a level.
 
-// Reload a Level.
-void Game::reload() {
-	this->currentLevel->reload();
-}
+	const std::string &file: path to the level file.
+*/
+void Game::loadLevel(const std::string &file) { this->currentLevel->loadLevel(file); }
 
-// Prepare the level here.
-void Game::prepareLevel() {
-	this->currentLevel->prepareLevel();
-}
+/*
+	Reload a level.
+*/
+void Game::reload() { this->currentLevel->reload(); }
 
+/*
+	Prepare a level.
+*/
+void Game::prepareLevel() { this->currentLevel->prepareLevel(); }
 
-int Game::getXRow(int bl) {
-	return this->currentLevel->getXRow(bl);
-}
+/*
+	Return the X Row from a block.
 
-void Game::setXRow(int bl, int xPos, int yPos, int pos) {
-	this->currentLevel->setXRow(bl, xPos, yPos, pos);
-}
+	int bl: The block-Index.
+*/
+int Game::getXRow(int bl) const { return this->currentLevel->getXRow(bl); }
 
-int Game::getYRow(int bl) {
-	return this->currentLevel->getYRow(bl);
-}
+/*
+	Set the X Row from a block.
 
-void Game::setYRow(int bl, int xPos, int yPos, int pos) {
-	this->currentLevel->setYRow(bl, xPos, yPos, pos);
-}
+	int bl: The block-Index.
+	int xPos: The X Position of the block.
+	int yPos : The Y Position of the block.
+	int pos: The "index" which is forward | backward.
+*/
+void Game::setXRow(int bl, int xPos, int yPos, int pos) { this->currentLevel->setXRow(bl, xPos, yPos, pos); }
 
-int Game::getSize(int bl) {
-	return this->currentLevel->getSize(bl);
-}
+/*
+	Return the Y Row from a block.
 
-Direction Game::getDirection(int bl) {
-	return this->currentLevel->getDirection(bl);
-}
+	int bl: The block-Index.
+*/
+int Game::getYRow(int bl) const { return this->currentLevel->getYRow(bl); }
 
-Blocks Game::getBlock(int bl) {
-	return this->currentLevel->getBlock(bl);
-}
+/*
+	Set the Y Row from a block.
 
-int Game::getBlockAmount() { return this->currentLevel->getBlockAmount(); }
+	int bl: The block-Index.
+	int xPos: The X Position of the block.
+	int yPos : The Y Position of the block.
+	int pos: The "index" which is forward | backward.
+*/
+void Game::setYRow(int bl, int xPos, int yPos, int pos) { this->currentLevel->setYRow(bl, xPos, yPos, pos); }
 
-bool Game::isValid() { return this->currentLevel->isValid(); }
+/*
+	Return the size of a block.
 
-bool Game::returnIfMovable(int bl, bool mv) {
-	return this->currentLevel->returnIfMovable(bl, mv);
-}
+	int bl: The block-index.
+*/
+int Game::getSize(int bl) const { return this->currentLevel->getSize(bl); }
+
+/*
+	Return the Direction of a block.
+
+	int bl: The block-index.
+*/
+Direction Game::getDirection(int bl) const { return this->currentLevel->getDirection(bl); }
+
+/*
+	Return the Blocktype of a block.
+
+	int bl: The block-index.
+*/
+Blocks Game::getBlock(int bl) const { return this->currentLevel->getBlock(bl); }
+
+/*
+	Return the used Block Amount.
+*/
+int Game::getBlockAmount() const { return this->currentLevel->getBlockAmount(); }
+
+/*
+	Return if the current level is valid.
+*/
+bool Game::isValid() const { return this->currentLevel->isValid(); }
+
+/*
+	Return if a block can move.
+
+	int bl: The block-index.
+	bool mv: forward (true) or backward (false).
+*/
+bool Game::returnIfMovable(int bl, bool mv) { return this->currentLevel->returnIfMovable(bl, mv); }
