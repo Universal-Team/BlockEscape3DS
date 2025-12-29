@@ -30,6 +30,7 @@
 #include "block.hpp"
 #include "coreHelper.hpp"
 #include <3ds.h>
+#include <array>
 #include <memory>
 #include <vector>
 

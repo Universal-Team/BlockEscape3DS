@@ -33,7 +33,7 @@
 nlohmann::json appJson;
 extern std::unique_ptr<Config> config;
 
-#ifdef _3DS
+#ifdef __3DS__
 	#define LANGPATH "romfs:/lang/"
 #else
 	#define LANGPATH "nitro:/lang/"
